@@ -6,7 +6,7 @@ import com.hotel.hotels.vo.HotelImageVO;
 
 public interface HotelImageService {
 	
-	public List<HotelImageVO> getList(HotelImageVO imagefile);
+	public List<HotelImageVO> List();
 	
 
 }

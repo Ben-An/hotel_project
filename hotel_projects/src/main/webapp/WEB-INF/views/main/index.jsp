@@ -18,8 +18,8 @@
 		<c:forEach var="item" items="${list }">
 		<%-- 	<c:set var="goods_count" value="${goods_count+1 }" /> --%>
 			<div class="hotel ">
-				 <img width="121" height="154"
-					src="${contextPath}/thumbnails.do?hotelNo=${item.HotelNo}&hotelFileName=${item.hotelFileName}">
+				<%--  <img width="121" height="154"
+					src="${contextPath}/thumbnails.do?hotelNo=${item.HotelNo}&hotelFileName=${item.hotelFileName}"> --%>
 
 				
 			</div>

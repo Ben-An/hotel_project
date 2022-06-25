@@ -14,7 +14,7 @@ public class FileController {
 	private static String CURR_IMAGE_REPO_PATH = "C:\\hotel\\files";
 	
 	
-	
+
 	@RequestMapping("/thumbnails.do")
 	protected void thumbnails(@RequestParam("hotelFileName") String hotelFileName,
                             	@RequestParam("hotelNo") String hotelNo,
@@ -27,9 +27,10 @@ public class FileController {
 		String imageFileName = hotelFileName.substring(0,lastIndex);
 		if (image.exists()) { 
 			Thumbnails.of(image).size(121,154).outputFormat("png").toOutputStream(out);
-		}
+		}s
 		byte[] buffer = new byte[1024 * 8];
 		out.write(buffer);
 		out.close();
 	}
+
 }
