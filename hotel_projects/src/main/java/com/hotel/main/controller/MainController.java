@@ -4,6 +4,7 @@ package com.hotel.main.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,29 +28,31 @@ import lombok.AllArgsConstructor;
 
 public class MainController {
 	
+	@Autowired
 	private HotelImageService service;
-	
+
+
 	@GetMapping("/index")
-	public void list( ){
+	public void list(Model model){
 		
+		model.addAttribute("list",service.List());
 		
+		System.out.println("model>>>>>>"+model);
+	
 		
-//		
-//		System.out.println("hotel>>>>>>>"+hotelImage);
-//	
-//		 model.addAttribute("list", service.getList());
+
 }
 	
 	
-	@GetMapping(value="/getList", produces=MediaType.APPLICATION_JSON_UTF8_VALUE )
-	@ResponseBody
-	public ResponseEntity<List<HotelImageVO>> getList(HotelImageVO imagefile){
-		
-		System.out.println("hotelImage >>>>"+imagefile);
-		
-		return new ResponseEntity<>(service.getList(imagefile), HttpStatus.OK );
-		
-	}
+//	@GetMapping(value="/getList", produces=MediaType.APPLICATION_JSON_UTF8_VALUE )
+//	@ResponseBody
+//	public ResponseEntity<List<HotelImageVO>> getList(HotelImageVO imagefile){
+//		
+//		System.out.println("hotelImage >>>>"+imagefile);
+//		
+//		return new ResponseEntity<>(service.getList(imagefile), HttpStatus.OK );
+//		
+//	}
 	
 	
 	

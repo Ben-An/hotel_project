@@ -4,28 +4,29 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.hotel.common.mapper.HotelsMapper;
 import com.hotel.hotels.vo.HotelImageVO;
 
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 
 
 
 
 @Service
+@AllArgsConstructor
 public class HotelImageServiceImpl implements HotelImageService {
 
 	
 	@Setter(onMethod_ =@Autowired)
 	private HotelsMapper mapper;
 	
-	@Transactional
+	
 	@Override
-	public List<HotelImageVO> getList(HotelImageVO imagefile) {
+	public List<HotelImageVO> List()  {
 		
-		return mapper.getList(imagefile);
+		return mapper.getList();
 		
 	}
 
