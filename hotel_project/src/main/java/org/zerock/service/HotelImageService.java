@@ -2,13 +2,15 @@ package org.zerock.service;
 
 import java.util.List;
 
-import org.zerock.domain.HotelImageVO;
+
+import org.zerock.domain.HotelVO;
+import org.zerock.domain.MainVO;
 
 
 
 public interface HotelImageService {
 	
-	public List<HotelImageVO> List();
+	public List<MainVO> List();
 	
 
 }

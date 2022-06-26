@@ -1,380 +1,530 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+<title>심사숙고</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 
-    <!-- MetisMenu CSS -->
-    <link href="/resources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+<!--제이쿼리-->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+	integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- DataTables CSS -->
-    <link href="/resources/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+	integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- DataTables Responsive CSS -->
-    <link href="/resources/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+<!--datepicker 이쁘게-->
+<script type="text/javascript" src="/resources/js/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/resources/css/jquery-ui.css">
+<link href="/resources/css/recommend_hotel.css" rel="stylesheet">
+<style>
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
 
-    <!-- Custom CSS -->
-    <link href="/resources/dist/css/sb-admin-2.css" rel="stylesheet">
+/* 큰화면 (태블릿, 768px 이상) */
+@media ( min-width : 768px) {
+	header {
+		height: 300px;
+	}
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+	.search_input {
+		display: flex;
+		align-items: center;
+		text-align: center;
+		height: 66px;
+		width: 850px;
+		margin: 100px auto;
+		background-color: #FFFFFF;
+		border-radius: 110px;
+	}
+	.search_input>div {
+		width: 13rem;
+		border-right: 1px solid #dadada;
+	}
+	.btn-primary {
+		display: none;
+	}
+}
 
-    <!-- Custom Fonts -->
-    <link href="/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+/* 작은 화면 */
+@media screen and (max-width: 767px) {
+	header {
+		height: 200px;
+	}
+	.search_input_box {
+		display: none;
+	}
+	.small_search_input_lacation, .small_search_input__start_date,
+		.small_search_input__end_date, .small_search_input_people {
+		align-items: center;
+		text-align: center;
+		height: 66px;
+		width: 90%;
+		background-color: #FFFFFF;
+		border-radius: 110px;
+		padding: 10px 0;
+		margin: auto;
+		margin-top: 10px;
+	}
+	.search_button_container {
+		display: block;
+		align-items: right;
+		text-align: center;
+		margin: auto;
+	}
+	.modal_btn {
+		display: block;
+		align-items: center;
+		margin-top: 50px;
+		margin-right: auto;
+		margin-left: auto;
+	}
+}
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+.btn-outline-light, .modal_btn {
+	background-color: white;
+	color: #FF8C00;
+	border: none;
+}
+
+.btn-outline-light:hover, .modal_btn:hover {
+	background-color: #FF8C00;
+	border-color: white;
+	color: white;
+}
+
+.flex_center {
+	display: inline-flex;
+	align-items: center;
+}
+
+a {
+	text-decoration: none;
+	color: #000000;
+}
+
+a:visited {
+	color: #000000;
+}
+
+.search_input>:nth-child(1) {
+	width: 18rem;
+}
+
+.search_input>:nth-last-child(2) {
+	width: 11rem;
+	border: none;
+}
+
+.search_input>:nth-last-child(1) {
+	width: 65px;
+	border: none;
+}
+
+.search_input>:nth-last-child(1):hover {
+	background: none;
+}
+
+.search_input>div div, .search_input>div input, .small_search_input>div div,
+	.small_search_input>div input {
+	width: 70%;
+	margin: auto;
+	border: none;
+	text-align: left;
+}
+
+.search_input>div:hover, .small_search_input>div:hover {
+	padding: 10px 0;
+	background-color: #FFEBD2;
+	border-radius: 110px;
+	cursor: pointer;
+}
+
+.search_input input, .small_search_input input {
+	cursor: default;
+	background: transparent;
+}
+
+.search_button, .small_search_button {
+	width: 45px;
+	height: 45px;
+	border: none;
+	border-radius: 50%;
+	background-color: #FF8607;
+}
+
+.search_button:hover, .small_search_button:hover {
+	background-color: #FF7602;
+}
+
+.search_icon, .small_search_icon {
+	color: white;
+	border-color: #FFFFFF;
+}
+
+.st0 {
+	fill: #FFFFFF;
+}
+
+.st1 {
+	opacity: 0.8;
+}
+
+.st2 {
+	fill: #D9D9D9;
+}
+
+.st3 {
+	fill: #CCCCCC;
+}
+
+.st4 {
+	fill: #A1A1A1;
+}
+
+.st5 {
+	fill: none;
+}
+
+.st6 {
+	fill: #B3B3B3;
+}
+
+.st7 {
+	fill: #808080;
+}
+
+.st8 {
+	fill: #BFBFBF;
+}
+
+.st9 {
+	fill: #E6E6E6;
+}
+
+.st10 {
+	fill: #A6A6A6;
+}
+
+.st11 {
+	fill: #8C8C8C;
+}
+
+.st12 {
+	fill: #999999;
+}
+
+.st0:hover {
+	fill: #FF6A00;
+}
+
+.st1:hover {
+	fill: #FF6A00;
+}
+
+.st2:hover {
+	fill: #FF6A00;
+}
+
+.st3:hover {
+	fill: #FF6A00;
+}
+
+.st4:hover {
+	fill: #FF6A00;
+}
+
+.st5:hover {
+	fill: #FF6A00;
+}
+
+.st6:hover {
+	fill: #FF6A00;
+}
+
+.st7:hover {
+	fill: #FF6A00;
+}
+
+.st8:hover {
+	fill: #FF6A00;
+}
+
+.st9:hover {
+	fill: #FF6A00;
+}
+
+.st10:hover {
+	fill: #FF6A00;
+}
+
+.st11:hover {
+	fill: #FF6A00;
+}
+
+.st12:hover {
+	fill: #FF6A00;
+}
+
+.card{
+	margin:10px;
+}
+
+
+
+/* .recommend_hotel_box{
+  flex-grow: 0;
+} */
+</style>
+<!-- Custom styles for this template -->
+<link href="/resources/css/headers.css" rel="stylesheet">
+
+<!-- 검색어 자동 완성 -->
+<script>
+	$(function() { //화면 다 뜨면 시작
+		var searchSource = [ "연천", "고양", "파주", "김포", "가평", "부천", "화성", "동두천",
+				"구리", "하남", "양평", "여주", "이천", "화성", "평택", "안성", "용인", "수원",
+				"안산", "양주", "의정부", "남양주", "성남", "군포", "안양", "광명", "과천", "포천",
+				"광주" ]; // 배열 형태로 
+		$("#searchInput").autocomplete({ //오토 컴플릿트 시작
+			source : searchSource, // source 는 자동 완성 대상
+			select : function(event, ui) { //아이템 선택시
+				console.log(ui.item);
+			},
+			focus : function(event, ui) { //포커스 가면
+				return false;//한글 에러 잡기용도로 사용됨
+			},
+			minLength : 1,// 최소 글자수
+			autoFocus : true, //첫번째 항목 자동 포커스 기본값 false
+			classes : { //잘 모르겠음
+				"ui-autocomplete" : "highlight"
+			},
+			delay : 100, //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+			//            disabled: true, //자동완성 기능 끄기
+			position : {
+				my : "right top",
+				at : "right bottom"
+			}, //잘 모르겠음
+			close : function(event) { //자동완성창 닫아질때 호출
+				console.log(event);
+			}
+		});
+
+	});
+</script>
+
+
 
 </head>
 
 <body>
+<main>
+<header style="background-color: #FF8C00;" class="p-3 text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="index.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <span class="fs-4"><strong>심사숙소</strong></span>
+        </a>
+        <div class="col-md-7 mb-lg-0 me-lg-3"></div>
+          <div class="text-end">
+            <button type="button" class="btn btn-outline-light me-2">Login</button>
+            <button type="button" class="btn btn-outline-light me-2">Sign-up</button>
+          </div>
+      </div>
+    </div>
 
-    <div id="wrapper">
+      <div class="search_input_box">
+        <div class="search_input rooms_box">
+          <div class="search_input_lacation">
+            <a href="#">
+              <div>위치</div>
+              <input type="text" placeholder="어디로 여행가세요?" id="searchInput">
+            </a>
+          </div>
+          <div class="search_input__start_date">
+            <a href="#">
+              <div>체크인</div>
+              <input type="datetime" placeholder="날짜 추가" class="datepicker" readonly>
+              <script>
+                $.datepicker.setDefaults({
+                  dateFormat: 'yy-mm-dd',
+                  prevText: '이전 달',
+                  nextText: '다음 달',
+                  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+                  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+                  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                  showMonthAfterYear: true,
+                  yearSuffix: '년'
+                });
+                $(function () {
+                  $('.datepicker').datepicker();
+                })
+              </script>
+            </a>
+          </div>
+          <div class="search_input__end_date">
+            <a href="#">
+              <div>체크아웃</div>
+              <input type="datetime" placeholder="날짜 추가" 
+              class="datepicker" readonly>
+              <script>
+                $.datepicker.setDefaults({
+                  dateFormat: 'yy-mm-dd',
+                  prevText: '이전 달',
+                  nextText: '다음 달',
+                  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+                  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+                  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                  showMonthAfterYear: true,
+                  yearSuffix: '년'
+                });
+                $(function () {
+                  $('.datepicker').datepicker();
+                })
+              </script>
+            </a>
+          </div>
+          <div class="search_input_people">
+            <a href="#">
+              <div>인원</div>
+              <input type="number" placeholder="게스트 추가">
+            </a>
+          </div>
+          <div class="search_button_container">
+            <button class="search_button" style="text-align: center;">
+                <img src="/resources/images/search.svg" class="search_icon"/>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+    <!-- Button trigger modal -->
+      <button type="button" class="modal_btn btn btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal">
+        숙소검색하기
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel" style="color: #000000;">조건 검색</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- /.navbar-header -->
-
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+            <div class="modal-body" style="background-color: #FF8C00;">
+              <div class="small_search_input_box">
+                <div class="small_search_input rooms_box">
+                  <div class="small_search_input_lacation">
+                    <a href="#">
+                      <div>위치</div>
+                      <input type="text" placeholder="어디로 여행가세요?">
                     </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                  </div>
+                  <div class="small_search_input__start_date">
+                    <a href="#">
+                      <div>체크인</div>
+                      <input type="datetime" placeholder="날짜 추가" class="datepicker" readonly>
+                      <script>
+                        $.datepicker.setDefaults({
+                          dateFormat: 'yy-mm-dd',
+                          prevText: '이전 달',
+                          nextText: '다음 달',
+                          monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                          monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                          dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+                          dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+                          dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                          showMonthAfterYear: true,
+                          yearSuffix: '년'
+                        });
+                        $(function () {
+                          $('.datepicker').datepicker();
+                        })
+                      </script>
                     </a>
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 1</strong>
-                                        <span class="pull-right text-muted">40% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 2</strong>
-                                        <span class="pull-right text-muted">20% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 3</strong>
-                                        <span class="pull-right text-muted">60% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 4</strong>
-                                        <span class="pull-right text-muted">80% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete (danger)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-tasks -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                  </div>
+                  <div class="small_search_input__end_date">
+                    <a href="#">
+                      <div>체크아웃</div>
+                      <input type="datetime" placeholder="날짜 추가" 
+                      class="datepicker" readonly>
+                      <script>
+                        $.datepicker.setDefaults({
+                          dateFormat: 'yy-mm-dd',
+                          prevText: '이전 달',
+                          nextText: '다음 달',
+                          monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                          monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                          dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+                          dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+                          dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                          showMonthAfterYear: true,
+                          yearSuffix: '년'
+                        });
+                        $(function () {
+                          $('.datepicker').datepicker();
+                        })
+                      </script>
                     </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                  </div>
+                  <div class="small_search_input_people">
+                    <a href="#">
+                      <div>인원</div>
+                      <input type="number" placeholder="게스트 추가">
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
-
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-                        <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html">Flot Charts</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">Morris.js Charts</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                        </li>
-                        <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
-                                </li>
-                                <li>
-                                    <a href="buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="notifications.html">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="typography.html">Typography</a>
-                                </li>
-                                <li>
-                                    <a href="icons.html"> Icons</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grid</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                    <!-- /.nav-third-level -->
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="blank.html">Blank Page</a>
-                                </li>
-                                <li>
-                                    <a href="login.html">Login Page</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                    </ul>
+                  </div>
                 </div>
-                <!-- /.sidebar-collapse -->
+                <div class="small_search_button_container">
+                  <button class="search_button" style="display: block; text-align: center; margin: auto;">
+                      <img src="images/search.svg" class="search_icon"/>
+                  </button>
+                </div>
+              </div>
             </div>
-            <!-- /.navbar-static-side -->
-        </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+  </header>
+  
+ 
 
-        <div id="page-wrapper">
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+  
+  
+  
+
+
