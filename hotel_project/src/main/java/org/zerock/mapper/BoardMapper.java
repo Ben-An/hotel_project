@@ -2,17 +2,18 @@ package org.zerock.mapper;
 
 import java.util.List;
 
+import org.zerock.domain.MainVO;
 
-import org.zerock.domain.HotelImageVO;
+
+
 
 public interface BoardMapper {
 
 //	public List<BoardVO> getList();
 	
-	public List<HotelImageVO> imageList();
+	public List<MainVO> imageList();
 
 //	public List<BoardVO> getListWithPaging(Criteria cri);
-//
 //	public void insert(BoardVO board);
 //
 //	public Integer insertSelectKey(BoardVO board);

@@ -8,10 +8,12 @@
 
 	
 	
-	<select id="imageList" resultType="org.zerock.domain.HotelImageVO">
+	<select id="imageList" resultType="org.zerock.domain.MainVO">
 			
 		<![CDATA[
-			select * from hotel_image
+	
+			select i.hotelFileName,r.grade,n.hotelname from hotel_image i, hotel n, review r where rownum <5
+	
 		]]>
 
 	</select>

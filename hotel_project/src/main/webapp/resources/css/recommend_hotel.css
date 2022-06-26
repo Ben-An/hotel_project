@@ -1,0 +1,71 @@
+@charset "EUC-KR";
+
+ .recommend_hotel_head {
+  display: flex;
+  width: var(--large-width);
+  margin: auto;
+  justify-content: space-between;
+  }
+
+.recommend_hotel {
+  display: inline-block;
+}
+
+.recommend_hotel h1 {
+  font-size: 30px;
+}
+
+.recommend_hotel_list {
+  display: block;
+}
+
+.recommend_hotel_list hr {
+  max-width: var(--large-width);
+}
+
+.recommend_hotel_list .recommend_hotel_container {
+  display: flex;
+  max-width: 1200px;
+  margin: 30px auto;
+  flex-wrap: wrap;
+}
+
+.recommend_hotel_list article {
+  flex: 1 2 250px;
+}
+
+.recommend_hotel_list a {
+  margin: 10px;
+  display: block;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  color: inherit;
+}
+
+.recommend_hotel_all a {
+  border: none;
+}
+
+.recommend_hotel_list a:hover {
+  opacity: 0.8;
+}
+
+.recommend_hotel_list .recommend_hotel_photo {
+  min-height: 150px;
+  background-size: cover;
+  background-position: center;
+}
+
+.recommend_hotel_list h2 {
+  font-size: 18px;
+}
+
+.recommend_hotel_list p {
+  font-size: 14px;
+  opacity: 0.8;
+  text-align: right;
+}
+
+.recommend_hotel_list text {
+  margin: 10px;
+}

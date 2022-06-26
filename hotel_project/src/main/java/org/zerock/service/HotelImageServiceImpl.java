@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.HotelImageVO;
+import org.zerock.domain.HotelVO;
+import org.zerock.domain.MainVO;
 import org.zerock.mapper.BoardMapper;
 
 import lombok.AllArgsConstructor;
@@ -23,7 +25,7 @@ public class HotelImageServiceImpl implements HotelImageService {
 	
 	
 	@Override
-	public List<HotelImageVO> List()  {
+	public List<MainVO> List( )  {
 		
 		return mapper.imageList();
 		
