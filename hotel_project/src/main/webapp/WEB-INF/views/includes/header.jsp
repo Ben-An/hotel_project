@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>심사숙고</title>
+<title>심사숙소</title>
 
 <!-- Bootstrap core CSS -->
 <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -216,6 +216,7 @@ a:visited {
 						<!-- 로그인한 상태 -->
                		 	<c:if test="${member != null}">
                 		<span style="margin:15px">${member.memberName}님, 안녕하세요</span>
+                		<button type="button" class="btn btn-outline-light me-2" onclick="location.href='/member/myPage'">my page</button>
                 		<button type="button" id="logout" class="btn btn-outline-light me-2">Logout</button>
              		   </c:if>
 					</div>
