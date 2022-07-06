@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.MemberMapper">
+	
+	<resultMap type="org.zerock.domain.MemberVO" id="memberMap">
+		<id	property="memberNo" column="memberNo"/>
+		<result property="memberNo" column="memberNo"/>
+		<result property="memberId" column="memberId"/>
+		<result property="memberPassword" column="memberPassword"/>
+		<result property="memberName" column="memberName"/>
+		<result property="memberNickname" column="memberNickname"/>
+	</resultMap>
+	
+	<!-- <select id="getList" resultType="org.zerock.domain.MemberVO">
+		<![CDATA[
+	select memberId,memberPassword from member
+		]]>
+	</select> -->
+	
+	<insert id="memberJoin">
+		insert into member
+		values (member_seq.nextval, #{memberId}, #{memberPassword}, #{memberName}, #{memberNickname},#{memberEmail},#{memberPhoneNo},#{memberGender})
+	</insert>
+	<!-- 아이디 중복검사 -->
+  	<select id="idCheck" resultType="int">
+  	
+  		select count(*) from member where memberId = #{memberId}
+  	
+  	</select>
+  	 <!-- 로그인 -->
+      <select id="memberLogin" resultType="org.zerock.domain.MemberVO">
+      
+        SELECT memberId, memberName, memberNickname FROM member where memberId = #{memberId} and memberPassword=#{memberPassword}
+      
+      </select>
+ 
+	<!-- test용 회원가입 -->
+	<!-- <insert id="memberJoin">
+		insert into member(memberNo, memberId, memberPassword, memberName, memberNickname)
+		values (member_seq.nextval, #{memberId}, #{memberPassword}, #{memberName}, #{memberNickname})
+	</insert> -->
+	
+	<!-- <select id="read" resultType="org.zerock.domain.MemberVO">
+		select * from member where memberNo=#{memberNo}
+	</select>
+	
+	<delete id="delete">
+		delete from member where memberNo=#{memberNo}
+	</delete>
+
+	<update id="update">
+		update member
+		set memberPassword=#{memberPassword},
+		memberNickname=#{memberNickname}
+		where memberNo=#{memberNo}
+	</update> -->
+
+</mapper>
