@@ -1,0 +1,66 @@
+@charset "EUC-KR";
+
+/* 큰화면 (태블릿, 768px 이상) */
+@media ( min-width : 768px) {
+	header {
+		height: 300px;
+	}
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+	.search_input {
+		display: flex;
+		align-items: center;
+		text-align: center;
+		height: 66px;
+		width: 850px;
+		margin: 100px auto;
+		background-color: #FFFFFF;
+		border-radius: 110px;
+	}
+	.search_input>div {
+		width: 13rem;
+		border-right: 1px solid #dadada;
+	}
+	.btn-primary {
+		display: none;
+	}
+}
+
+/* 작은 화면 */
+@media screen and (max-width: 767px) {
+	header {
+		height: 200px;
+	}
+	.search_input_box {
+		display: none;
+	}
+	.small_search_input_lacation, .small_search_input__start_date,
+		.small_search_input__end_date, .small_search_input_people {
+		align-items: center;
+		text-align: center;
+		height: 66px;
+		width: 90%;
+		background-color: #FFFFFF;
+		border-radius: 110px;
+		padding: 10px 0;
+		margin: auto;
+		margin-top: 10px;
+	}
+	.search_button_container {
+		display: block;
+		align-items: right;
+		text-align: center;
+		margin: auto;
+	}
+	.modal_btn {
+		display: block;
+		align-items: center;
+		margin-top: 50px;
+		margin-right: auto;
+		margin-left: auto;
+	}
+	.map-svg {
+		display: none;
+	}
+}
