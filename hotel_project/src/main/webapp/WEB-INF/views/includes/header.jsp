@@ -47,6 +47,9 @@
 
 <!-- 별점주기	 -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"></script>
+
+<!-- sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	
 <!-- Custom styles for this template -->
 <link href="/resources/css/headers.css" rel="stylesheet">
@@ -206,9 +209,17 @@ a:visited {
 					<div
 						class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 						<div class="col-md-7 mb-lg-0 me-lg-3"></div>
-						<button type="button" class="btn btn-outline-light me-2">Login</button>
-						<button type="button" class="btn btn-outline-light me-2">Sign-up</button>
+						<c:if test = "${member == null}">
+						<button type="button" class="btn btn-outline-light me-2" onclick="location.href='/member/login'">Login</button>
+						<button type="button" class="btn btn-outline-light me-2" onclick="location.href='/member/join'">Sign-up</button>
+						</c:if>
+						<!-- 로그인한 상태 -->
+               		 	<c:if test="${member != null}">
+                		<span style="margin:15px">${member.memberName}님, 안녕하세요</span>
+                		<button type="button" id="logout" class="btn btn-outline-light me-2">Logout</button>
+             		   </c:if>
 					</div>
+
 				</div>
 			</nav>
 
@@ -437,3 +448,23 @@ a:visited {
 			</div>
 			</div>
 		</header>
+		
+		<script>
+		//로그아웃 alert
+		  $("#logout").click(function () {
+			    Swal.fire({
+			      title: '로그아웃 하시겠습니까?',
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#FF8C00',
+			      cancelButtonColor: '#d33',
+			      confirmButtonText: 'OK',
+			      cancelButtonText: 'Cancel',
+			      
+			    }).then((result) => {
+			      if (result.isConfirmed) {
+			          location.href='/member/logout.do'
+			      }
+			    })
+			  });
+		</script>
