@@ -22,6 +22,21 @@
 
 	</select>
 
+	<select id="myPageList" resultType="org.zerock.domain.MyPageVO">			
+		<![CDATA[
+	
+	select m.memberNo, m.memberName, m.memberId, m.memberNickname, r.hotelNo, r.reservationNo, r.memberAmount, r.realMember, r.checkInDate, r.checkOutDate, h.hotelName, h.mainAddress, n.reviewId, n.reviewContent, n.reviewDate, i.hotelImageId, i.hotelFilename, w.wishListNo
+	from member m, reservation r, hotel h, review n, hotel_image i, wishList w
+	where m.memberNo = r.memberNo 
+		and r.memberNo = n.memberNo 
+		and n.memberNo = w.memberNo
+		and h.hotelNo = r.hotelNo 
+	    and h.hotelNo = n.hotelNo
+	    and h.hotelNo = i.hotelNo
+	    and i.hotelNo = w.hotelNo
+		and m.memberNo = 1
+		]]>
+	</select>
 
 
 </mapper>
