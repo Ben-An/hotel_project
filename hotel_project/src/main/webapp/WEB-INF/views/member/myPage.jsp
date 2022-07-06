@@ -64,7 +64,7 @@
 		  		</c:forEach>
 			</table>
 			
-			<div style="text-align: right;"><a href="${contextPath}/hotel/myPage_reservationList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
+			<div style="text-align: right;"><a href="${contextPath}/member/myPage_reservationList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
 		</div>
 	
 	<div class="myPageContainer">	
@@ -90,7 +90,7 @@
 			  	</tbody>
 		  	</c:forEach>
 		</table>
-		<div style="text-align: right;"><a href="${contextPath}/hotel/myPage_reviewList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
+		<div style="text-align: right;"><a href="${contextPath}/member/myPage_reviewList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
 	</div>
 	
 	<div class="myPageContainer">
@@ -112,7 +112,7 @@
 				</c:forEach>
 			</div>
 		</div>
-		<div style="text-align: right;"><a href="${contextPath}/hotel/myPage_wishList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
+		<div style="text-align: right;"><a href="${contextPath}/member/myPage_wishList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
 	</div>
 </div>
 

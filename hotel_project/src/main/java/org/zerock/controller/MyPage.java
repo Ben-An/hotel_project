@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 
 
 @Controller
-@RequestMapping("/hotel/*")
+@RequestMapping("/member/*")
 @AllArgsConstructor
 
 public class MyPage {
