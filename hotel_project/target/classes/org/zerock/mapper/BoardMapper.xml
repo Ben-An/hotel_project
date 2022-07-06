@@ -10,11 +10,15 @@
 	
 	<select id="imageList" resultType="org.zerock.domain.MainVO">
 			
+				
 		<![CDATA[
 	
-			select i.hotelFileName,r.grade,n.hotelname from hotel_image i, hotel n, review r where rownum <5
+			select t.* from (select i.hotelFileName,n.hotelname, r.grade,r.reviewContent, r.reviewDate from hotel_image i, hotel n,review r where i.hotelNo = n.hotelNo and n.hotelNo=r.hotelNo order by r.grade desc) t where rownum<5
+		
+	
 	
 		]]>
+
 
 	</select>
 
