@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en">
 
@@ -201,7 +202,7 @@ a:visited {
 		<header style="background-color: #FF8C00;" class="p-3 text-white">
 			<nav class="navbar">
 				<div class="container-fluid">
-					<a href="index.html"
+					<a href="${contextPath }/hotel/index"
 						class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
 						<span class="fs-4"><strong>심사숙소</strong></span>
 					</a>

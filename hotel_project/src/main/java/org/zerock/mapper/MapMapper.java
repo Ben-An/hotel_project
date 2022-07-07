@@ -8,7 +8,7 @@ import org.zerock.domain.MapVO;
 public interface MapMapper {
 	
 	
-	public  List<MapVO> mapSelect(String MainAddress);
+	public  List<MapVO> mapSelect(String state);
 	
 	void insertInfo(HotelApiVO hotelDTO);
 	

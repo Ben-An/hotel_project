@@ -44,9 +44,9 @@ public class MapController {
 	
 	
 	@GetMapping("/mapside")
-	public void mapList(Model model,@RequestParam("mainAddress") String mainAddress){
+	public void mapList(Model model,@RequestParam("state") String state){
 		
-		model.addAttribute("getmap",service.mapSelect(mainAddress));
+		model.addAttribute("getmap",service.mapSelect(state));
 		
 		log.info("model>>>>>>>>>>>>"+model);
 		
