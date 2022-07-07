@@ -4,8 +4,12 @@ import lombok.Data;
 
 @Data
 public class MapVO {
-	private String hotelName;   
+	private String realhotelname; 
+	private String hotelfilename;
+	private String state;
 	private int bedNo;
-	private double grade;
-	private int roomPrice;
+	private int avg;
+	private String roomPrice;
+	private String lat;
+	private String logt;
 }

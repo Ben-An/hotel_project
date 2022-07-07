@@ -29,10 +29,10 @@ public class MapServiceImpl implements MapService {
 	private MapMapper map;
 
 	@Override
-	public List<MapVO> mapSelect(String MainAddress) {
+	public List<MapVO> mapSelect(String state) {
 	
-		log.info("get>>>>>>>>>>>>>>>>>>>>>>"+ MainAddress);
-		return map.mapSelect(MainAddress);
+		log.info("get>>>>>>>>>>>>>>>>>>>>>>"+ state);
+		return map.mapSelect(state);
 	}
 
 	@Override

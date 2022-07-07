@@ -27,29 +27,29 @@
 
 	<div class="col-6">
 
-		<div class="row" style="margin-left: 50px">
+		<div class="row" style="margin-left: 10px">
 			<c:forEach var="item" items="${getmap }">
 
 				<div class="col-6">
-
+<a href="#">
 					<div class="card" style="width: 23rem; border: none">
-						<img src="/resources/hotel/file_repo/1/hotel1.jpg"
-							class="card-img-top" alt="...">
+						<img src="${item.hotelfilename }"
+							class="card-img-top" alt="..." style="height: 250px">
 						<div class="card-body">
 							<div class=row>
-								<div class="col-9">
-									<h3 class="card-title">${item.hotelName }</h3>
+								<div class="col-10" style="">
+									<h3 class="card-title">${item.realhotelname }</h3>
 								</div>
-								<div class="col-3">
-									<h5 class="card-title">벌점</h5>
+								<div class="col-2">
+								<!-- 	<h5 class="card-title">벌점</h5> -->
 								</div>
 							</div>
 
-							<h5 class="card-subtitle">침대 갯수</h5>
-							<h6 class="card-prices">호텔값</h6>
+							<h5 class="card-subtitle">방갯수:${item.bedNo}<h5>
+							<h6 class="card-prices">가격:${item.roomPrice }원</h6>
 						</div>
 					</div>
-
+</a>
 
 				</div>
 			</c:forEach>
@@ -86,7 +86,7 @@
 
 	<div class="col-6">
 
-		<div id="map" style="width: 1300px; height: 1500px;"></div>
+		<div id="map" style="width: 1150px; height: 1500px;"></div>
 
 
 	</div>
@@ -102,11 +102,13 @@
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=466f81d1ecaad40dd3b39fec58f9ab91"></script>
 
 
+
 <script>
+
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	mapOption = {
-		center : new kakao.maps.LatLng(37.55173, 126.98403), // 지도의 중심좌표
-		level : 4, // 지도의 확대 레벨
+		center : new kakao.maps.LatLng(37.6254389,126.7122455), // 지도의 중심좌표
+		level : 9, // 지도의 확대 레벨
 		mapTypeId : kakao.maps.MapTypeId.ROADMAP
 	// 지도종류
 	};
@@ -118,24 +120,41 @@
 	kakao.maps.event.addListener(map, 'zoom_changed', function() {
 		console.log('지도의 현재 확대레벨은 ' + map.getLevel() + '레벨 입니다.');
 	});
-
-	// 지도에 마커를 생성하고 표시한다
-	var marker = new kakao.maps.Marker({
-		position : new kakao.maps.LatLng(37.55073, 126.97886), // 마커의 좌표
-		map : map
+	
+		
 	// 마커를 표시할 지도 객체
-	});
 
-	// 커스텀 오버레이를 생성하고 지도에 표시한다
-	var customOverlay = new kakao.maps.CustomOverlay({
-		map : map,
-		content : '<div style="padding:0 5px;background:#fff;">안녕하세요 ㅋㅋ</div>',
-		position : new kakao.maps.LatLng(37.55073, 126.97886), // 커스텀 오버레이를 표시할 좌표
-		xAnchor : 0.5, // 컨텐츠의 x 위치
-		yAnchor : 0
-	// 컨텐츠의 y 위치
-	});
-</script>
+	var positions = [	
+	
+		
+		 <c:forEach items="${getmap}" var="list">
+		 
+		{
+		       
+		        latlng: new kakao.maps.LatLng(${list.lat},${list.logt})
+		    },
+
+
+
+		    </c:forEach> 
+		    
+		
+		    
+	];
+	
+	
+	for (var i = 0; i < positions.length; i ++) {
+		
+		  var marker = new kakao.maps.Marker({
+		        map: map, // 마커를 표시할 지도
+		        position: positions[i].latlng
+		    
+		    });
+		  
+		  }
+</script>		
+	
+		
 
 
 

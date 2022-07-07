@@ -91,7 +91,7 @@ public class MemberController {
         log.info("인증번호: " + checkNum);
    
         /* 이메일 보내기 */
-        String setFrom = "mood127@naver.com";
+        String setFrom = "byungjinan13@naver.com";
         String toMail = email; //수신받을 이메일
         String title = "심사숙소 회원가입 인증 이메일 입니다.";
         String content = 

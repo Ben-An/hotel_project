@@ -14,13 +14,14 @@
 
    <![CDATA[
 	
-		
-	select t.* from (select h.hotelName,r.bedNo,AVG(v.grade),r.roomPrice from hotel h 
-    left join review v on h.hotelNo = v.hotelNo 
-    left join hotel_room r on h.hotelNo = r.hotelNo  
-    where mainAddress=#{mainAddress}
-    group by h.hotelName,r.bedNo,r.roomPrice) t 
-    where rownum <15
+    
+    
+select h.hotelfilename,rh.realhotelname,rh.lat,rh.logt,rh.lotnoaddr,AVG(r.grade),hr.bedno,hr.roomprice,rh.state from hotel h 
+left join realhotel rh on h.realhotelno = rh.realhotelno
+left join review r on h.hotelno = r.hotelno
+left join  hotel_room hr on h.hotelno = hr.hotelno
+where rh.state= #{state}
+group by h.hotelfilename,rh.realhotelname,rh.lat,rh.logt,rh.lotnoaddr,hr.bedno,hr.roomprice,rh.state
 		
 		
 		
