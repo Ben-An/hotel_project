@@ -86,7 +86,7 @@
 
 	<div class="col-6">
 
-		<div id="map" style="width: 1150px; height: 1500px;"></div>
+		<div id="map" style="width:90%; height:90%;"></div>
 
 
 	</div>
@@ -105,55 +105,146 @@
 
 <script>
 
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	mapOption = {
-		center : new kakao.maps.LatLng(37.6254389,126.7122455), // 지도의 중심좌표
-		level : 9, // 지도의 확대 레벨
-		mapTypeId : kakao.maps.MapTypeId.ROADMAP
-	// 지도종류
-	};
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+mapOption = { 
+	center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+    level: 9 // 지도의 확대 레벨
+};
 
 	// 지도를 생성한다 
 	var map = new kakao.maps.Map(mapContainer, mapOption);
 
-	// 지도 확대 레벨 변화 이벤트를 등록한다
-	kakao.maps.event.addListener(map, 'zoom_changed', function() {
-		console.log('지도의 현재 확대레벨은 ' + map.getLevel() + '레벨 입니다.');
-	});
+
 	
 		
 	// 마커를 표시할 지도 객체
 
 	var positions = [	
-	
+		<c:forEach items="${getmap}" var="list">
 		
-		 <c:forEach items="${getmap}" var="list">
+	
 		 
 		{
-		       
-		        latlng: new kakao.maps.LatLng(${list.lat},${list.logt})
+		      
+			content: '<div class="wrap">' + 
+	            '    <div class="info">' + 
+	            '        <div class="title">' + 
+	            '         <div class="title-name"> <c:out value="${list.realhotelname}"/></div>' + 
+	            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+	            '        </div>' + 
+	            '        <div class="body">' + 
+	            '            <div class="img">' +
+	            '                <img src="<c:out value="${list.hotelfilename}"/>" width="73" height="70">' +
+	            '           </div>' + 
+	            '            <div class="desc">' + 
+	            '                <div class="ellipsis"><c:out value="${list.roadaddr}"/></div>' + 
+	            '         			    <div class="review">'+
+	         	'					   <div class="rating" data-rate="<c:out value="${list.grade}"/>">'+
+	         	'						<i class="fas fa-star"></i> <i class="fas fa-star"></i>'+
+	         	'						<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i>'+
+	            '									</div>' +  
+	            '                <button><a href="https://www.kakaocorp.com/main" target="_blank" class="link">숙소보기</a></button>' + 
+	            '            </div>' + 
+	            '        </div>' + 
+	            '    </div>' +    
+	            '</div>',
+	            /*   <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' +  */
+	            
+		 		 latlng: new kakao.maps.LatLng(${list.lat},${list.logt})
+		 	
+		
+					
 		    },
+		    
 
-
-
+		
 		    </c:forEach> 
+		 
 		    
 		
 		    
 	];
 	
 	
-	for (var i = 0; i < positions.length; i ++) {
+	
+	
+	
+	
+	
+	
+	// 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+	var bounds = new kakao.maps.LatLngBounds();    
+
+	 
+	
+	
+
+	var i, marker, overlay;
+	for (i = 0; i < positions.length; i ++) {
 		
-		  var marker = new kakao.maps.Marker({
-		        map: map, // 마커를 표시할 지도
+		 	 marker = new kakao.maps.Marker({
+		     	map: map,
 		        position: positions[i].latlng
 		    
 		    });
-		  
-		  }
-</script>		
+		 	 
+		 	 
+		 	 
 	
+		 	 var iwContent = positions[i].content,
+		 	 iwRemoveable = true;
+		 	 
+		 	 var infowindow = new kakao.maps.InfoWindow({
+		 		content: iwContent,
+		 		removable : iwRemoveable
+		 		 
+		 	 });
+		 	 
+		 	 
+		     bounds.extend(positions[i].latlng);
+
+		 	  
+		
+		 	 
+		 	kakao.maps.event.addListener(marker, 'click', function(info, mark) {
+		 	    return function() { 
+		 	        info.open(map, mark);
+		 	    }
+		 	}(infowindow, marker));
+		 	 
+		 	
+		  }
+	
+	
+
+	
+    // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
+    // 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
+    map.setBounds(bounds);
+
+	
+	
+	
+
+</script>		
+
+
+<script type="text/javascript">
+/*  별점받기 */
+$(function() {
+
+	var rating = $('.review .rating');
+	rating.each(function() {
+		var targetScore = $(this).attr('data-rate');
+		$(this).find('svg:nth-child(-n+' + targetScore + ')').css({
+			color : '#F05522'
+		});
+	});
+
+});
+
+</script>
+
 		
 
 
