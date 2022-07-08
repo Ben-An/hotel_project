@@ -14,10 +14,10 @@ public class MyPageVO {
 	private String memberNickname;
 	private int reservationNo;
 	private String hotelName;
-	private String realMember;
+	private String realUser;
 	private Date checkInDate;
 	private Date checkOutDate;
-	private int memberAmount;
+	private int userAmount;
 	private String reviewContent;
 	private Date reviewDate;
 	private int hotelImageId;

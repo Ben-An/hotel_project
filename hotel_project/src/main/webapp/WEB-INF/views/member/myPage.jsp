@@ -56,7 +56,7 @@
 			  		<tbody>
 				  		<tr>
 				  			<td>${item.hotelName }</td>
-				  			<td>${item.memberAmount }</td>
+				  			<td>${item.userAmount }</td>
 				  			<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkInDate }" />
 				  			~ <fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkOutDate }" /></td>
 				  		</tr>
@@ -83,7 +83,7 @@
 			  	<tbody>
 				 	<tr>
 				  		<td>${item.hotelName }</td>
-				  		<td>${item.realMember }</td>
+				  		<td>${item.realUser }</td>
 				  		<td>${item.reviewContent }</td>
 				 		<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.reviewDate }" /></td>
 				  	</tr>
