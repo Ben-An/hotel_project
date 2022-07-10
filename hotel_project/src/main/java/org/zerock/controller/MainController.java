@@ -42,7 +42,20 @@ public class MainController {
 	
 		
 
+		
 }
+	
+	@GetMapping("/detail")
+		public void detailHotel() {
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 //	@GetMapping(value="/getList", produces=MediaType.APPLICATION_JSON_UTF8_VALUE )
