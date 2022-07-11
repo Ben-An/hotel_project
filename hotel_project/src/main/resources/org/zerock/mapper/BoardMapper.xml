@@ -23,20 +23,70 @@ where n.hotelNo=r.hotelNo and n.realhotelno = rh.realhotelno order by r.grade de
 
 
 	</select>
+	
+	<select id="hotelList" resultType="org.zerock.domain.HotelVO">
+			
+		<![CDATA[
+	
+	select n.hotelNo, i.hotelFileName, n.hotelName, n.mainAddress, n.address from hotel_image i, hotel n where i.hotelNo = n.hotelNo
+	
+		]]>
+
+	</select>
+	
+	<select id="hotelListWithPaging" resultType="org.zerock.domain.SearchVO" parameterType="map">			
+		<![CDATA[
+	
+		select realhotelName, hotelFilename, state
+		from 
+			(
+			 select 
+			 	rownum rn, state, hotelFilename, realhotelname, buffet, swim
+       	 	 from
+       	 	 	hotel h, realhotel r 
+        	 where 
+        	 	h.realhotelno = r.realhotelno
+	    ]]>  
+	      	
+	    <choose>
+            <when test="checkArray != null and checkArray.size != 0">           
+                <foreach collection="checkArray" item="item" >
+                   and #{item} = 'T' 
+                </foreach>
+            </when>
+        </choose>
+        <if test = "keyword != null">
+        	 and state like '%'||#{keyword}||'%'
+        </if>
+      <![CDATA[	
+        	)
+		]]>
+		<!-- and  
+	        	rownum <= #{pageNum} * #{amount} -->
+			
+		<!-- and
+			rn > (#{pageNum} - 1) * #{amount} -->
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from hotel where hotelNo > 0
+		<if test="keyword != null">
+			and title like '%'||#{keyword}||'%'
+		</if>
+		
+	</select>
 
 	<select id="myPageList" resultType="org.zerock.domain.MyPageVO">			
 		<![CDATA[
 	
-	select m.memberNo, m.memberName, m.memberId, m.memberNickname, r.roomNo, r.reservationNo, r.userAmount, r.realUser, r.checkInDate, r.checkOutDate, h.hotelName, h.mainAddress, n.reviewContent, n.reviewDate, i.hotelImageId, i.hotelFilename, w.wishListNo
-	from member m, reservation r, hotel h, review n, hotel_image i, wishList w
-	where m.memberNo = r.memberNo 
-		and r.memberNo = n.memberNo 
-		and n.memberNo = w.memberNo
-		and h.hotelNo = r.roomNo 
-	    and h.hotelNo = n.hotelNo
-	    and h.hotelNo = i.hotelNo
-	    and i.hotelNo = w.hotelNo
-		and m.memberNo = 1
+		select m.memberno, m.memberid, m.membername,m.membernickname, r.reviewno, l.realhotelname, l.state, r.reviewcontent, r.reviewDate , h.hotelFilename, s.userAmount, s.checkInDate, s.checkOutDate
+		from hotel h, realhotel l, member m, review r, reservation s
+		where h.realhotelno = l.realhotelno 
+		and r.hotelno = h.hotelno 
+        and h.hotelno = s.roomno
+		and m.memberno = r.memberno 
+        and s.memberno = r.memberno
+		and m.memberno = 1
 		]]>
 	</select>
 

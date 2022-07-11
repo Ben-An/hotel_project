@@ -153,6 +153,30 @@ a:visited {
 	margin: 10px;
 }
 
+.star {
+    position: relative;
+    font-size: 2rem;
+    color: #ddd;
+  }
+  
+  .star input {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .star span {
+    width: 0;
+    position: absolute; 
+    left: 0;
+    color: red;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
 /* .recommend_hotel_box{
   flex-grow: 0;
 } */
@@ -230,7 +254,7 @@ a:visited {
 					<div class="search_input_lacation">
 						<a href="#">
 							<div>위치</div> <input type="text" placeholder="어디로 여행가세요?"
-							id="searchInput">
+							name = "keyword"id="searchInput" value="${pageMaker.cri.keyword }">
 						</a>
 					</div>
 					<div class="search_input__start_date">
@@ -303,6 +327,11 @@ a:visited {
 					</div>
 				</div>
 			</div>
+			<form id='searchForm' action="${contextPath }/hotel/search_normal" method='post'>
+				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword }">
+			</form>
 			</div>
 
 			<!-- Button trigger modal -->
@@ -326,7 +355,8 @@ a:visited {
 								<div class="small_search_input rooms_box">
 									<div class="small_search_input_lacation">
 										<a href="#">
-											<div>위치</div> <input type="text" placeholder="어디로 여행가세요?">
+											<div>위치</div> <input type="text" placeholder="어디로 여행가세요?"
+							name = "keyword"id="searchInput" value="${pageMaker.cri.keyword }">
 										</a>
 									</div>
 									<div class="small_search_input__start_date">
@@ -448,6 +478,11 @@ a:visited {
 					</div>
 				</div>
 			</div>
+			<form id='searchForm' action="${contextPath }/hotel/search_normal" method='get'>
+				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+				<input type='hidden' name='amount' value='${pageMaker.cri .amount}'>
+				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword }">
+			</form>
 			</div>
 		</header>
 		
@@ -469,4 +504,15 @@ a:visited {
 			      }
 			    })
 			  });
+		
+		//검색 script
+		  $(".search_button").on("click", function(e){
+			  	console.log("click");
+		        e.preventDefault();
+		        let searchForm = $('#searchForm');
+		        let val = $("input[name='keyword']").val();
+		        searchForm.find("input[name='keyword']").val(val);
+		        searchForm.find("input[name='pageNum']").val(1);
+		        searchForm.submit();
+		    });
 		</script>

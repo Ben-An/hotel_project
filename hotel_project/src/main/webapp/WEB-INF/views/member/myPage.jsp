@@ -19,23 +19,21 @@
 	<div class="myPageContainer">
 		<h3>사용자 정보</h3>
 		<hr>
-			<table class="table">
-				<c:forEach var="item" items="${myPageList }">
+			<table class="table">	
 					<tbody>
-						<tr>
-							<th scope="row">이름</th>
-							<td>${item.memberName }<td>
-						</tr>
-						<tr>
-							<th scope="row">아이디</th>
-							<td>${item.memberId }<td>
-						</tr>
-						<tr>
-							<th scope="row">닉네임</th>
-							<td>${item.memberNickname }<td>
-						</tr>
+							<tr>
+								<th scope="row">이름</th>
+								<td>${member.memberName }<td>
+							</tr>
+							<tr>
+								<th scope="row">아이디</th>
+								<td>${member.memberId }<td>
+							</tr>
+							<tr>
+								<th scope="row">닉네임</th>
+								<td>${member.memberNickname }<td>
+							</tr>
 					</tbody>		
-				</c:forEach>
 			</table>
 			
 		<div style="text-align: right;"><a href="#">수정<i class="fa-solid fa-angle-right"></i></a></div>
@@ -45,23 +43,36 @@
 		<h3>예약 내역 조회</h3>
 		<hr>
 			<table class="table table-sm">
-				<c:forEach var="item" items="${myPageList }">
 			  		<thead>
 				  		<tr>
 				  			<th>예약 호텔</th>
+				  			<th>투숙자</th>
 				  			<th>예약 인원</th>
 				  			<th>예약 날짜</th>
 				  		</tr>
 			  		</thead>
 			  		<tbody>
-				  		<tr>
-				  			<td>${item.hotelName }</td>
-				  			<td>${item.userAmount }</td>
-				  			<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkInDate }" />
-				  			~ <fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkOutDate }" /></td>
-				  		</tr>
+			  			<c:forEach var="item" items="${myPageList }">
+					  		<tr>
+					  			<c:if test = "${item.reservationNo != null}">
+						  			<td>${item.realhotelName }</td>
+						  			<c:if test = "${item.realUser != null }">
+						  				<td>${item.realUser }</td>
+						  			</c:if>
+						  			<c:if test = "${item.realUser == null }">
+						  				<td>${item.memberName }</td>
+						  			</c:if>
+						  			<td>${item.userAmount }</td>
+						  			<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkInDate }" />
+						  			~ <fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkOutDate }" /></td>
+					  			</c:if>
+					  			<c:if test = "${item.reservationNo == null}">
+						  			<td>예약 내역이 없습니다.</td>
+					  			</c:if>
+					  		</tr>
+				  		</c:forEach>
 			  		</tbody>
-		  		</c:forEach>
+		  		
 			</table>
 			
 			<div style="text-align: right;"><a href="${contextPath}/member/myPage_reservationList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
@@ -71,7 +82,6 @@
 		<h3>내가 쓴 리뷰</h3>
 		<hr>
 		<table class="table table-sm">
-			<c:forEach var="item" items="${myPageList }">
 		  		<thead>
 			  		<tr>
 			  			<th>호텔</th>
@@ -81,14 +91,16 @@
 					</tr>
 			  	</thead>
 			  	<tbody>
-				 	<tr>
-				  		<td>${item.hotelName }</td>
-				  		<td>${item.realUser }</td>
-				  		<td>${item.reviewContent }</td>
-				 		<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.reviewDate }" /></td>
+			  		<c:forEach var="item" items="${myPageList }">
+				 	<tr>	 		
+					  		<td>${item.realhotelName }</td>
+					  		<td>${item.memberNickname }</td>
+					  		<td>${item.reviewContent }</td>
+					 		<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.reviewDate }" /></td>	
 				  	</tr>
+				  	</c:forEach>
 			  	</tbody>
-		  	</c:forEach>
+		  	
 		</table>
 		<div style="text-align: right;"><a href="${contextPath}/member/myPage_reviewList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
 	</div>
@@ -98,17 +110,21 @@
 		<hr>
 		<div class="container">
 			<div class="row">
-				<c:forEach var="item" items="${myPageList }">
-					<div class="col-12 col-md-5 col-lg-3 ">
-						<div class="card">
-							<img src="${item.hotelFileName }" class="card-img-top" alt="" style="height: 250px ">
-							<div class="card-body">
-								<span class="badge bg-primary "	style="border-radius: 10px; margin-bottom: 10px;">추천</span>
-								<h5 class="card-title">${item.hotelName }</h5>
-								<%-- <p>${item.mainAddress }</p> --%>
+				<c:forEach var="item" items="${myPageList }" begin="0" end="5" step="1" varStatus="status">
+					<c:if test = "${item.wishListNo != null }">
+						<div class="col-12 col-md-5 col-lg-3 ">
+							<div class="card">
+								<img src="${item.hotelFileName }" class="card-img-top" alt="" style="height: 250px ">
+								<div class="card-body">
+									<h5 class="card-title">${item.realhotelName }</h5>
+									<p>${item.state }</p>
+								</div>
 							</div>
 						</div>
-					</div>
+					</c:if>
+					<c:if test = "${item.wishListNo == null }">
+						<p>찜한 숙소가 없습니다</p>
+					</c:if>
 				</c:forEach>
 			</div>
 		</div>
