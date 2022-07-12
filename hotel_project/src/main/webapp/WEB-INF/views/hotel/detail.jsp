@@ -11,9 +11,10 @@
 
 <div class="container" >
 	<div class="row" >
+	
 		<div class="col-12" style="padding:15px; border:1px solid; margin-top:15px;border-radius:5px">
-			<h3>숙소이름 </h3>
-				<h4>주소</h4>
+			<h3>숙소이름 : </h3>
+				<h4>주소 : </h4>
 		</div>
 		
 	
@@ -28,16 +29,16 @@
 		<div class="col">
 		
 		
-			<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
+	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  	<div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="/resources/hotel/file_repo/1/hotel1.jpg" class="d-block w-100" alt="..." style="height:300px"> 
+      <img src="/resources/hotel/file_repo/1/hotel1.jpg" class="d-block w-100" alt="..." style="height:300px;width:200px"> 
     </div>
     <div class="carousel-item">
-      <img src="/resources/hotel/file_repo/1/hotel2.jpg" class="d-block w-100" alt="..." style="height:300px">
+      <img src="/resources/hotel/file_repo/1/hotel2.jpg" class="d-block w-100" alt="..." style="height:300px;width:200px">
     </div>
     <div class="carousel-item">
-      <img src="/resources/hotel/file_repo/1/hotel3.jpg" class="d-block w-100" alt="..." style="height:300px">
+      <img src="/resources/hotel/file_repo/1/hotel3.jpg" class="d-block w-100" alt="..." style="height:300px;width:200px">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -116,10 +117,25 @@
 
 
 
+<!-- detail 처리를 위한 객체 포함 등록  -->
+<script type="text/javascript" src="/resources/js/detail.js"></script>
 
 
-
+<!-- 객체를 위한 실제적은 처리 가능함  -->
 <script type="text/javascript">
+
+
+
+$(function(){
+	
+		detailService.list({hotelno : ${detailList.hotelno}},function(list){alert(list);})
+		
+});
+	
+
+	
+	
+
 
 </script>
 

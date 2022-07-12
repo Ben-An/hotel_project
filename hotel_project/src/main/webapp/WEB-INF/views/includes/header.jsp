@@ -57,6 +57,8 @@
 
 <link href="/resources/css/style.css" rel="stylesheet">
 
+
+
 <style>
 .bd-placeholder-img {
 	font-size: 1.125rem;
