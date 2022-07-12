@@ -42,7 +42,7 @@ public class MapServiceImpl implements MapService {
 		//log.info("get>>>>>>>>>>>>>>>>>>>>>>"+ hotelDTO);
 		
 	}
-
+ 
 	@Override
 	public List<HotelApiVO> hotelList() {
 		
