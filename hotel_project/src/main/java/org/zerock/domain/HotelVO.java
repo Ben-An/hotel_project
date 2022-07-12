@@ -8,7 +8,8 @@ import lombok.Data;
 public class HotelVO {
 	private Long hotelNo;       
 	private String hotelName;       
-	private String mainAddress;   
+	private String mainAddress;
+	private String state;
 	private String address;         
 	private String hotelPhoneNo;    
 	private boolean buffet;         
