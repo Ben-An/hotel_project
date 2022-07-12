@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class MainVO {
+	private int hotelno;
 	private String hotelFileName; 
 	private String realhotelname;   
 	private int grade;
