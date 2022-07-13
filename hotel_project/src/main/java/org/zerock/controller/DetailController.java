@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.zerock.domain.DetailImage;
+import org.zerock.domain.ImageList;
 import org.zerock.service.DetailService;
 
 
@@ -42,13 +43,27 @@ public class DetailController {
 }
 	
 	@ResponseBody
-	@GetMapping(value="/list.do",produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE })
+	@GetMapping(value="/list.do",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public ResponseEntity<List<DetailImage>> list(int hotelno){
 		
 		log.info("Get>>>>>>>>>>>>>>"+hotelno);
 		
 		return new ResponseEntity<>(service.getImage(hotelno),HttpStatus.OK);
 	}
+	
+	
+	@ResponseBody
+	@GetMapping(value="/imageList.do", produces = {MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE})
+	public ResponseEntity<List<ImageList>> roomList(int hotelno){
+		
+		
+		log.info("get image num>>>>>>>>>>>>>>"+hotelno);
+		
+		return new ResponseEntity<>(service.getRoom(hotelno),HttpStatus.OK);
+	}
+	
+	
+	
 	
 	
 	
