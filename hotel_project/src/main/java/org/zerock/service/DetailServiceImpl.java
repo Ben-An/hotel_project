@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
+import org.zerock.domain.ImageList;
 import org.zerock.mapper.DetailMapper;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ public class DetailServiceImpl implements DetailService {
 	private DetailMapper mapper;
 
 	@Override
-	public List<DetailVO> detailList(int hotelno) {
+	public DetailVO detailList(int hotelno) {
 	
 		return mapper.detailList(hotelno);
 	}
@@ -29,6 +30,12 @@ public class DetailServiceImpl implements DetailService {
 	public List<DetailImage> getImage(int hotelno) {
 		
 		return mapper.listImage(hotelno);
+	}
+
+	@Override
+	public List<ImageList> getRoom(int hotelno) {
+		
+		return mapper.roomList(hotelno);
 	}
 	
 	
