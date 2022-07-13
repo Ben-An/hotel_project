@@ -19,7 +19,7 @@ public class MyPage {
 	private MyPageService service;
 
 
-	@GetMapping(value = {"/myPage", "/myPage_reservationList", "myPage_reviewList", "myPage_wishList"})
+	@GetMapping(value = {"/myPage", "/myPage_memberUpdate", "/myPage_memberDelete","/myPage_reservationList", "myPage_reviewList", "myPage_wishList"})
 	public void list(Model model){
 		
 		model.addAttribute("myPageList",service.List());

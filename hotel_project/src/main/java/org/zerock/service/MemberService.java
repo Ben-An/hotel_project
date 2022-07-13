@@ -28,4 +28,11 @@ public interface MemberService {
 	
 	// 로그인 
     public MemberVO memberLogin(MemberVO member) throws Exception;
+
+    //회원정보 수정
+	public void memberUpdate(MemberVO member) throws Exception;
+	
+	//회원정보 삭제
+	public MemberVO memberDelete(MemberVO member) throws Exception;
+    
 }
