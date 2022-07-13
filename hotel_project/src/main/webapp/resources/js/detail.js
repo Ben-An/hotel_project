@@ -13,7 +13,7 @@
  	//댓글 리스트 가져오기 -list(서버에 넘겨주는 데이터 겍체,데이터를 가져오면 실행되는 함수, 오류가 나면 실행되는 함수)
  	function list(param,callback,error){
  	
- 		alert("detail 리스트 가져오기");
+ 		
  		var hotelno = param.hotelno;
  		//jquery
  		$.getJSON("/hotel/list.do?hotelno="+hotelno, function(data){
@@ -28,10 +28,39 @@
  	
  	}
  	
+ 	
+ 	function roomList(param,callback,error){
+ 		
+ 		
+ 		var hotelno = param.hotelno;
+ 		
+ 		$.getJSON("/hotel/imageList.do?hotelno="+hotelno, function(data){
+ 			if(callback){
+ 				callback(data);
+ 				
+ 			}
+ 			}).fail(function(xhr, status,err){
+ 				if(error) error();
+ 				else alert("테이터 가져오기 실패 하였습니다.")
+ 				
+ 			});
+ 		
+ 		
+ 		
+ 	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
  	return{
  	
  		//: 앞에 list는 변수(속성) 이다. : 뒤에 list는 선언한 함수 자체이다. detailService.list();
- 		list : list
+ 		list : list,
+ 		roomList : roomList
  	
  	
  	};//함수를 객체로 만들어서 리턴해준다.
