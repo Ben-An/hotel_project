@@ -284,6 +284,54 @@
 	$(document)
 			.ready(
 					function() {
+						
+						
+						
+							//carousel .active 설정 하기
+						
+							
+							$('.carousel-control-next').click(function(){
+								
+								//alert("눌러주셈 ");
+								var next = $('.carousel-inner .active').removeClass('active').next();
+								
+								if(next.length==0){
+									
+									next = $('.carousel div').first();
+									
+								}
+								
+								next.addClass('active');
+								
+								
+								
+							});
+							
+							
+							
+							
+							$('.carousel-control-prev').click(function(){
+								
+								//alert("눌러주셈 ");
+								
+								var prev = $('.carousel-inner .active').removeClass('active').prev();
+								
+								if(prev.length==0){
+									
+									prev = $('.carousel div').last();
+								}
+								
+								prev.addClass('active');
+								
+								
+								
+							});
+							
+							
+							
+						
+						
+						
 
 				
 					
