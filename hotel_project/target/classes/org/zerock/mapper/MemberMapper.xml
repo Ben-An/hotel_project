@@ -29,13 +29,29 @@
   		select count(*) from member where memberId = #{memberId}
   	
   	</select>
-  	 <!-- 로그인 -->
-      <select id="memberLogin" resultType="org.zerock.domain.MemberVO">
+  	
+  	<!-- 로그인 -->
+    <select id="memberLogin" resultType="org.zerock.domain.MemberVO">
       
         SELECT memberId, memberName, memberNickname FROM member where memberId = #{memberId} and memberPassword=#{memberPassword}
-      
-      </select>
- 
+    
+    </select>
+    
+    <!-- 회원 정보 수정 -->
+ 	<update id="memberUpdate" parameterType="org.zerock.domain.MemberVO">
+ 	
+ 		update member set 
+ 		memberPassword = #{memberPassword}, memberName = #{memberName}, memberNickname = #{memberNickname}, memberEmail = #{memberEmail}, memberPhoneNo = #{memberPhoneNo}, memberGender = #{memberGender} 
+ 		where memberId = #{memberId}
+ 		
+ 	</update>
+ 	
+ 	<!-- 회원 삭제 -->
+ 	<delete id="memberDelete" parameterType="org.zerock.domain.MemberVO">
+ 	
+ 		delete from member where memberId = #{memberId} and memberPassword = #{memberPassword}
+ 	
+ 	</delete>
 	<!-- test용 회원가입 -->
 	<!-- <insert id="memberJoin">
 		insert into member(memberNo, memberId, memberPassword, memberName, memberNickname)
