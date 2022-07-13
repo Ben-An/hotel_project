@@ -36,7 +36,8 @@
 					</tbody>		
 			</table>
 			
-		<div style="text-align: right;"><a href="#">수정<i class="fa-solid fa-angle-right"></i></a></div>
+		<div style="text-align: right;"><a href="${contextPath }/member/myPage_memberUpdate?memberNo=${member.memberNo}">수정<i class="fa-solid fa-angle-right"></i></a>
+		<a href="${contextPath }/member/myPage_memberDelete?memberNo=${member.memberNo}">탈퇴<i class="fa-solid fa-angle-right"></i></a></div>
 	</div>
 
 	<div class="myPageContainer">
@@ -131,6 +132,16 @@
 		<div style="text-align: right;"><a href="${contextPath}/member/myPage_wishList?memberNo=${item.memberNo }">전체보기<i class="fa-solid fa-angle-right"></i></a></div>
 	</div>
 </div>
+
+<script>
+	function fn_update(){
+    
+	    var form = document.getElementById("viewForm");
+	    
+	    form.action = "<c:url value='/board/memberUpdate.do'/>";
+	    form.submit();
+	}
+</script>
 
 
 <%@include file="../includes/footer.jsp"%>
