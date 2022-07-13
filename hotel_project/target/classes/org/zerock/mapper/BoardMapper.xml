@@ -13,7 +13,7 @@
 				
 		<![CDATA[
 	
-select t.* from (select n.hotelFileName,rh.realhotelname, r.grade,r.reviewContent, r.reviewDate from hotel n,review r,realhotel rh
+select t.* from (select n.hotelno, n.hotelFileName,rh.realhotelname, r.grade,r.reviewContent, r.reviewDate from hotel n,review r,realhotel rh
 
 where n.hotelNo=r.hotelNo and n.realhotelno = rh.realhotelno order by r.grade desc) t where rownum<5
 		

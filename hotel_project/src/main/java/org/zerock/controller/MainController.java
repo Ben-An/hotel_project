@@ -45,11 +45,7 @@ public class MainController {
 		
 }
 	
-	@GetMapping("/detail")
-		public void detailHotel() {
-		
-		
-	}
+
 	
 	
 	
