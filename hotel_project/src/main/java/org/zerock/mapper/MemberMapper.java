@@ -30,4 +30,10 @@ public interface MemberMapper {
 	
 	// 로그인 
     public MemberVO memberLogin(MemberVO member);
+    
+    //회원정보수정
+    public void memberUpdate(MemberVO member);
+    
+    //회원 탈퇴
+    public MemberVO memberDelete(MemberVO member);
 }

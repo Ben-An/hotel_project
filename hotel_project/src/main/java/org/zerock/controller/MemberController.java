@@ -10,12 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.MemberVO;
 import org.zerock.service.MemberService;
+import org.zerock.service.MemberServiceImpl;
 
 import lombok.extern.log4j.Log4j;
 
@@ -91,7 +95,7 @@ public class MemberController {
         log.info("인증번호: " + checkNum);
    
         /* 이메일 보내기 */
-        String setFrom = "@@@@@naver.com";
+        String setFrom = "ktrwwmnv@naver.com";
         String toMail = email; //수신받을 이메일
         String title = "심사숙소 회원가입 인증 이메일 입니다.";
         String content = 
@@ -150,5 +154,41 @@ public class MemberController {
         session.invalidate();
         return "redirect:/hotel/index"; 
     }
+    
+    //회원 정보 수정
+    @RequestMapping(value = "/myPage_memberUpdate", method = RequestMethod.POST)
+    public String updatePost(HttpServletRequest request, MemberVO member) throws Exception {
+    	memberservice.memberUpdate(member);
+    	HttpSession session = request.getSession();
+        session.invalidate();
+    	return "redirect:/member/login";
+    }
+    
+    // 탈퇴 페이지 이동
+ 	@RequestMapping(value = "memberDelete", method = RequestMethod.GET)
+ 	public void deleteGET() {
+ 		log.info("탈퇴 페이지 진입");
+ 	}
+    
+    // 회원 탈퇴
+    @RequestMapping(value = "memberDelete", method = RequestMethod.POST)
+	public String deletePOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) throws Exception {
+
+		System.out.println("delete 메서드 진입");
+		System.out.println("전달된 데이터 : " + member);
+
+		MemberVO lvo = memberservice.memberDelete(member);// MemberVO 객체를 반환받아서 변수 lvo에 저장
+
+		if (lvo == null) { // 일치하지 않는 아이디, 비밀번호 입력 경우
+
+			int result = 0;
+			rttr.addFlashAttribute("result", result);
+			return "redirect:/member/myPage_memberDelete";
+
+		}
+
+
+		return "redirect:/hotel/index";
+	}
 
 }

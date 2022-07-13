@@ -2,6 +2,8 @@ package org.zerock.service;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.MemberVO;
@@ -58,4 +60,18 @@ public class MemberServiceImpl implements MemberService{
         
         return mapper.memberLogin(member);
     }
+
+    // 회원 정보 수정
+	@Override
+	public void memberUpdate(MemberVO member) throws Exception {
+		mapper.memberUpdate(member);
+		
+	}
+
+	//회원 삭제
+	@Override
+	public MemberVO memberDelete(MemberVO member) throws Exception {
+		return mapper.memberDelete(member);	
+	}
+    
 }
