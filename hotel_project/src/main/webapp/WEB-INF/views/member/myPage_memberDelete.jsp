@@ -1,235 +1,298 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8">
-<title>심사숙소 로그인</title>
-
-<!-- Bootstrap core CSS -->
-<link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-<link href="/resources/css/bootstrap.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>심사숙소 회원가입</title>
 
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/adac482b14.js"
 	crossorigin="anonymous"></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
 	href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap"
 	rel="stylesheet">
-<!-- 제이쿼리 -->
+
+<style>
+/* 중복아이디 존재하지 않는경우 */
+.id_input_re_1 {
+	color: green;
+	display: none;
+}
+/* 중복아이디 존재하는 경우 */
+.id_input_re_2 {
+	color: red;
+	display: none;
+}
+
+/* #mail_check_input_box_false{
+    background-color:#ebebe4;
+}
+ 
+#mail_check_input_box_true{
+    background-color:white;
+} */
+.correct {
+	color: green;
+}
+
+.incorrect {
+	color: red;
+}
+
+.mail_check_button {
+	background-color: black;
+}
+
+/* 유효성 검사 문구 */
+.final_id_ck {
+	display: none;
+	color : red;
+}
+
+.final_pw_ck {
+	display: none;
+	color : red;
+}
+
+.final_pwck_ck {
+	display: none;
+	color : red;
+}
+
+.final_name_ck {
+	display: none;
+	color : red;
+}
+
+.final_nickname_ck {
+	display: none;
+	color : red;
+}
+
+.final_mail_ck {
+	display: none;
+	color : red;
+}
+
+.final_hp_ck {
+	display: none;
+	color : red;
+}
+
+/* 비밀번호 확인 일치 유효성검사 */
+.pwck_input_re_1 {
+	color: green;
+	display: none;
+}
+
+.pwck_input_re_2 {
+	color: red;
+	display: none;
+}
+
+@import
+	url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap')
+	;
+
+*, body {
+	font-family: 'Gowun Batang', serif;
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+	height: 100%;
+	background-color: #152733;
+	overflow: hidden;
+}
+
+.form-holder {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	min-height: 100vh;
+}
+
+.form-holder .form-content {
+	position: relative;
+	text-align: center;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-align-items: center;
+	align-items: center;
+	padding: 60px;
+}
+
+.form-content .form-items {
+	border: 3px solid #fff;
+	padding: 40px;
+	display: inline-block;
+	width: 100%;
+	min-width: 540px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	text-align: left;
+	-webkit-transition: all 0.4s ease;
+	transition: all 0.4s ease;
+}
+
+.form-content h3 {
+	color: #fff;
+	text-align: left;
+	font-size: 28px;
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+
+.form-content h3.form-title {
+	margin-bottom: 30px;
+}
+
+.form-content p {
+	color: #fff;
+	text-align: left;
+	font-size: 17px;
+	font-weight: 300;
+	line-height: 20px;
+	margin-bottom: 30px;
+}
+
+.form-content label, .was-validated .form-check-input:invalid ~.form-check-label,
+	.was-validated .form-check-input:valid ~.form-check-label {
+	color: #fff;
+}
+
+.form-content input[type=text], .form-content input[type=password],
+	.form-content input[type=email], .form-content select {
+	width: 100%;
+	padding: 9px 20px;
+	text-align: left;
+	border: 0;
+	outline: 0;
+	border-radius: 6px;
+	background-color: #fff;
+	font-size: 15px;
+	font-weight: 300;
+	color: #8D8D8D;
+	-webkit-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+	margin-top: 16px;
+}
+
+.btn-primary {
+	background-color: #6C757D;
+	outline: none;
+	border: 0px;
+	box-shadow: none;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+	background-color: #495056;
+	outline: none !important;
+	border: none !important;
+	box-shadow: none;
+}
+
+.form-content textarea {
+	position: static !important;
+	width: 100%;
+	padding: 8px 20px;
+	border-radius: 6px;
+	text-align: left;
+	background-color: #fff;
+	border: 0;
+	font-size: 15px;
+	font-weight: 300;
+	color: #8D8D8D;
+	outline: none;
+	resize: none;
+	height: 120px;
+	-webkit-transition: none;
+	transition: none;
+	margin-bottom: 14px;
+}
+
+.form-content textarea:hover, .form-content textarea:focus {
+	border: 0;
+	background-color: #ebeff8;
+	color: #8D8D8D;
+}
+
+.mv-up {
+	margin-top: -9px !important;
+	margin-bottom: 8px !important;
+}
+
+.invalid-feedback {
+	color: #ff606e;
+}
+
+.valid-feedback {
+	color: #2acc80;
+}
+</style>
+<!-- Bootstrap core CSS -->
+<link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="/resources/css/bootstrap.css" rel="stylesheet">
+<!-- 폰트어썸 -->
+<script src="https://kit.fontawesome.com/adac482b14.js"
+	crossorigin="anonymous"></script>
+<!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.js"
 	integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
 	crossorigin="anonymous"></script>
-<style>
-/* html,
-body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
-}
-
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-}
-
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
-
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      } */
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap');
-/* 로그인 실패시 경고글 */
-.login_warn{
-    margin: 10px;
-    text-align: center;
-    color : red;
-} 
-html,
-body {
-font-family: 'Gowun Batang', serif;
-  height: 100%;
-}
-
-body {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-}
-
-.card {
-	border: none;
-	height: 320px
-	 max-width: 330px;
-  padding: 15px;
-}
-
-.forms-inputs {
-	position: relative
-}
-
-.forms-inputs span {
-	position: absolute;
-	top: -18px;
-	left: 10px;
-	background-color: #fff;
-	padding: 5px 10px;
-	font-size: 15px
-}
-
-.forms-inputs input {
-	height: 50px;
-	border: 2px solid #eee
-}
-
-.forms-inputs input:focus {
-	box-shadow: none;
-	outline: none;
-	border: 2px solid #000
-}
-
-.btn {
-	height: 50px
-}
-
-.success-data {
-	display: flex;
-	flex-direction: column
-}
-
-.bxs-badge-check {
-	font-size: 90px
-}
-</style>
 
 </head>
-<body style="background-color: #FF8C00;">
+<body class="text-center"
+	style="font-family: 'Gowun Batang', serif; background-color: #FF8C00;">
 
-	<%--   <form id="login_form" method="post">
-    <span class="fs-4"><strong>심사숙소</strong></span>
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <div class="form-floating">
-      <input class="form-control" id="memberId" name="memberId" placeholder="name">
-      <label for="memberId">ID</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="memberPassword" name="memberPassword" placeholder="Password">
-      <label for="memberPassword">Password</label>
-    </div>
+	<main class="form-signin w-100 m-auto text-white">
+		<form id="update_form" method="post">
+			<div class="form-body">
+				<div class="row">
+					<div class="form-holder">
+						<div class="form-content">
+							<div class="form-items">
+								<h3>회원 탈퇴</h3>
+								
+								<form class="requires-validation" novalidate>
 
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div>
-      <c:if test = "${result == 0 }">
-                <div class = "login_warn">사용자 ID 또는 비밀번호를 잘못 입력하셨습니다.</div>
-            </c:if>
-    <button class="w-100 btn btn-lg btn-primary login_button" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 심사숙소 2022</p>
+									<div class="col-md-12 id_wrap">
+										<input class="form-control id_input" type="text"
+											name="memberId" value="${member.memberId }" readonly>
+									</div>
 
-  </form> --%>
-	<div class="container mt-5">
-		<div class="row d-flex justify-content-center">
-		<form id="login_form" method="post">
-			<div class="col-md-6" style="float: none; margin:0 auto;">
-				<div class="card px-5 py-5" id="form1">
-					<div class="form-data">
-						<div class="forms-inputs mb-4">
-							<span>ID</span> 
-							<input type="text" class="form-control" id="memberId" name="memberId">
-						</div>
-						<div class="forms-inputs mb-4">
-							<span>Password</span> 
-							<input type="password" class="form-control" id="memberPassword" name="memberPassword">
-						</div>
-						<c:if test = "${result == 0 }">
-               				 <div class = "login_warn">사용자 ID 또는 비밀번호를 잘못 입력하셨습니다.</div>
-            			</c:if>
-						<div class="mb-3">
-							<button class="btn btn-dark w-100" type="submit">회원 탈퇴</button>
+									<div class="col-md-12 pw_wrap">
+										<input class="form-control pw_input" type="password"
+											name="memberPassword" placeholder="비밀번호">
+									</div>
+
+									<div class="form-button mt-3 join_button_wrap">
+										<input type="submit" class="btn btn-dark join_button w-100" value="탈퇴하기" id="delete_Button">
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			</form>
-		</div>
-	</div>
+		</form>
 
-	
-
+	</main>
 </body>
 </html>

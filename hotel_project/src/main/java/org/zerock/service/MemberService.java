@@ -33,6 +33,6 @@ public interface MemberService {
 	public void memberUpdate(MemberVO member) throws Exception;
 	
 	//회원정보 삭제
-	public MemberVO memberDelete(MemberVO member) throws Exception;
+	public void memberDelete(MemberVO member) throws Exception;
     
 }

@@ -35,5 +35,5 @@ public interface MemberMapper {
     public void memberUpdate(MemberVO member);
     
     //회원 탈퇴
-    public MemberVO memberDelete(MemberVO member);
+    public void memberDelete(MemberVO member);
 }
