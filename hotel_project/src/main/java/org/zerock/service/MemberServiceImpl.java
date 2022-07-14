@@ -70,8 +70,8 @@ public class MemberServiceImpl implements MemberService{
 
 	//회원 삭제
 	@Override
-	public MemberVO memberDelete(MemberVO member) throws Exception {
-		return mapper.memberDelete(member);	
+	public void memberDelete(MemberVO member) throws Exception {
+		mapper.memberDelete(member);	
 	}
     
 }

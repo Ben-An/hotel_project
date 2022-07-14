@@ -163,31 +163,15 @@ public class MemberController {
         session.invalidate();
     	return "redirect:/member/login";
     }
-    
-    // 탈퇴 페이지 이동
- 	@RequestMapping(value = "memberDelete", method = RequestMethod.GET)
- 	public void deleteGET() {
- 		log.info("탈퇴 페이지 진입");
- 	}
+   
     
     // 회원 탈퇴
-    @RequestMapping(value = "memberDelete", method = RequestMethod.POST)
-	public String deletePOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) throws Exception {
+    @RequestMapping(value = "/myPage_memberDelete", method = RequestMethod.POST)
+	public String deletePOST(HttpServletRequest request, MemberVO member) throws Exception {
 
-		System.out.println("delete 메서드 진입");
-		System.out.println("전달된 데이터 : " + member);
-
-		MemberVO lvo = memberservice.memberDelete(member);// MemberVO 객체를 반환받아서 변수 lvo에 저장
-
-		if (lvo == null) { // 일치하지 않는 아이디, 비밀번호 입력 경우
-
-			int result = 0;
-			rttr.addFlashAttribute("result", result);
-			return "redirect:/member/myPage_memberDelete";
-
-		}
-
-
+    	memberservice.memberDelete(member);
+    	HttpSession session = request.getSession();
+        session.invalidate();
 		return "redirect:/hotel/index";
 	}
 
