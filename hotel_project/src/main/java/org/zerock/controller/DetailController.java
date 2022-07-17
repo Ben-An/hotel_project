@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.ImageList;
+import org.zerock.domain.RelyVO;
 import org.zerock.service.DetailService;
 
 
@@ -61,6 +62,24 @@ public class DetailController {
 		
 		return new ResponseEntity<>(service.getRoom(hotelno),HttpStatus.OK);
 	}
+	
+	
+	
+	@ResponseBody
+	@GetMapping(value="/rely.do", produces = {MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE})
+	public ResponseEntity< List<RelyVO>> relyList(int hotelno){
+		
+		
+		log.info("get rely>>>>>>>>>>>>>>>>>>>>>>"+hotelno);
+		
+		return new ResponseEntity<>(service.getRely(hotelno),HttpStatus.OK);
+		
+	}
+	
+	
+
+	
+	
 	
 	
 	

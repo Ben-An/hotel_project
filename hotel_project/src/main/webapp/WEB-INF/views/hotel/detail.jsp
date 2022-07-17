@@ -148,8 +148,8 @@
 	<h3>고객 이용 후기</h3>
 	
 	<hr>
-
-	<div class="row">
+<div class="relyChat"></div>
+	<!-- <div class="row">
 		<div class="col-2">
 
 			<div class="row">
@@ -157,9 +157,8 @@
 
 
 					<div class="rating" data-rate="3">
-						<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-							class="fas fa-star"></i> <i class="fas fa-star"></i> <i
-							class="fas fa-star"></i>
+						<i class="fas fa-star"></i> <i class="fas fa-star"></i> 
+						<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i>
 
 					</div>
 
@@ -195,8 +194,8 @@
 			<h5>작성일</h5>
 
 			<hr>
-
-			<div></div>
+	
+		
 
 
 
@@ -206,8 +205,20 @@
 
 
 
-		<div>
-			<nav aria-label="Page navigation example">
+		
+	
+
+
+
+
+	</div> -->
+
+	
+
+
+</div>
+
+	<nav aria-label="Page navigation example">
 				<ul class="pagination justify-content-center">
 					<li class="page-item"><a class="page-link" href="#"
 						aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
@@ -220,16 +231,7 @@
 					</a></li>
 				</ul>
 			</nav>
-		</div>
-
-
-
-
-	</div>
-
-
-
-</div>
+	
 
 
 
@@ -240,8 +242,8 @@
 	<div
 		class="bg-white rounded shadow-sm p-4 mb-5 rating-review-select-page">
 
-		<h5 class="mb-4">Leave Comment</h5>
-		<p class="mb-2">Rate the Place</p>
+		<h5 class="mb-4">댓글을 달아주세요~~</h5>
+		<p class="mb-2">별점주기~~</p>
 		<div class="mb-4">
 			<span class="star-rating"> <a href="#"><i
 					class="icofont-ui-rating icofont-2x"></i></a> <a href="#"><i
@@ -253,11 +255,11 @@
 		</div>
 		<form>
 			<div class="form-group">
-				<label>Your Comment </label>
+
 				<textarea class="form-control"></textarea>
 			</div>
 			<div class="form-group mt-4">
-				<button>작성하기</button>
+				<button id="writeReplyBtn" class="btn">작성하기</button>
 			</div>
 		</form>
 
@@ -285,159 +287,255 @@
 			.ready(
 					function() {
 						
+						showList();
 						
-						
-							//carousel .active 설정 하기
-						
-							
-							$('.carousel-control-next').click(function(){
-								
-								//alert("눌러주셈 ");
-								var next = $('.carousel-inner .active').removeClass('active').next();
-								
-								if(next.length==0){
-									
-									next = $('.carousel div').first();
-									
-								}
-								
-								next.addClass('active');
-								
-								
-								
-							});
-							
-							
-							
-							
-							$('.carousel-control-prev').click(function(){
-								
-								//alert("눌러주셈 ");
-								
-								var prev = $('.carousel-inner .active').removeClass('active').prev();
-								
-								if(prev.length==0){
-									
-									prev = $('.carousel div').last();
-								}
-								
-								prev.addClass('active');
-								
-								
-								
-							});
-							
-							
-							
-						
-						
-						
-
 				
+							
+				function showList(){
 					
-		
-							var hotelValue = '<c:out value="${detailList.hotelno}"/>'
+							var hotelValue = '<c:out value="${detailList.hotelno}"/>';
 							var imageUL = $(".carousel-inner");
-							var roomUL =$(".roomDetail");
-						
+								detailService
+								.list(
+										{
+											hotelno : hotelValue
+										},
+										function(list) {
 
-							console.log("hotelno>>>>>>>" + hotelValue);
-							
-				detailService
-							.list(
-									{
-										hotelno : hotelValue
-									},
-									function(list) {
+											console.log("list>>>>>>>>" + list);
 
-										console.log("list>>>>>>>>" + list);
+											var str = "";
 
-										var str = "";
+											for (var i = 0; i < list.length; i++) {
 
-										for (var i = 0; i < list.length; i++) {
+												str += "<div class='carousel-item active'>";
+												str += "<img src='"+list[i].roomfilename+ 
+														"'class='d-block w-100' alt='...' style='height: 300px; width: 200px'></div>";
 
-											str += "<div class='carousel-item active'>";
-											str += "<img src='"+list[i].roomfilename+ 
-													"'class='d-block w-100' alt='...' style='height: 300px; width: 200px'></div>";
+											}
 
-										}
+											imageUL.html(str);
+											
+											roomService();
+											
 
-										imageUL.html(str);
-
-									});
-									
-				detailService.roomList(
-								{
-									
-									hotelno : hotelValue
-														
-								},
-								function(roomList) {
-									
-									console.log("roomList>>>>>>"+roomList);
-									
-									
-									
-									var str ="";
-									
-								for(var i = 0; i<roomList.length; i++){
-									
-									str +="<div class='col-9'>";
-									str +="<div class='d-flex'>";
-									str +="<div class='flex-shrink-0'>";
-									str +="	<img alt='' src='/resources/hotel/file_repo/1/hotel3.jpg' style='height: 100px; width: 100px'>";
-									str +="</div>";
-									str +="<div class='flex-grow-1 ms-2'>";	
-									str +="<h6 class='mb-0'>방이름: "+roomList[i].roomname+"</h6>";
-									str +="<h6 class='mb-1'>수용 가능 인원: "+roomList[i].bedno+"</h6>";
-									str +="<h6 class='mb-2'>방정보</h6>";
-									str +="</div>";
-									
-									str +="</div>";
-									str +="</div>";
-									
-									str +="<div class='col-3 mt-3  mt-md-1'>";
-									str +="	<div class='row'>";
-									str +="<div class='col-6'>";
-									str +="	<p>"+roomList[i].roomprice+"원</p>";
-									str +="</div>";
-									str +="<div class='col-6'>";
-									str +="<button>방예약</button>";
-									str +="</div>";
-
-									str +="</div>";
-									str +="</div>";
-									
-									
-								}
-								
-							
-							
-									
-								roomUL.html(str);
-								
-								
-							}); //end roomList functions
-							
-							
-							
-							
-							
-							
-							
-					
-						
+										});
+										
 			
-										
-										
+								
+								
+								
+							}
+				
+				
+				function roomService(){
+					
+					var hotelValue = '<c:out value="${detailList.hotelno}"/>';
+					
+					var roomUL =$(".roomDetail");
+					
+					detailService.roomList(
+							{
+								
+								hotelno : hotelValue
+													
+							},
+							function(roomList) {
+								
+								console.log("roomList>>>>>>"+roomList);
+								
+								
+								
+								var str ="";
+								
+							for(var i = 0; i<roomList.length; i++){
+								
+								str +="<div class='col-9'>";
+								str +="<div class='d-flex'>";
+								str +="<div class='flex-shrink-0'>";
+								str +="	<img alt='' src='/resources/hotel/file_repo/1/hotel3.jpg' style='height: 100px; width: 100px'>";
+								str +="</div>";
+								str +="<div class='flex-grow-1 ms-2'>";	
+								str +="<h6 class='mb-0'>방이름: "+roomList[i].roomname+"</h6>";
+								str +="<h6 class='mb-1'>수용 가능 인원: "+roomList[i].bedno+"</h6>";
+								str +="<h6 class='mb-2'>방정보</h6>";
+								str +="</div>";
+								
+								str +="</div>";
+								str +="</div>";
+								
+								str +="<div class='col-3 mt-3  mt-md-1'>";
+								str +="	<div class='row'>";
+								str +="<div class='col-6'>";
+								str +="	<p>"+roomList[i].roomprice+"원</p>";
+								str +="</div>";
+								str +="<div class='col-6'>";
+								str +="<button>방예약</button>";
+								str +="</div>";
+
+								str +="</div>";
+								str +="</div>";
+								
+								
+							}
+							
+						
+						
+								
+							roomUL.html(str);
+							relyService();
+						
+							
+							
+						}); //end roomList functions
+						
+					
+				}
+				
+				
+				
+				function relyService(){
+					var hotelno = '<c:out value="${detailList.hotelno}"/>';
+					var relyUL =$(".relyChat");
+					
+					
+					detailService.relyList(
+							{
+								
+								hotelno : hotelno
+													
+							},
+							function(relyList) {
+								
+								console.log("roomList>>>>>>"+relyList);
+								
+								
+								
+							var str ="";
+								
+							for(var i = 0; i<relyList.length; i++){
+								
+								
+								str +="<div class='row'>";
+								
+								
+								str +="<div class='col-2'>";
+								
+								str +="<div class='row'>";
+								str +="<div class='col-8'>";
+						 		str +="<div class='rating' data-rate='"+relyList[i].grade+"'>";
+								str +="<i class='fas fa-star'></i> <i class='fas fa-star'></i>";
+						 		str +="<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i>";
+						 		str +="</div>";
+								str +="</div>";
+								
+								str +="<div class='col-8 mt-2'>";
+								str +="<h3>"+relyList[i].memberNickname+"</h3>";
+								str +="	</div>";
+								
+								
+								str +="	</div>";
+								
+								str +="	</div>";
+								
+								
+								
+								
+								str +="<div class='col-10' style='background-color: #ddd; height: 200px; border-radius: 5px'>";
+								
+								str +="<p class='py-3'>"+relyList[i].reviewcontent +"</p>";
+								
+								str +="<h5>"+relyList[i].reviewdate+"</h5>";
+								
+								str +="	</div>";
+								
+								str +="	<hr class='mt-4'>";
+								
+								
+								str +="	</div>";
+								
+							}
+							
+						
+						
+								
+							relyUL.html(str);
+							
+						
+							
+						}); //end relyList function 
+					
+					
+				}
+			
+							
+			
+						
+							
+	
+				//carousel .active 설정 하기
+			
+				
+				$('.carousel-control-next').click(function(){
+					
+					//alert("눌러주셈 ");
+					var next = $('.carousel-inner .active').removeClass('active').next();
+					
+					if(next.length==0){
+						
+						next = $('.carousel div').first();
+						
+					}
+					
+					next.addClass('active');
+					
+					
+					
+				});
+				
+				
+				
+				
+				$('.carousel-control-prev').click(function(){
+					
+					//alert("눌러주셈 ");
+					
+					var prev = $('.carousel-inner .active').removeClass('active').prev();
+					
+					if(prev.length==0){
+						
+						prev = $('.carousel div').last();
+					}
+					
+					prev.addClass('active');
+					
+					
+					
+				});
+				
+				
 				
 							
 							
-					
+		$("#writeReplyBtn").click(function(){
+			
+			alert("댓글 이벤트 처리");
+		});
+		
 						
 
 					});
+	
+	
+	
+	
+	
+	
+	
 </script>
+
+
+
 
 
 
