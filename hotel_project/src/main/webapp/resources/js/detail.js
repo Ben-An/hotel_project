@@ -26,7 +26,7 @@
  		
  		});
  	
- 	}
+ 	};
  	
  	
  	function roomList(param,callback,error){
@@ -47,7 +47,33 @@
  		
  		
  		
- 	}
+ 	};
+ 	
+ 	
+ 		function relyList(param,callback,error){
+ 		
+ 		
+ 		var hotelno = param.hotelno;
+ 		
+ 		$.getJSON("/hotel/rely.do?hotelno="+hotelno, function(data){
+ 			if(callback){
+ 				callback(data);
+ 				
+ 			}
+ 			}).fail(function(xhr, status,err){
+ 				if(error) error();
+ 				else alert("테이터 가져오기 실패 하였습니다.")
+ 				
+ 			});
+ 		
+ 		
+ 		
+ 	};
+ 	
+ 	
+
+ 	
+ 
  	
  	
  	
@@ -58,9 +84,10 @@
  	
  	return{
  	
- 		//: 앞에 list는 변수(속성) 이다. : 뒤에 list는 선언한 함수 자체이다. detailService.list();
  		list : list,
- 		roomList : roomList
+ 		roomList : roomList,
+ 		
+ 		relyList : relyList
  	
  	
  	};//함수를 객체로 만들어서 리턴해준다.
