@@ -5,6 +5,7 @@ import java.util.List;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
 import org.zerock.domain.ImageList;
+import org.zerock.domain.RelyVO;
 
 public interface DetailService {
 	
@@ -14,6 +15,8 @@ public interface DetailService {
 	
 	
 	public List<ImageList> getRoom(int hotelno);
+	
+	public List<RelyVO> getRely(int hotelno);
 	
 
 	

@@ -33,6 +33,33 @@
 
 
 	</select>
+	
+  <select id="read" resultType="org.zerock.domain.RelyVO">
+		  <![CDATA[
+		  	
+		  		select r.grade,r.reviewcontent,r.reviewdate,m.memberNickname from review r
+				left join member m on m.memberno = r.memberno
+				where hotelno =#{hotelno}
+		   ]]>
+
+
+	</select> 
+	
+	
+	<insert id="insert">
+		  <![CDATA[
+				insert into review(reviewNo,grade,reviewContent) values (review_seq.nextval,#{grade},#{reviewContent})
+				
+				
+		   ]]>
+	</insert>
+	
+	
+	
+	
+	
+	
+	
 
 
 
