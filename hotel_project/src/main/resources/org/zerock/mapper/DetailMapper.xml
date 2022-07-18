@@ -20,7 +20,7 @@
 	<select id="listImage"
 		resultType="org.zerock.domain.DetailImage">
 		  <![CDATA[
-		select roomfilename from room_image where hotelno=#{hotelno}
+			select roomfilename from room_image where hotelno=#{hotelno}
 		   ]]>
 	</select>
 
@@ -48,7 +48,8 @@
 	
 	<insert id="insert">
 		  <![CDATA[
-				insert into review(reviewNo,grade,reviewContent) values (review_seq.nextval,#{grade},#{reviewContent})
+		  
+				insert into review(reviewNo,memberNo,grade,reviewContent,reviewDate) values (review_seq.nextval,#{memberNo}#{grade},#{reviewContent},sysdate)
 				
 				
 		   ]]>

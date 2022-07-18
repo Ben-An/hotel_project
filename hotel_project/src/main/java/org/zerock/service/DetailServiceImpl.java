@@ -44,6 +44,12 @@ public class DetailServiceImpl implements DetailService {
 		
 		return mapper.read(hotelno);
 	}
+
+	@Override
+	public boolean register(RelyVO vo) {
+		// TODO Auto-generated method stub
+		 return mapper.insert(vo);
+	}
 	
 	
 	
