@@ -17,6 +17,8 @@ public interface DetailMapper {
 	
 	public List<RelyVO>read(int hotelno);
 	
+	public boolean insert (RelyVO vo);
+	
 	
 	
 	
