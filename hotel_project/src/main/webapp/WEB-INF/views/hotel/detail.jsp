@@ -242,24 +242,34 @@
 	<div
 		class="bg-white rounded shadow-sm p-4 mb-5 rating-review-select-page">
 
-		<h5 class="mb-4">댓글을 달아주세요~~</h5>
-		<p class="mb-2">별점주기~~</p>
-		<div class="mb-4">
-			<span class="star-rating"> <a href="#"><i
-					class="icofont-ui-rating icofont-2x"></i></a> <a href="#"><i
-					class="icofont-ui-rating icofont-2x"></i></a> <a href="#"><i
-					class="icofont-ui-rating icofont-2x"></i></a> <a href="#"><i
-					class="icofont-ui-rating icofont-2x"></i></a> <a href="#"><i
-					class="icofont-ui-rating icofont-2x"></i></a>
-			</span>
-		</div>
-		<form>
-			<div class="form-group">
+		<h5 class="mb-4">댓글</h5>
+		
+		<form action="/hotel/new.do" method="post" class="replyForm">
+		
+		<fieldset>
+			<input type="radio" name="grade" value="5" id="rate1">
+			<label for="rate1">⭐</label>
+			<input type="radio" name="grade" value="4" id="rate2">
+			<label for="rate2">⭐</label>
+			<input type="radio" name="grade" value="3" id="rate3">
+			<label for="rate3">⭐</label>
+			<input type="radio" name="grade" value="2" id="rate4">
+			<label for="rate4">⭐</label>
+			<input type="radio" name="grade" value="1" id="rate5">
+			<label for="rate5">⭐</label>
+		</fieldset>
 
-				<textarea class="form-control"></textarea>
+	
+			<input type="hidden" name="memberNo" value="${member.memberNo }" />
+			<input type="hidden" name="hotelNo" value="${detailList.hotelno }"/>
+			<div class="form-group">
+	
+			<textarea class="small_text mt-3" name="reviewContent" style="width:100%; height: 200px; border-color: #dadada; padding: 10px 10px 10px 10px" placeholder="리뷰를 작성해주세요."><c:if test="${empty member.memberId}">로그인이 필요합니다.</c:if></textarea>
+			
+	
 			</div>
 			<div class="form-group mt-4">
-				<button id="writeReplyBtn" class="btn">작성하기</button>
+				<button id='registerBtn' type="button" class="btn">제출</button>
 			</div>
 		</form>
 
@@ -443,9 +453,9 @@
 								
 								str +="<div class='col-10' style='background-color: #ddd; height: 200px; border-radius: 5px'>";
 								
-								str +="<p class='py-3'>"+relyList[i].reviewcontent +"</p>";
+								str +="<p class='py-3'>"+relyList[i].reviewContent +"</p>";
 								
-								str +="<h5>"+relyList[i].reviewdate+"</h5>";
+								str +="<h5>"+detailService.displayTime(relyList[i].reviewDate)+"</h5>";
 								
 								str +="	</div>";
 								
@@ -467,6 +477,61 @@
 					
 					
 				}
+				
+				
+				var replyForms= $(".replyForm");	
+				var registerBtn = $("#registerBtn");
+				var hotelValue = '<c:out value="${detailList.hotelno}"/>';
+				/* var inputGrade = relyForms.find("input[name='grade']"); */
+				var inputReviewContent = replyForms.find("textarea[name='reviewContent']");
+				var memberIdValue = '<c:out value="${member.memberNo}"/>';
+				
+				
+				
+				registerBtn.on("click",function(e){
+					
+					var reply = {
+						/* 	grade : inputGrade.val(), */
+							reviewContent : inputReviewContent.val(),
+							hotelno : hotelValue,
+							memberNo : memberIdValue
+							
+							
+							
+							
+							
+					};
+					
+					
+					console.log(reply);
+					
+					detailService.add(reply, function(result){
+						alert(result);
+						
+						
+						replyForms.find("input").val("");
+						
+						
+						
+						showList();
+					});
+					
+					
+				});
+				
+				
+				
+				
+	
+				
+				
+				
+				
+				
+				
+				
+				
+			
 			
 							
 			
@@ -517,10 +582,12 @@
 				
 							
 							
-		$("#writeReplyBtn").click(function(){
 			
-			alert("댓글 이벤트 처리");
-		});
+		
+		
+		
+		
+		
 		
 						
 

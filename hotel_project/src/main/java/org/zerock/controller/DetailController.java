@@ -9,7 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.ImageList;
@@ -75,6 +78,21 @@ public class DetailController {
 		return new ResponseEntity<>(service.getRely(hotelno),HttpStatus.OK);
 		
 	}
+	
+	@ResponseBody
+	@PostMapping(value="/new.do",consumes ="application/json",produces= {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> create(@RequestBody RelyVO vo){
+		
+		log.info("relyVO"+vo);
+		
+		
+		boolean result = service.register(vo);
+		
+		return result == true ? new ResponseEntity<>("success",HttpStatus.OK)
+			: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		
+	}
+	
 	
 	
 
