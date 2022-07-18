@@ -159,6 +159,8 @@ public class MemberController {
     @RequestMapping(value = "/myPage_memberUpdate", method = RequestMethod.POST)
     public String updatePost(HttpServletRequest request, MemberVO member) throws Exception {
     	memberservice.memberUpdate(member);
+    	
+    	
     	HttpSession session = request.getSession();
         session.invalidate();
     	return "redirect:/member/login";

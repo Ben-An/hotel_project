@@ -18,6 +18,8 @@ public interface DetailService {
 	
 	public List<RelyVO> getRely(int hotelno);
 	
+	public boolean register(RelyVO vo);
+	
 
 	
 	

@@ -1146,7 +1146,7 @@
 		<c:forEach var="item" items="${list }">
 
 			<div class="col-12 col-md-5 col-lg-3 ">
-				<a href="/hotel/detail?hotelno=<c:out value="${item.hotelno }"/>">
+				<a href="/hotel/detail?hotelno=<c:out value="${item.hotelno }"/>&memberNo=${member.memberNo}">
 					<div class="card" style="">
 					<img src="${item.hotelFileName }" class="card-img-top" alt=""
 						style="height: 250px">

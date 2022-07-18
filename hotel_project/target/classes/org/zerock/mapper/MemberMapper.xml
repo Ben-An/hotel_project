@@ -11,6 +11,7 @@
 		<result property="memberPassword" column="memberPassword"/>
 		<result property="memberName" column="memberName"/>
 		<result property="memberNickname" column="memberNickname"/>
+		
 	</resultMap>
 	
 	<!-- <select id="getList" resultType="org.zerock.domain.MemberVO">
@@ -33,7 +34,7 @@
   	<!-- 로그인 -->
     <select id="memberLogin" resultType="org.zerock.domain.MemberVO">
       
-        SELECT memberId, memberName, memberNickname FROM member where memberId = #{memberId} and memberPassword=#{memberPassword}
+        SELECT memberNo, memberId, memberName, memberNickname FROM member where memberId = #{memberId} and memberPassword=#{memberPassword}
     
     </select>
     
