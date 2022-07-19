@@ -92,9 +92,12 @@
 		console.log("optionFilters >>>> ", optionFilters);
 		
 		let roomPrices = document.getElementsByClassName('roomPrice');
-		//roomPrice = roomPrice.replace(/,/g, "");
-		//roomPrice = parseInt(roomPrice);
-		console.log(roomPrices[0]);
+		for(int i = 0; i < roomPrices.length; i++){
+			let roomPrice = roomPrices[i];
+			//roomPrice = roomPrice.replace(/,/g, "");
+			///roomPrice = parseInt(roomPrice);
+			console.log(roomPrice);
+		}
 		
 		optionFilters.on("change", function () {
 			let selectedFilters = $("input[name='option']:checked");
