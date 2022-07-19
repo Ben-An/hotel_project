@@ -10,7 +10,6 @@ public class MemberVO {
 	private String memberPhoneNo;
 	private String memberGender;
 	
-	
 	public int getMemberNo() {
 		return memberNo;
 	}
