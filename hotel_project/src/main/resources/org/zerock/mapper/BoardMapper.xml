@@ -37,24 +37,18 @@ where n.hotelNo=r.hotelNo and n.realhotelno = rh.realhotelno order by r.grade de
 	<select id="hotelListWithPaging" resultType="org.zerock.domain.SearchVO" parameterType="map">			
 		<![CDATA[
 	
-		select realhotelName, hotelFilename, state
+		select realhotelName, hotelFilename, state, roomPrice, buffet, swim
 		from 
 			(
 			 select 
-			 	rownum rn, state, hotelFilename, realhotelname, buffet, swim
+			 	rownum rn, state, hotelFilename, realhotelname, roomPrice, buffet, swim
        	 	 from
-       	 	 	hotel h, realhotel r 
+       	 	 	hotel h, realhotel r, hotel_room hr
         	 where 
         	 	h.realhotelno = r.realhotelno
+        	 and
+        	 	h.hotelno = hr.hotelno
 	    ]]>  
-	      	
-	    <choose>
-            <when test="checkArray != null and checkArray.size != 0">           
-                <foreach collection="checkArray" item="item" >
-                   and #{item} = 'T' 
-                </foreach>
-            </when>
-        </choose>
         <if test = "keyword != null">
         	 and state like '%'||#{keyword}||'%'
         </if>

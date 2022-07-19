@@ -26,5 +26,6 @@ public class SearchVO {
 	private Date hotelRegistDate; 
 	private double grade;
 	private int hotelImageId;        
- 	private String hotelFileName; 	
+ 	private String hotelFileName; 
+ 	private String roomPrice;
 }

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+
 	
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px; margin-left: 300px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -19,8 +21,12 @@
 	  </li>
 	  <hr>
       <li>
-      	<p>가격</p>
-      	<input type="range" name="price" min="0" max="1,000,000" step="10,000">
+      	<p>
+		  <label for="price">가격</label>
+		  <input type="text" id="price" name="price" readonly style="border:0; color:#f6931f; font-weight:bold;">
+		</p>
+ 
+		<div id="slider-range"></div>
       </li>
       <hr>
       <li>
@@ -35,39 +41,39 @@
       <li>
         <p>편의 시설</p>
         <div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f1" name = "facility" value="buffet">
+			<input class="form-check-input" type="checkbox" id="f1" name = "option" value="buffet">
 			<label class="form-check-label" for="f1">조식</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f2" name = "facility" value="swim">
+			<input class="form-check-input" type="checkbox" id="f2" name = "option" value="swim">
 			<label class="form-check-label" for="f2">수영장</label>
 		</div>
         <div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f3" name = "facility" value="golf">
+			<input class="form-check-input" type="checkbox" id="f3" name = "option" value="golf">
 			<label class="form-check-label" for="f3">골프장</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f4" name = "facility" value="pet">
+			<input class="form-check-input" type="checkbox" id="f4" name = "option" value="pet">
 			<label class="form-check-label" for="f4">반려동물 동반</label>
 		</div>
         <div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f5" name = "facility" value="restaurant">
+			<input class="form-check-input" type="checkbox" id="f5" name = "option" value="restaurant">
 			<label class="form-check-label" for="f5">레스토랑</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f6" name = "facility" value="fitness">
+			<input class="form-check-input" type="checkbox" id="f6" name = "option" value="fitness">
 			<label class="form-check-label" for="f6">피트니스</label>
 		</div>
         <div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f7" name = "facility" value="parking">
+			<input class="form-check-input" type="checkbox" id="f7" name = "option" value="parking">
 			<label class="form-check-label" for="f7">주차</label>
 		</div>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f8" name = "facility" value="wifi">
+			<input class="form-check-input" type="checkbox" id="f8" name = "option" value="wifi">
 			<label class="form-check-label" for="f8">와이파이</label>
 		</div>
         <div class="form-check">
-			<input class="form-check-input" type="checkbox" id="f9" name = "facility" value="kitchen">
+			<input class="form-check-input" type="checkbox" id="f9" name = "option" value="kitchen">
 			<label class="form-check-label" for="f9">주방</label>
 		</div>
       </li>
@@ -75,12 +81,8 @@
       <li>
         <p>객실 흡연</p>
         <div class="form-check">
-	  		<input class="form-check-input" type="radio" name="smoke" id="r1" value="smoke">
-			<label class="form-check-label" for="r1">흡연</label>
-		</div>
-		<div class="form-check">
-			<input class="form-check-input" type="radio" name="smoke" id="r2" value="smoke">
-			<label class="form-check-label" for="r2">금연</label>
+	  		<input class="form-check-input" type="checkbox" id="f10" name="option" value="smoke">
+			<label class="form-check-label" for="f10">흡연</label>
 		</div>
       </li>
       <hr>
@@ -296,50 +298,14 @@
       	</ul>
       </li>
     </ul>
-    <hr>
-   
+    <hr>   
   </div>
 
 <script>
-const drawStar = function(target){
-	  $('.star span').css({ width: target.value * 10+"%" });
+	const drawStar = function(target){
+		  $('.star span').css({ width: target.value * 10+"%" });
 	}
 	
-	
-	//console.log("checkboxValues >>>>>> ", checkboxValues);
-	
-	let checkbox = $('input[name="facility"]');
-	console.log(checkbox);
-	const filtering = function(e){
-		
-		let checkboxValues = [];
-		
-		$('input[name="facility"]:checked').each(function(i){
-			checkboxValues.push($(this).val());
-		});
-		console.log(e.target.value);
-		console.log(checkboxValues);
-		var params = {
-				"checkArray": checkboxValues
-		};
-		console.log(params);
-		$.ajax({
-			url: "/hotel/search_filter",
-			data: JSON.stringify(params),
-			contentType: "application/json",
-			method: "POST",
-			dataType: "json",
-			success: function(result){
-				console.log(result);
-			}
-		});
-	} 
-	
-	for(let i = 0; i < checkbox.length; i++){
-		checkbox[i].addEventListener("click", filtering);
-	}
-	
-
 	
 </script>
 </body>
