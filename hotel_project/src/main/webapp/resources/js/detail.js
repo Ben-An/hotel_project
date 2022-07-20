@@ -104,6 +104,7 @@
  	
  	
  	
+ 	
 	function displayTime(timeValue) {
 
 		var today = new Date();
@@ -134,7 +135,69 @@
  	
 
  	
- 
+	function deleteReply(reviewNo, callback, error) {
+		$.ajax({
+			type : 'delete',
+			url : '/hotel/' + reviewNo,
+			success : function(result, status, xhr) {
+				if (callback) {
+					callback(result);
+				}
+				
+			},
+			error : function(xhr, status, er) {
+				if (error) {
+					error(er);
+				}
+			}
+		});
+	};
+	
+	
+	
+	
+	
+	function update(reply, callback, error){
+		
+		
+		console.log("update-----------------------------------------------");
+		
+		
+		$.ajax({
+			type : 'put',
+			url : '/hotel/' + reply.reviewNo,
+			data : JSON.stringify(reply),
+			contentType : "application/json; charset=utf-8",
+			success : function(result, status, xhr){
+				if(callback){
+					callback(result);
+					
+				}
+				
+				
+				
+			},
+			error : function(xhr, status, er){
+				if(error){
+					error(er);
+					
+					
+				}
+			}
+			
+			
+			
+			
+		});
+		
+		
+		
+		
+		
+	};
+	
+	
+	
  	
  	
  	
@@ -152,7 +215,11 @@
  		
  		displayTime : displayTime,
  		
- 		add : add
+ 		add : add,
+ 		
+ 		deleteReply : deleteReply,
+ 		
+ 		update : update
  	
  	
  	};//함수를 객체로 만들어서 리턴해준다.

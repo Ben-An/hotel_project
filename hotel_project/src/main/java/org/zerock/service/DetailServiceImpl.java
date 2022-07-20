@@ -12,9 +12,11 @@ import org.zerock.mapper.DetailMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Service
 @AllArgsConstructor
+@Log4j
 public class DetailServiceImpl implements DetailService {
 
 	
@@ -49,6 +51,24 @@ public class DetailServiceImpl implements DetailService {
 	public boolean register(RelyVO vo) {
 		// TODO Auto-generated method stub
 		 return mapper.insert(vo);
+	}
+	
+	
+	@Override
+	public int delete(int reviewNo) {
+		
+		
+		log.info("reviewNo>>>>"+reviewNo);
+		
+		
+		return mapper.delete(reviewNo);
+	}
+
+	@Override
+	public int modify(RelyVO vo) {
+		log.info("modify vo>>>>>>>>>>>>>"+vo);
+		
+		return mapper.update(vo);
 	}
 	
 	
