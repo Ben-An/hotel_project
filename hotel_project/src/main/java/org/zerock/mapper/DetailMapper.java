@@ -20,6 +20,14 @@ public interface DetailMapper {
 	public boolean insert (RelyVO vo);
 	
 	
+	//댓글 삭제
+	public int delete(int reivewNo);
+	
+	
+	//댓글 수정
+	public int update (RelyVO vo);
+	
+	
 	
 	
 	
