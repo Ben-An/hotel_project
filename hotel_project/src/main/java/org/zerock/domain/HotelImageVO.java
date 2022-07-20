@@ -9,6 +9,7 @@ public class HotelImageVO {
 	
 	private int hotelImageId;  
 	private int hotelNo;       
- 	private String hotelFileName; 
+ 	private String uploadPath;
+	private String hotelFileName;
  
 }

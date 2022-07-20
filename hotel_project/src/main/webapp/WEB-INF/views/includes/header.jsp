@@ -215,6 +215,29 @@ a:visited {
 				console.log(event);
 			}
 		});
+		$("#md").autocomplete({ //오토 컴플릿트 시작
+			source : searchSource, // source 는 자동 완성 대상
+			select : function(event, ui) { //아이템 선택시
+				console.log(ui.item);
+			},
+			focus : function(event, ui) { //포커스 가면
+				return false;//한글 에러 잡기용도로 사용됨
+			},
+			minLength : 1,// 최소 글자수
+			autoFocus : true, //첫번째 항목 자동 포커스 기본값 false
+			classes : { //잘 모르겠음
+				"ui-autocomplete" : "highlight"
+			},
+			delay : 100, //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+			//            disabled: true, //자동완성 기능 끄기
+			position : {
+				my : "right top",
+				at : "right bottom"
+			}, //잘 모르겠음
+			close : function(event) { //자동완성창 닫아질때 호출
+				console.log(event);
+			}
+		});
 
 	});
 </script>
@@ -240,8 +263,13 @@ a:visited {
 						<button type="button" class="btn btn-outline-light me-2" onclick="location.href='/member/login'">Login</button>
 						<button type="button" class="btn btn-outline-light me-2" onclick="location.href='/member/join'">Sign-up</button>
 						</c:if>
+						<!-- 관리자 로그인 -->
+             		    <c:if test="${member.memberId =='admin'}">
+                       	<button type="button" class="btn btn-outline-light me-2" onclick="location.href='/admin/main'">admin</button>
+                       	<button type="button" id="logout" class="btn btn-outline-light me-2">Logout</button>
+                    	</c:if>
 						<!-- 로그인한 상태 -->
-               		 	<c:if test="${member != null}">
+               		 	<c:if test="${member != null and member.memberId !='admin'}">
                 		<span style="margin:15px">${member.memberName}님, 안녕하세요</span>
                 		<button type="button" class="btn btn-outline-light me-2" onclick="location.href='/member/myPage'">my page</button>
                 		<button type="button" id="logout" class="btn btn-outline-light me-2">Logout</button>

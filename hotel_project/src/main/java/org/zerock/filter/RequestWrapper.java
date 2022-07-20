@@ -42,13 +42,13 @@ public class RequestWrapper extends HttpServletRequestWrapper{
     private String XSSFilter(String value) {
     	System.out.println("XSS Filter before : " + value);
     	value = value
-    			.replaceAll("&#", "")
-    			.replaceAll("&", "& amp;")
-    			.replaceAll("<", "& lt;")
-    			.replaceAll(">", "& gt;")
-    			.replaceAll("\"", "& quot;")
-    			.replaceAll("\'", "&# x27;")
-    			.replaceAll("/", "&# x2F;");
+    			.replaceAll("&#", "");
+    			//.replaceAll("&", "& amp;")
+    			//.replaceAll("<", "& lt;")
+    			//.replaceAll(">", "& gt;")
+    			//.replaceAll("\"", "& quot;")
+    			//.replaceAll("\'", "&# x27;")
+    			//.replaceAll("/", "&# x2F;");
     	System.out.println("XSS Filter after : " + value);		
 
     			return value;
