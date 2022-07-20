@@ -15,7 +15,6 @@
 
 
 
-
 <div class="container mt-4 d-flex">
 	<div class="row">
 		<div class="col">
@@ -29,7 +28,7 @@
 				data-bs-ride="carousel">
 				
 				
-				<div class="carousel-inner">
+				<div class="carousel-inner" >
 					
 			
 				
@@ -246,7 +245,7 @@
 		
 		<form action="/hotel/new.do" method="post" class="replyForm">
 		
-		<fieldset>
+	
 			<input type="radio" name="grade" value="5" id="rate1">
 			<label for="rate1">⭐</label>
 			<input type="radio" name="grade" value="4" id="rate2">
@@ -257,7 +256,7 @@
 			<label for="rate4">⭐</label>
 			<input type="radio" name="grade" value="1" id="rate5">
 			<label for="rate5">⭐</label>
-		</fieldset>
+		
 
 	
 			<input type="hidden" name="memberNo" value="${member.memberNo }" />
@@ -269,7 +268,7 @@
 	
 			</div>
 			<div class="form-group mt-4">
-				<button id='registerBtn' type="button" class="btn">제출</button>
+				<button id='registerBtn' type="button" class="btn" style="background-color:#FF8C00; color:#FFFFFF;">제출</button>
 			</div>
 		</form>
 
@@ -281,8 +280,36 @@
 
 
 
-
 </div>
+
+
+
+
+	<div class="modal fade" id="MyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">댓글</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+         
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">댓글 수정해주세요:</label>
+            <textarea class="form-control" name="reviewContent"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button  id="replyUpdateBtn" type="button" class="btn" style="background-color:#FF8C00; color:#FFFFFF">수정하기</button>
+        <button type="button" class="btn" data-bs-dismiss="modal"  style="background-color:#FF8C00; color:#FFFFFF">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 
@@ -380,7 +407,7 @@
 								str +="	<p>"+roomList[i].roomprice+"원</p>";
 								str +="</div>";
 								str +="<div class='col-6'>";
-								str +="<button>방예약</button>";
+								str +="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF'>방예약</button>";
 								str +="</div>";
 
 								str +="</div>";
@@ -428,15 +455,18 @@
 								
 								str +="<div class='row'>";
 								
+								str+="<div style='display:none;' id='replyData' data-reply='"+relyList[i].reviewNo+"' ></div>"
 								
 								str +="<div class='col-2'>";
 								
 								str +="<div class='row'>";
 								str +="<div class='col-8'>";
-						 		str +="<div class='rating' data-rate='"+relyList[i].grade+"'>";
-								str +="<i class='fas fa-star'></i> <i class='fas fa-star'></i>";
-						 		str +="<i class='fas fa-star'></i> <i class='fas fa-star'></i> <i class='fas fa-star'></i>";
+						 		str +="<div id='rating' data-rate='"+relyList[i].grade+"'>";
+								str +="<i class='fas fa-star'></i><i class='fas fa-star'></i>";
+						 		str +="<i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i>";
 						 		str +="</div>";
+						 		
+						 		
 								str +="</div>";
 								
 								str +="<div class='col-8 mt-2'>";
@@ -455,7 +485,23 @@
 								
 								str +="<p class='py-3'>"+relyList[i].reviewContent +"</p>";
 								
-								str +="<h5>"+detailService.displayTime(relyList[i].reviewDate)+"</h5>";
+								str +="<p style='margin-top:80px'>"+detailService.displayTime(relyList[i].reviewDate)+"</p>";
+								
+								
+								str +="<div class='row position-relative'>";
+								str+="<div class='col-5 position-absolute top-100 start-100 translate-middle d-flex'>";
+								str+="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF' data-bs-toggle='modal' data-bs-target='#MyModal'>수정</button>";
+								str+="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF; margin-left:25px' data-delete='"+relyList[i].reviewNo+"'id='replyDeleteBtn'>삭제</button>";
+								
+								
+								str+="</div>";
+								
+								
+								str+="</div>";
+								
+								
+								
+								
 								
 								str +="	</div>";
 								
@@ -463,6 +509,11 @@
 								
 								
 								str +="	</div>";
+								
+								
+								
+								
+				
 								
 							}
 							
@@ -482,19 +533,25 @@
 				var replyForms= $(".replyForm");	
 				var registerBtn = $("#registerBtn");
 				var hotelValue = '<c:out value="${detailList.hotelno}"/>';
-				/* var inputGrade = relyForms.find("input[name='grade']"); */
+				var inputGrade = $('input[name=grade]');
 				var inputReviewContent = replyForms.find("textarea[name='reviewContent']");
 				var memberIdValue = '<c:out value="${member.memberNo}"/>';
+				var relyUL =$(".relyChat");
 				
 				
 				
+				
+				
+				
+				
+				//댓글 작성
 				registerBtn.on("click",function(e){
 					
 					var reply = {
-						/* 	grade : inputGrade.val(), */
-							reviewContent : inputReviewContent.val(),
-							hotelno : hotelValue,
-							memberNo : memberIdValue
+							grade:inputGrade.val(), 
+							reviewContent:inputReviewContent.val(),
+							hotelNo:hotelValue,
+							memberNo:memberIdValue
 							
 							
 							
@@ -521,19 +578,62 @@
 				
 				
 				
+					
 				
-	
+			 $(document).on("click","#replyDeleteBtn", function(e){
+
+					
+						var reviewNo = $(this).data("delete");
+						
+						console.log("reviewNo>>>>>>>>>>>>"+reviewNo);
+					
+						detailService.deleteReply(reviewNo, function(result){
+						
+						alert(result);
+						showList();
+						
+					});
+					
+					
+					
+					
+				});  
+			 
+			 
+			 
+			 $("#replyUpdateBtn").on("click", function(e){
+				
+				 	var reviewNo = $("#replyData").data("reply");
+				 
+				 	var modal = $("#MyModal");
+				 	
+				 	var reviewContent = modal.find("textarea[name='reviewContent']").val();
+				 	
+				 	
+				 	console.log("modalReivew>>>>>>>>>>>>"+reviewContent);
+				 	
+					var reply = {reviewNo : reviewNo, reviewContent : reviewContent}; 	
+				 	
+				 	
+					detailService.update(reply,function(result){
+						
+						alert(result);
+						
+						modal.modal("hide");
+						
+						showList();
+						
+					
+					
+					});
+					
+				 
+				 
+			 });
+		
 				
 				
 				
-				
-				
-				
-				
-				
-			
-			
-							
 			
 						
 							
@@ -548,7 +648,7 @@
 					
 					if(next.length==0){
 						
-						next = $('.carousel div').first();
+						next = $('.carousel-inner').first();
 						
 					}
 					
@@ -580,6 +680,27 @@
 				
 				
 				
+				
+				
+			
+				$(document).ready(function(){
+					var rating = $('#rating');
+					
+					rating.each(function() {
+						var targetScore =$(this).attr('data-rate');
+						
+						
+						$(this).find('svg:nth-child(-n+'+targetScore+')').css({
+							color : '#F05522'
+						});
+					});
+					
+				});
+				
+				
+				
+				
+			
 							
 							
 			
@@ -599,7 +720,11 @@
 	
 	
 	
+	
 </script>
+
+
+
 
 
 
