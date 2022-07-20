@@ -37,7 +37,7 @@
   <select id="read" resultType="org.zerock.domain.RelyVO">
 		  <![CDATA[
 		  	
-		  		select r.grade,r.reviewcontent,r.reviewdate,m.memberNickname from review r
+		  		select r.reviewNo, r.grade,r.reviewcontent,r.reviewdate,m.memberNickname from review r
 				left join member m on m.memberno = r.memberno
 				where hotelno =#{hotelno}
 		   ]]>
@@ -46,15 +46,37 @@
 	</select> 
 	
 	
-	<insert id="insert">
+		<insert id="insert">
 		  <![CDATA[
 		  
-				insert into review(reviewNo,memberNo,grade,reviewContent,reviewDate) values (review_seq.nextval,#{memberNo}#{grade},#{reviewContent},sysdate)
+				insert into review(reviewNo,memberNo,hotelNo,grade,reviewContent,reviewDate) values (review_seq.nextval,#{memberNo},#{hotelNo},#{grade},#{reviewContent},sysdate)
 				
 				
 		   ]]>
 	</insert>
 	
+	
+	
+	
+	<delete id="delete">
+		  <![CDATA[
+				delete from review where reviewNo = #{reviewNo}
+		 ]]>
+	</delete>
+	
+	
+	
+		<update id ="update">
+		 <![CDATA[
+		 
+		 		update review set reviewContent =#{reviewContent}
+		 		
+		 		where reviewNo = #{reviewNo}
+		 
+		 
+		 
+		    ]]>
+	</update>
 	
 	
 	
