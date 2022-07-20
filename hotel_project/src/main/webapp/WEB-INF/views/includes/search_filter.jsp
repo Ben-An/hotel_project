@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 
@@ -13,11 +14,13 @@
     <ul class="nav nav-pills flex-column mb-auto">
       <li> 
       	<p>지도로 보기</p>
-      	<a href="#">
-	        <button type="button" class="btn btn-primary" style="display: block;">
-				지도로 검색
-			</button>
-		</a>
+      	<c:forEach var="item" items="${list }" end="0">
+	      	<a href="${contextPath }/map/mapside?state=${item.state}">
+		        <button type="button" class="btn btn-primary" style="display: block;">
+					지도로 검색
+				</button>
+			</a>
+		</c:forEach>
 	  </li>
 	  <hr>
       <li>
@@ -34,7 +37,7 @@
         <span class="star">
   		★★★★★
   			<span>★★★★★</span>
-  			<input type="range" oninput="drawStar(this)" value="1" step="1" min="0" max="10">
+  			<input type="range" id="grade" name= "grade" oninput="drawStar(this)" value="0" step="0.5" min="0" max="5">
 		</span>
       </li>
       <hr>
@@ -303,7 +306,23 @@
 
 <script>
 	const drawStar = function(target){
-		  $('.star span').css({ width: target.value * 10+"%" });
+		  $('.star span').css({ width: target.value * 20+"%" });
+		  
+		  let searchGrade = document.getElementById("grade");
+			let ags = document.getElementsByClassName('averageGrade');
+			searchGrade = searchGrade.value;
+			console.log(searchGrade);
+			for(var i = 0; i < ags.length; i++){
+				let ag = ags[i].innerText;
+				console.log(ag);
+				if(ag < searchGrade){
+					//ags[i].closest(".hotelContent").style.display = "none";
+					ags[i].closest(".hotelContent, selectable_grade").classList.remove("selectable_grade");
+				}else{
+					//ags[i].closest(".hotelContent").style.display = "flex";
+					ags[i].closest(".hotelContent").classList.add("selectable_grade");
+				}
+			}
 	}
 	
 	
