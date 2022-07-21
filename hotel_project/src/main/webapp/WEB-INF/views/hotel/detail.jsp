@@ -12,12 +12,9 @@
 
 
 
-
-
-
-<div class="container mt-4 d-flex">
+<div class="container mt-4">
 	<div class="row">
-		<div class="col">
+		<div class="col-12">
 
 
 
@@ -28,11 +25,7 @@
 				data-bs-ride="carousel">
 				
 				
-				<div class="carousel-inner" >
-					
-			
-				
-				</div>
+				<div class="carousel-inner" id="carousel" ></div>
 				
 				
 				
@@ -147,6 +140,9 @@
 	<h3>고객 이용 후기</h3>
 	
 	<hr>
+	
+	<div></div>
+	
 <div class="relyChat"></div>
 	<!-- <div class="row">
 		<div class="col-2">
@@ -343,17 +339,23 @@
 
 											var str = "";
 
-											for (var i = 0; i < list.length; i++) {
+									 		for (var i = 0; i < list.length; i++) {
 
-												str += "<div class='carousel-item active'>";
-												str += "<img src='"+list[i].roomfilename+ 
-														"'class='d-block w-100' alt='...' style='height: 300px; width: 200px'></div>";
+												str += "<div class='carousel-item'><img src='"+list[i].roomfilename+ 
+														"'class='d-block w-100' alt='...' style='height:300px;'></div>";
 
-											}
+											} 
+											
+											
+										
+											
 
 											imageUL.html(str);
 											
 											roomService();
+											
+											
+											$("#carousel").find('.carousel-item:first-child').addClass('active');
 											
 
 										});
@@ -393,9 +395,10 @@
 								str +="	<img alt='' src='/resources/hotel/file_repo/1/hotel3.jpg' style='height: 100px; width: 100px'>";
 								str +="</div>";
 								str +="<div class='flex-grow-1 ms-2'>";	
-								str +="<h6 class='mb-0'>방이름: "+roomList[i].roomname+"</h6>";
-								str +="<h6 class='mb-1'>수용 가능 인원: "+roomList[i].bedno+"</h6>";
-								str +="<h6 class='mb-2'>방정보</h6>";
+								str +="<h6 class='mb-0 mt-1'>방이름: "+roomList[i].roomname+"</h6>";
+								str +="<h6 class='mb-1 mt-1'>수용 가능 인원: "+roomList[i].bedno+"</h6>";
+								str +="<h6 class='mb-2 mt-1'>방정보 : </h6>";
+								str +="<p></p>";
 								str +="</div>";
 								
 								str +="</div>";
@@ -632,56 +635,7 @@
 			 });
 		
 				
-				
-				
-			
-						
-							
-	
-				//carousel .active 설정 하기
-			
-				
-				$('.carousel-control-next').click(function(){
-					
-					//alert("눌러주셈 ");
-					var next = $('.carousel-inner .active').removeClass('active').next();
-					
-					if(next.length==0){
-						
-						next = $('.carousel-inner').first();
-						
-					}
-					
-					next.addClass('active');
-					
-					
-					
-				});
-				
-				
-				
-				
-				$('.carousel-control-prev').click(function(){
-					
-					//alert("눌러주셈 ");
-					
-					var prev = $('.carousel-inner .active').removeClass('active').prev();
-					
-					if(prev.length==0){
-						
-						prev = $('.carousel div').last();
-					}
-					
-					prev.addClass('active');
-					
-					
-					
-				});
-				
-				
-				
-				
-				
+
 			
 				$(document).ready(function(){
 					var rating = $('#rating');
