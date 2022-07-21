@@ -143,7 +143,7 @@ mapOption = {
 	         	'						<i class="fas fa-star"></i> <i class="fas fa-star"></i>'+
 	         	'						<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i>'+
 	            '									</div>' +  
-	            '                <button><a href="https://www.kakaocorp.com/main" target="_blank" class="link">숙소보기</a></button>' + 
+	            '                <button><a href="https://www.kakaocorp.com/main" target="_blank" class="btn" >숙소보기</a></button>' + 
 	            '            </div>' + 
 	            '        </div>' + 
 	            '    </div>' +    
