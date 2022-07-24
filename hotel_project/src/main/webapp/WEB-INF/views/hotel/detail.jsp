@@ -18,9 +18,6 @@
 
 
 
-
-
-
 			<div id="carouselExampleControls" class="carousel slide"
 				data-bs-ride="carousel">
 				
@@ -65,7 +62,7 @@
 	<div class="row">
 
 		<div class="col-12"
-			style="padding: 15px; border: 1px solid; margin-top: 15px; border-radius: 5px">
+			style="padding: 15px; border: 1px solid  rgb(0,0,0,0.2); margin-top: 15px; border-radius: 5px;">
 			<h3>
 				숙소이름 :
 				<c:out value="${detailList.realhotelname }"></c:out>
@@ -74,8 +71,13 @@
 				주소 :
 				<c:out value="${detailList.roadaddr }"></c:out>
 			</h4>
+			
+			
+			
+			
 		</div>
-
+		
+	
 
 
 	</div>
@@ -89,7 +91,18 @@
 
 	<h2>숙소정보</h2>
 	<hr>
-	<div class="row roomDetail" style="border:1px solid; padding:10px; border-radius:15px">
+	
+<!-- 	<form>
+	<div class="datepicker-to-from">
+    <input type="date" id="dates-available-from" class="date-picker" value="11/18/2012 05:45">
+
+    <input type="date" id="dates-available-to" class="date-picker" value="04/09/2014 5:00">
+	</div>
+		
+	</form> -->
+	<div class="row roomDetail">
+	
+	
 	
 		<!-- <div class="col-9">
 			<div class="d-flex">
@@ -310,6 +323,13 @@
 
 
 
+
+<!-- util.js 시간 추가  -->
+<script type="text/javascript" src="/resources/js/util.js"></script>
+
+
+
+
 <!-- detail 처리를 위한 객체 포함 등록  -->
 <script type="text/javascript" src="/resources/js/detail.js"></script>
 
@@ -388,31 +408,36 @@
 								var str ="";
 								
 							for(var i = 0; i<roomList.length; i++){
+								str+="<div class='mt-3' style='border:1px solid rgb(0,0,0,0.2); padding:10px; border-radius:5px'>";
 								
+								str +="<div class='row'>"
 								str +="<div class='col-9'>";
 								str +="<div class='d-flex'>";
 								str +="<div class='flex-shrink-0'>";
-								str +="	<img alt='' src='/resources/hotel/file_repo/1/hotel3.jpg' style='height: 100px; width: 100px'>";
+								str +="	<img alt='' src='/resources/hotel/file_repo/1/hotel3.jpg' style='height: 200px; width: 200px'>";
 								str +="</div>";
 								str +="<div class='flex-grow-1 ms-2'>";	
-								str +="<h6 class='mb-0 mt-1'>방이름: "+roomList[i].roomname+"</h6>";
-								str +="<h6 class='mb-1 mt-1'>수용 가능 인원: "+roomList[i].bedno+"</h6>";
-								str +="<h6 class='mb-2 mt-1'>방정보 : </h6>";
-								str +="<p></p>";
+								str +="<h6 class='mb-0 mt-2'>방이름: "+roomList[i].roomname+"</h6>";
+								str +="<h6 class='mb-1 mt-3'>수용 가능 인원: "+roomList[i].bedno+"</h6>";
+								str +="<h6 class='mb-2 mt-3'>방 정보 : "+ roomList[i].infoRoom+"</h6>";
+								str +="<p class='mt-3'>예약정보 :"+roomList[i].checkInDate+"~"+roomList[i].checkOutDate+"</p>";
 								str +="</div>";
 								
 								str +="</div>";
 								str +="</div>";
 								
-								str +="<div class='col-3 mt-3  mt-md-1'>";
+								str +="<div class='col-3 mt-5'>";
 								str +="	<div class='row'>";
 								str +="<div class='col-6'>";
-								str +="	<p>"+roomList[i].roomprice+"원</p>";
+								str +="<h6>가격: "+roomList[i].roomprice+"원</h6>";
 								str +="</div>";
 								str +="<div class='col-6'>";
-								str +="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF'>방예약</button>";
+								str +="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF; padding:10px 30px'>방예약</button>";
 								str +="</div>";
 
+								str +="</div>";
+								str +="</div>";
+								
 								str +="</div>";
 								str +="</div>";
 								
@@ -653,6 +678,33 @@
 				
 				
 				
+				//datepicker range
+			/* 	var fromDate = new Date();
+				$('#dates-available-from').daterangepicker({
+				  singleDatePicker: true,
+				  showDropdowns: true,
+				  autoApply:true,
+				  locale: {
+				    format: 'YYYY-MM-DD'
+				  },
+				 minDate:new Date()
+				 },
+				 function(start, end, label) {
+				  fromDate =  start.format('YYYY-MM-DD');   
+				  $('dates-available-to').daterangepicker({
+				    singleDatePicker: true,
+				    showDropdowns: true,
+				    autoApply:true,
+				    locale: {
+				      format: 'YYYY-MM-DD'
+				    },
+				    minDate:fromDate
+				 });
+				}); */
+				
+				
+				
+			
 				
 			
 							
@@ -676,6 +728,7 @@
 	
 	
 </script>
+
 
 
 

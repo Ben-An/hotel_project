@@ -28,7 +28,7 @@
 	<select id="roomList" resultType="org.zerock.domain.ImageList">
 		  <![CDATA[
 		  	
-		  		select roomname,roomprice,bedno from hotel_room where hotelno=#{hotelno}
+		  		select roomname,roomprice,bedno,infoRoom,checkInDate,checkOutDate from hotel_room where hotelno=#{hotelno}
 		   ]]>
 
 
