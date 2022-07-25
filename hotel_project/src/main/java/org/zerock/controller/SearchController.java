@@ -35,7 +35,6 @@ public class SearchController {
 	@PostMapping("/search_normal")
 //	public void list(Criteria cri, Model model){
 		public void list(@RequestParam Map<String, Object> filterMap, Model model){
-		
 //		Map<String, Object> filterMap = new HashMap<String, Object>();
 //		filterMap.put("pageNum", cri.getPageNum());
 //		filterMap.put("amount", cri.getAmount());

@@ -37,7 +37,7 @@ where n.hotelNo=r.hotelNo and n.realhotelno = rh.realhotelno order by r.grade de
 	<select id="hotelListWithPaging" resultType="org.zerock.domain.SearchVO" parameterType="map">			
 		<![CDATA[
 	
-		select realhotelName, hotelFilename, state, roomPrice, ag, buffet, swim
+		select a.hotelno, realhotelName, hotelFilename, state, roomPrice, ag, buffet, swim
 		from 
             (
             select 
@@ -62,11 +62,6 @@ where n.hotelNo=r.hotelNo and n.realhotelno = rh.realhotelno order by r.grade de
         <if test = "keyword != null">
         	 and state like '%'||#{keyword}||'%'
         </if>
-		<!-- and  
-	        	rownum <= #{pageNum} * #{amount} -->
-			
-		<!-- and
-			rn > (#{pageNum} - 1) * #{amount} -->
 	</select>
 	
 	<select id="getTotalCount" resultType="int">
