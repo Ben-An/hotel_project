@@ -304,29 +304,6 @@
     <hr>   
   </div>
 
-<script>
-	const drawStar = function(target){
-		  $('.star span').css({ width: target.value * 20+"%" });
-		  
-		  let searchGrade = document.getElementById("grade");
-			let ags = document.getElementsByClassName('averageGrade');
-			searchGrade = searchGrade.value;
-			console.log(searchGrade);
-			for(var i = 0; i < ags.length; i++){
-				let ag = ags[i].innerText;
-				console.log(ag);
-				if(ag < searchGrade){
-					//ags[i].closest(".hotelContent").style.display = "none";
-					ags[i].closest(".hotelContent, selectable_grade").classList.remove("selectable_grade");
-				}else{
-					//ags[i].closest(".hotelContent").style.display = "flex";
-					ags[i].closest(".hotelContent").classList.add("selectable_grade");
-				}
-			}
-	}
-	
-	
-</script>
 </body>
 
 

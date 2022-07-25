@@ -6,8 +6,7 @@ import lombok.Data;
 
 @Data
 public class SearchVO {
-	private String[] facilityList;
-	private int hotelNo; 
+	private int hotelno; 
 	private String realhotelName;
 	private String hotelName;     
 	private String state;   
