@@ -65,11 +65,11 @@
 			style="padding: 15px; border: 1px solid  rgb(0,0,0,0.2); margin-top: 15px; border-radius: 5px;">
 			<h3>
 				숙소이름 :
-				<c:out value="${detailList.realhotelname }"></c:out>
+				${detailList.realhotelname }
 			</h3>
 			<h4>
 				주소 :
-				<c:out value="${detailList.roadaddr }"></c:out>
+				${detailList.roadaddr }
 			</h4>
 			
 			
@@ -336,6 +336,24 @@
 
 <!-- 객체를 위한 실제적은 처리 가능함  -->
 <script type="text/javascript">
+
+/*  별점받기 */
+$(function() {
+
+	var rating = $('.rating');
+	rating.each(function() {
+		var targetScore = $(this).attr('data-rate');
+		$(this).find('svg:nth-child(-n+' + targetScore + ')').css({
+			color : '#F05522'
+		});
+	});
+
+});
+
+
+
+
+
 	$(document)
 			.ready(
 					function() {
@@ -432,7 +450,7 @@
 								str +="<h6>가격: "+roomList[i].roomprice+"원</h6>";
 								str +="</div>";
 								str +="<div class='col-6'>";
-								str +="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF; padding:10px 30px'>방예약</button>";
+								str +="<a href='/hotel/reservation?roomno="+roomList[i].roomno+"'> <button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF; padding:10px 30px'>방예약</button> </a>";
 								str +="</div>";
 
 								str +="</div>";
@@ -662,20 +680,6 @@
 				
 
 			
-				$(document).ready(function(){
-					var rating = $('#rating');
-					
-					rating.each(function() {
-						var targetScore =$(this).attr('data-rate');
-						
-						
-						$(this).find('svg:nth-child(-n+'+targetScore+')').css({
-							color : '#F05522'
-						});
-					});
-					
-				});
-				
 				
 				
 				//datepicker range
