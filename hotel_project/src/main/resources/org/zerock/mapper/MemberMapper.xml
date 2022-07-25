@@ -34,7 +34,7 @@
   	<!-- 로그인 -->
     <select id="memberLogin" resultType="org.zerock.domain.MemberVO">
       
-        SELECT memberNo, memberId, memberName, memberNickname FROM member where memberId = #{memberId} and memberPassword=#{memberPassword}
+        SELECT memberNo, memberId, memberName, memberNickname,memberPhoneNo FROM member where memberId = #{memberId} and memberPassword=#{memberPassword}
     
     </select>
     
