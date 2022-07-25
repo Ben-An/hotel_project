@@ -6,19 +6,26 @@
 
 <%@include file="../includes/header.jsp"%>
 
+
+<form>
+
 <div class="container mt-5">
 	<div class="row">
 		<h1>예약자정보</h1>
+
+	
+	<input  type="hidden" value='<c:out value="${reservationList.roomguest }"/>'/> 
+	<input  type="hidden" value='<c:out value="${member.memberNo }"/>'/> 
 	<div class="col-sm-6">
 		<div class="mt-3"><strong class="user_profile">예약자 이름 : </strong>
 			<br>
-			 <input type="text" class=" form-control-lg mt-3" style="padding:10px; background-color:#dddddd" value="user1" readonly>
+			 <input type="text" class=" form-control-lg mt-3" style="padding:10px; background-color:#dddddd" value='<c:out value="${member.memberName}"/>' readonly>
 		
 		</div>
 		
 		  <div class="mt-5">
-	        <strong class="user_profile">휴대폰 번호</strong> <br>
-	        <input type="text" class=" form-control-lg mt-3" style="padding:10px; background-color:#dddddd" value="number" readonly>
+	        <strong class="user_profile">휴대폰 번호:</strong> <br>
+	        <input type="text" class=" form-control-lg mt-3" style="padding:10px; background-color:#dddddd" value='<c:out value="${member.memberPhoneNo}"/>' readonly>
 	      </div>
 	      
 	      
@@ -51,14 +58,15 @@
 			<div class="col-12 mt-3">
 				<h4 class="reserve_info">
 	       			 <strong class="reserve_name">숙소이름:</strong> <br>
-	     		  		호텔이름
+	     		  	<c:out value="${reservationList.realhotelname}"/>
+	     		  	
 	     	    </h4>
 			</div>
 			
 			<div class="col-12 mt-3">
 				 <h4 class="reserve_info">
-	       			 <strong class="reserve_name">객실타입</strong> <br>
-	       			Single Room
+	       			 <strong class="reserve_name">객실타입:</strong> <br>
+	       			<c:out value="${reservationList.roomname}"/>
 	     		 </h4>
 			
 			</div>
@@ -66,8 +74,13 @@
 			
 			<div class="col-12 mt-3">
 				  <h4 class="reserve_info">
-	       			 <strong class="reserve_name">체크인</strong> <br>
-	      			  2022-32323
+	       			 <strong class="reserve_name">체크인:</strong> <br>
+	      			
+	      			
+	  
+	      			
+	      			<fmt:formatDate value="${reservationList.checkIndate}" pattern="yyyy.MM.dd"/>
+	      			
 	      	    	</h4>
 			
 			</div>
@@ -75,8 +88,13 @@
 			
 			<div class="col-12 mt-3">
 				  <h4 class="reserve_info">
-	     			   <strong class="reserve_name">체크아웃</strong> <br>
-	       				 2022-07-16
+	     			   <strong class="reserve_name">체크아웃:</strong> <br>
+
+	       			
+	  
+	      			<fmt:formatDate value="${reservationList.checkOutDate }" pattern="yyyy.MM.dd"/>
+	      			
+	      			
 	     		  </h4>
 			
 			</div>
@@ -101,16 +119,17 @@
 			    		</div>
 			    		
 			    		<div class="col-12">
+			    	
 			    		
-			    		<strong class="reserve_name" style="color: #ffc107; font-size: 30px;"><fmt:formatNumber value="500000" pattern="#,###" /></strong><strong class="reserve_name" style="color: black; font-size: 30px;"> 원</strong>
+			    		<strong class="reserve_name" style="color:#FF8C00; font-size: 30px;"><c:out value="${reservationList.roomPrice}"/></strong><strong class="reserve_name" style="color: black; font-size: 30px;"> 원</strong>
 			    		
 			    		</div>
 			    	
 			    		
 			    	
-			    		<div class="col-12">
-			    			 <button class="btn" type="button" onclick="requestPay()" id="btn" disabled
-	    				style="width: 100%; height: 56px; background: #ffc107; color: white; border: none;">결제하기</button>
+			    		<div class="col-12 mt-3">
+			    			 <button class="btn" type="button"  id="btn" 
+	    				style="width: 100%; height: 56px; background: #FF8C00; color: white; border: none;" disabled>결제하기</button>
 			    		</div>
 			    	
 		
@@ -124,11 +143,60 @@
 	     				
 	   			 </div>
 	
-	
+		
 	
 	</div>
 	
 	
 	</div>
 </div>
+</form>
+
+<script type="text/javascript">
+
+
+
+
+	$( "#btn" ).click(function() {
+		 
+	
+		 	$.ajax({
+			url:'/hotel/kakaoPay.cls',
+			dataType:'json',
+			success:function(data){
+			alert(data.tid);
+		} 
+	}); 
+		});
+
+
+/* 체크 박스 모두 클릭을 하여야 결제가능함 */
+function chkReserve(){
+	const check1 = document.querySelector('#check1')
+	const check2 = document.querySelector('#check2')
+	const check3 = document.querySelector('#check3')
+	const btn = document.querySelector('#btn')
+	
+	if(check1.checked == true && check2.checked == true && check3.checked == true) {
+		btn.disabled = false
+	} else {
+		btn.disabled = true
+	}
+};
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
 <%@include file="../includes/footer.jsp"%>

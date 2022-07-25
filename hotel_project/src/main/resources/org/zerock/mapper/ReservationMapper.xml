@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.ReservationMapper">
+
+<select id="reservationList" resultType="org.zerock.domain.ReservationVO">
+	  <![CDATA[
+	  	select rh.realhotelname,hr.roomname,hr.checkInDate,hr.checkOutDate,hr.roomPrice,hr.roomguest from hotel h 
+		left join hotel_room hr on h.hotelno = hr.hotelno
+		left join realhotel rh on rh.realhotelno = h.realhotelno
+		where roomno=#{roomno}
+	  	
+	  	
+	  
+	 ]]>
+</select>
+
+
+</mapper>
