@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class ImageList {
 	
+	private int roomno;
 	private String roomname;
 	private String roomprice;
 	private int bedno;
