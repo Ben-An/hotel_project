@@ -1,9 +1,13 @@
 package org.zerock.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.zerock.domain.PayRservationVO;
 import org.zerock.domain.ReservationVO;
 import org.zerock.mapper.ReservationMapper;
 
@@ -26,6 +30,16 @@ public class ReservationServiceImpl implements ReservationService {
 		log.info("roomno>>>>>>>>>>"+roomno);
 		
 		return mapper.reservationList(roomno);
+	}
+
+	@Override
+	public int payRegister(PayRservationVO payVO) {
+		
+		
+
+		
+		
+		return mapper.insert(payVO);
 	}
 	
 	
