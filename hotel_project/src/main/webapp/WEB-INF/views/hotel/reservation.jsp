@@ -2,30 +2,29 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/> 
+
 
 <%@include file="../includes/header.jsp"%>
 
 
-<form>
 
 <div class="container mt-5">
 	<div class="row">
 		<h1>예약자정보</h1>
 
 	
-	<input  type="hidden" value='<c:out value="${reservationList.roomguest }"/>'/> 
-	<input  type="hidden" value='<c:out value="${member.memberNo }"/>'/> 
+	<input  type="hidden" name="userAmount" value='<c:out value="${reservationList.roomguest }"/>'/> 
+	<input  type="hidden"  name="memberNo" value='<c:out value="${member.memberNo }"/>'/> 
 	<div class="col-sm-6">
 		<div class="mt-3"><strong class="user_profile">예약자 이름 : </strong>
 			<br>
-			 <input type="text" class=" form-control-lg mt-3" style="padding:10px; background-color:#dddddd" value='<c:out value="${member.memberName}"/>' readonly>
+			 <input type="text" class=" form-control-lg mt-3" style="padding:10px; background-color:#dddddd" name="realUser" value='<c:out value="${member.memberName}"/>' readonly>
 		
 		</div>
 		
 		  <div class="mt-5">
 	        <strong class="user_profile">휴대폰 번호:</strong> <br>
-	        <input type="text" class=" form-control-lg mt-3" style="padding:10px; background-color:#dddddd" value='<c:out value="${member.memberPhoneNo}"/>' readonly>
+	        <input type="text" class=" form-control-lg mt-3" style="padding:10px; background-color:#dddddd" name="" value='<c:out value="${member.memberPhoneNo}"/>' readonly>
 	      </div>
 	      
 	      
@@ -75,11 +74,9 @@
 			<div class="col-12 mt-3">
 				  <h4 class="reserve_info">
 	       			 <strong class="reserve_name">체크인:</strong> <br>
-	      			
-	      			
 	  
-	      			
 	      			<fmt:formatDate value="${reservationList.checkIndate}" pattern="yyyy.MM.dd"/>
+	      			
 	      			
 	      	    	</h4>
 			
@@ -89,8 +86,6 @@
 			<div class="col-12 mt-3">
 				  <h4 class="reserve_info">
 	     			   <strong class="reserve_name">체크아웃:</strong> <br>
-
-	       			
 	  
 	      			<fmt:formatDate value="${reservationList.checkOutDate }" pattern="yyyy.MM.dd"/>
 	      			
@@ -128,7 +123,7 @@
 			    		
 			    	
 			    		<div class="col-12 mt-3">
-			    			 <button class="btn" type="button"  id="btn" 
+			    			 <button class="btn" type="submit"  id="btn" 
 	    				style="width: 100%; height: 56px; background: #FF8C00; color: white; border: none;" disabled>결제하기</button>
 			    		</div>
 			    	
@@ -150,32 +145,109 @@
 	
 	</div>
 </div>
-</form>
 
+
+
+
+<script type="text/javascript" src="/resources/js/reservation.js"></script>
 <script type="text/javascript">
 
 
 
-
-	$( "#btn" ).click(function() {
-		 
+$(function(){
 	
-		 	$.ajax({
-			url:'/hotel/kakaoPay.cls',
-			dataType:'json',
-			success:function(data){
-			alert(data.tid);
-		} 
-	}); 
-		});
+	var memberNo = '<c:out value="${reservationList.roomguest }"/>';
+	var roomNo = '<c:out value="${reservationList.roomno }"/>';
+	var realUser = '<c:out value="${member.memberName}"/>';
+	var checkInDate = '${reservationList.checkIndate}';
+	var checkOutDate= '${reservationList.checkOutDate}';
+	var userAmount = '<c:out value="${reservationList.roomguest }"/>';
+	var payment = '<c:out value="${reservationList.roomPrice}"/>';
+	
+	console.log(checkOutDate);
+	
+	
+	$('#btn').click(function() {
+		
+$.ajax({ 
+ 			type: 'POST',
+ 			url:'/hotel/kakaoPay.cls',
+ 			dataType:'json',
+ 			success : function(data){
+ 				
+ 		
+ 				
+ 			
+ 				
+ 				
+ 				
+ 			} ,
+ 			
+ 			error:function(error){
+ 				
+ 				alert(error);
+ 				
+ 			}
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 			
+ 		});
+ 		
+ 		
+ 		var reservation = {
+ 				memberNo : memberNo,
+ 				roomNo : roomNo,
+ 				realUser : realUser,
+ 				checkInDate : checkInDate,
+ 				checkOutDate : checkOutDate,
+ 				userAmount : userAmount,
+ 				payment : payment
+ 				
+ 		};
+ 		
+ 		console.log(reservation);
+ 		
+ 		
+ 		reservationService.add(reservation,function(result){
+ 			
+ 			alert(result);
+ 			
+ 			
+ 		});
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+});
+
+
+	
+});
+
+		
+
+
 
 
 /* 체크 박스 모두 클릭을 하여야 결제가능함 */
 function chkReserve(){
-	const check1 = document.querySelector('#check1')
-	const check2 = document.querySelector('#check2')
-	const check3 = document.querySelector('#check3')
-	const btn = document.querySelector('#btn')
+	const check1 = document.querySelector('#check1');
+	const check2 = document.querySelector('#check2');
+	const check3 = document.querySelector('#check3');
+	const btn = document.querySelector('#btn');
 	
 	if(check1.checked == true && check2.checked == true && check3.checked == true) {
 		btn.disabled = false
