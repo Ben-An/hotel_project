@@ -16,12 +16,12 @@
 	
     
     
-select h.hotelfilename,rh.realhotelname,rh.lat,rh.logt,rh.lotnoaddr,AVG(r.grade),hr.bedno,hr.roomprice,rh.state,rh.roadaddr from hotel h 
+select h.hotelno, h.hotelfilename,rh.realhotelname,rh.lat,rh.logt,rh.lotnoaddr,AVG(r.grade),hr.bedno,hr.roomprice,rh.state,rh.roadaddr from hotel h 
 left join realhotel rh on h.realhotelno = rh.realhotelno
 left join review r on h.hotelno = r.hotelno
 left join  hotel_room hr on h.hotelno = hr.hotelno
 where rh.state= #{state}
-group by h.hotelfilename,rh.realhotelname,rh.lat,rh.logt,rh.lotnoaddr,hr.bedno,hr.roomprice,rh.state,rh.roadaddr
+group by h.hotelno, h.hotelfilename,rh.realhotelname,rh.lat,rh.logt,rh.lotnoaddr,hr.bedno,hr.roomprice,rh.state,rh.roadaddr
 		
 		
 		

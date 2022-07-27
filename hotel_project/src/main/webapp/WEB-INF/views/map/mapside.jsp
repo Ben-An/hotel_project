@@ -31,7 +31,7 @@
 			<c:forEach var="item" items="${getmap }">
 
 				<div class="col-6">
-<a href="#">
+<a href="/hotel/detail?hotelno=${item.hotelno}">
 					<div class="card" style="width: 23rem; border: none">
 						<img src="${item.hotelfilename }"
 							class="card-img-top" alt="..." style="height: 250px">
@@ -143,7 +143,7 @@ mapOption = {
 	         	'						<i class="fas fa-star"></i> <i class="fas fa-star"></i>'+
 	         	'						<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i>'+
 	            '									</div>' +  
-	            '                <button><a href="https://www.kakaocorp.com/main" target="_blank" class="btn" >숙소보기</a></button>' + 
+	            '                <button><a href="/hotel/detail?hotelno=${list.hotelno}" class="btn" style="background-color:#FF8C00; color:#FFFFFF;" >숙소보기</a></button>' + 
 	            '            </div>' + 
 	            '        </div>' + 
 	            '    </div>' +    
