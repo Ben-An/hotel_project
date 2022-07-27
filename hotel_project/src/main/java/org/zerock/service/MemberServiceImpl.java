@@ -1,6 +1,7 @@
 package org.zerock.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -73,5 +74,27 @@ public class MemberServiceImpl implements MemberService{
 	public void memberDelete(MemberVO member) throws Exception {
 		mapper.memberDelete(member);	
 	}
+	
+	//네이버 이메일 가입 체크
+		@Override
+		public Map<String, Object> naverConnectionCheck(Map<String, Object> apiJson) {
+			return mapper.naverConnectionCheck(apiJson);
+		}
+
+		@Override
+		public Map<String, Object> userNaverLoginPro(Map<String, Object> apiJson) {
+			return mapper.userNaverLoginPro(apiJson); 
+		}
+
+		@Override
+		public void setNaverConnection(Map<String, Object> apiJson) {
+			mapper.setNaverConnection(apiJson); 
+			
+		}
+		//네이버 가입
+		@Override
+		public void userNaverRegisterPro(Map<String, Object> apiJson) {
+			mapper.userNaverRegisterPro(apiJson);
+		}
     
 }

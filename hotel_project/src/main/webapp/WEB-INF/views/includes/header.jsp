@@ -275,7 +275,15 @@ a:visited {
                     	</c:if>
 						<!-- 로그인한 상태 -->
                		 	<c:if test="${member != null and member.memberId !='admin'}">
-                		<span style="margin:15px">${member.memberName}님, 안녕하세요</span>
+                		<span style="margin:15px">
+                		<c:choose>
+                		<c:when test="${member.memberNickname != null}">
+                		${member.memberNickname}님, 안녕하세요</span>
+                		</c:when>
+                		<c:otherwise>
+                		${member.MEMBERNICKNAME}님, 안녕하세요</span>
+           				 </c:otherwise>
+						</c:choose>
                 		<button type="button" class="btn btn-outline-light me-2" onclick="location.href='/member/myPage'">my page</button>
                 		<button type="button" id="logout" class="btn btn-outline-light me-2">Logout</button>
              		   </c:if>

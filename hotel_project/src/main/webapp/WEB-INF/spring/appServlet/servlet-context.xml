@@ -24,6 +24,11 @@
 	
 	<context:component-scan base-package="org.zerock.controller" />
 	
+	<!-- 업로드 관련 빈 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>	
+	
+	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
+	<beans:bean id="naverLoginBO" class="org.zerock.domain.NaverLoginBO" />
 	
 	
 </beans:beans>

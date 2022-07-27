@@ -222,6 +222,10 @@ body {
 						<div class="mb-3">
 							<button class="btn btn-dark w-100" type="submit">Login</button>
 						</div>
+						<!-- 네이버 로그인 버튼 노출 영역 -->
+						<div id="naver_id_login" style="text-align:center" class="mb-3">
+						<a href="${url}" class="btn w-100" type="button" style="background-color:white; border-color:#03C75A; color:#03C75A">
+						Naver로 Login</a></div>
 					</div>
 				</div>
 			</div>
