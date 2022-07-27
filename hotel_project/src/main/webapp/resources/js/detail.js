@@ -49,6 +49,21 @@
  		
  	};
  	
+ 	function placeList(param, callback, error){
+ 		var hotelno = param.hotelno;
+ 		
+ 		$.getJSON("/hotel/place.do?hotelno="+hotelno, function(data){
+ 			if(callback){
+ 				callback(data);
+ 				
+ 			}
+ 			}).fail(function(xhr, status,err){
+ 				if(error) error();
+ 				else alert("테이터 가져오기 실패 하였습니다.")
+ 				
+ 			});
+ 	}
+ 	
  	
  		function relyList(param,callback,error){
  		
@@ -210,6 +225,8 @@
  		list : list,
  		
  		roomList : roomList,
+ 		
+ 		placeList : placeList,
  		
  		relyList : relyList,
  		
