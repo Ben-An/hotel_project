@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class MapVO {
+	private int hotelno;
 	private String realhotelname; 
 	private String hotelfilename;
 	private String state;
