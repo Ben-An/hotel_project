@@ -140,13 +140,13 @@
 	    form.submit();
 	}
 	
-	$(document)
+/* 	$(document)
 	.ready(
 			function() {
 				function reservationList(){
 					var memberno = 
 				}
-			}
+			} */
 </script>
 
 
