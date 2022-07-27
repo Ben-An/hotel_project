@@ -34,6 +34,15 @@
 
 	</select>
 	
+	<select id="placeList" resultType="org.zerock.domain.PlaceVO">
+		<![CDATA[
+			select placeName, placeAddress, placeOpenTime, placeCloseTime from
+			place p,
+			(select state from hotel h, realhotel r where h.realhotelno = r.realhotelno and hotelno = #{hotelno}) h
+			where p.placeMainAddress = h.state
+		]]>		
+	</select>
+	
   <select id="read" resultType="org.zerock.domain.RelyVO">
 		  <![CDATA[
 		  	

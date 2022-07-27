@@ -72,19 +72,5 @@ where n.hotelNo=r.hotelNo and n.realhotelno = rh.realhotelno order by r.grade de
 		
 	</select>
 
-	<select id="myPageList" resultType="org.zerock.domain.MyPageVO">			
-		<![CDATA[
-	
-		select m.memberno, m.memberid, m.membername,m.membernickname, r.reviewno, l.realhotelname, l.state, r.reviewcontent, r.reviewDate , h.hotelFilename, s.userAmount, s.checkInDate, s.checkOutDate
-		from hotel h, realhotel l, member m, review r, reservation s
-		where h.realhotelno = l.realhotelno 
-		and r.hotelno = h.hotelno 
-        and h.hotelno = s.roomno
-		and m.memberno = r.memberno 
-        and s.memberno = r.memberno
-		and m.memberno = 1
-		]]>
-	</select>
-
 
 </mapper>

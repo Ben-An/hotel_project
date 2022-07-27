@@ -20,4 +20,6 @@ public class ReservationVO {
 	private String roomPrice;
 	private int roomguest;
 	private int roomno;
+	private String realUser;
+	private String userAmount;
 }

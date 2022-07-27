@@ -16,8 +16,6 @@ public interface BoardMapper {
 //	public List<BoardVO> getList();
 	
 	public List<MainVO> imageList();
-
-	public List<MyPageVO> myPageList();
 	
 	public List<SearchVO> hotelList();
 	
