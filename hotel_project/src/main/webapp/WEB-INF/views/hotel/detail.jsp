@@ -152,7 +152,15 @@
 	
 	<hr>
 	
-<div class="placeList"></div>
+	
+		<div class="placeList">
+			
+				
+				
+			
+		</div>
+	
+
 
 
 
@@ -498,14 +506,20 @@ $(function() {
 								
 								
 							var str ="";
+							str += "<div class='container'>";
+							str += "<div class='row'>";
+							
 								
 							for(var i = 0; i<placeList.length; i++){
 								
-								str += "<div class='row'>";
-								str += "<h5>" + placeList[i].placeName +"</h5>"
-								str += "<p> 상세주소: " + placeList[i].placeAddress + "</p>"
-								str += "<p> 운영시간: " + placeList[i].placeOpenTime+ "~" + placeList[i].placeCloseTime + "</p>"
-								str += "</div>"
+								
+								str += "<div class='col-6'>";
+								str += "<h5>" + placeList[i].placeName +"</h5>";
+								str += "<p> 상세주소: " + placeList[i].placeAddress + "</p>";
+								str += "<p> 운영시간: " + placeList[i].placeOpenTime+ "~" + placeList[i].placeCloseTime + "</p>";
+								str += "<hr>"
+								str += "</div>";
+								
 				
 								
 							}
