@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
 import org.zerock.domain.ImageList;
+import org.zerock.domain.PlaceVO;
 import org.zerock.domain.RelyVO;
 import org.zerock.mapper.DetailMapper;
 
@@ -41,6 +42,11 @@ public class DetailServiceImpl implements DetailService {
 		return mapper.roomList(hotelno);
 	}
 
+	@Override
+	public List<PlaceVO> getPlace(int hotelno){
+		return mapper.placeList(hotelno);
+	}
+	
 	@Override
 	public List<RelyVO> getRely(int hotelno) {
 		

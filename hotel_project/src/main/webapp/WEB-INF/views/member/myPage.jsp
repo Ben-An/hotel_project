@@ -53,8 +53,7 @@
 				  		</tr>
 			  		</thead>
 			  		<tbody>
-			  			<c:forEach var="item" items="${myPageList }">
-					  		<tr>
+					  		<tr class = "reservation_List">
 					  			<c:if test = "${item.reservationNo != null}">
 						  			<td>${item.realhotelName }</td>
 						  			<c:if test = "${item.realUser != null }">
@@ -71,7 +70,6 @@
 						  			<td>예약 내역이 없습니다.</td>
 					  			</c:if>
 					  		</tr>
-				  		</c:forEach>
 			  		</tbody>
 		  		
 			</table>
@@ -92,7 +90,7 @@
 					</tr>
 			  	</thead>
 			  	<tbody>
-			  		<c:forEach var="item" items="${myPageList }">
+			  		<c:forEach var="item" items="${myReviewList }">
 				 	<tr>	 		
 					  		<td>${item.realhotelName }</td>
 					  		<td>${item.memberNickname }</td>
@@ -111,7 +109,7 @@
 		<hr>
 		<div class="container">
 			<div class="row">
-				<c:forEach var="item" items="${myPageList }" begin="0" end="5" step="1" varStatus="status">
+				<c:forEach var="item" items="${myWishList }" begin="0" end="5" step="1" varStatus="status">
 					<c:if test = "${item.wishListNo != null }">
 						<div class="col-12 col-md-5 col-lg-3 ">
 							<div class="card">
@@ -141,6 +139,8 @@
 	    form.action = "<c:url value='/board/memberUpdate.do'/>";
 	    form.submit();
 	}
+	
+	
 </script>
 
 

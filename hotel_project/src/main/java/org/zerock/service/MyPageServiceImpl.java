@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.MyPageVO;
-import org.zerock.mapper.BoardMapper;
+import org.zerock.domain.RelyVO;
+import org.zerock.domain.ReservationVO;
+import org.zerock.domain.WishListVO;
+import org.zerock.mapper.MyPageMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -16,16 +19,28 @@ public class MyPageServiceImpl implements MyPageService {
 
 	
 	@Setter(onMethod_ =@Autowired)
-	private BoardMapper mapper;
-	
+	private MyPageMapper mapper;	
 	
 	@Override
-	public List<MyPageVO> List()  {
+	public List<ReservationVO> getReservation(int memberno)  {
 		
-		return mapper.myPageList();
+		return mapper.myReservationList(memberno);
 		
 	}
-
+	
+	@Override
+	public List<RelyVO> getReview(int memberno)  {
+		
+		return mapper.myReviewList(memberno);
+		
+	}
+	
+	@Override
+	public List<WishListVO> getWishList(int memberno)  {
+		
+		return mapper.myWishList(memberno);
+		
+	}
 
 	
 	

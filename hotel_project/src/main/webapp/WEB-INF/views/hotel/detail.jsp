@@ -466,12 +466,51 @@ $(function() {
 						
 								
 							roomUL.html(str);
+							
+							placeService();
 							relyService();
 						
 							
 							
 						}); //end roomList functions
 						
+					
+				}
+				
+				function placeService(){
+					var hotelno = '<c:out value="${detailList.hotelno}"/>'; 
+					var placeUL =$(".placeList");
+					
+					detailService.placeList(
+							{
+								
+								hotelno : hotelno
+													
+							},
+					function(placeList) {
+								
+								
+							var str ="";
+								
+							for(var i = 0; i<placeList.length; i++){
+								
+								str += "<div class='row'>";
+								str += "<h5>" + placeList[i].placeName +"</h5>"
+								str += "<p> 상세주소: " + placeList[i].placeAddress + "</p>"
+								str += "<p> 운영시간: " + placeList[i].placeOpenTime+ "~" + placeList[i].placeCloseTime + "</p>"
+								str += "</div>"
+				
+								
+							}
+							
+						
+						
+								
+							placeUL.html(str);
+							
+						
+							
+						}); 
 					
 				}
 				

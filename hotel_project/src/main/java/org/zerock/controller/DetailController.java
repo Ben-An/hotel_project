@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.ImageList;
+import org.zerock.domain.PlaceVO;
 import org.zerock.domain.RelyVO;
 import org.zerock.service.DetailService;
 
@@ -67,6 +68,13 @@ public class DetailController {
 		log.info("get image num>>>>>>>>>>>>>>"+hotelno);
 		
 		return new ResponseEntity<>(service.getRoom(hotelno),HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/place.do", produces = {MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE})
+	public ResponseEntity<List<PlaceVO>> placeList(int hotelno){
+		
+		return new ResponseEntity<>(service.getPlace(hotelno),HttpStatus.OK);
 	}
 	
 	
