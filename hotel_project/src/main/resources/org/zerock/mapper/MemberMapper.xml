@@ -13,15 +13,10 @@
 		<result property="memberNickname" column="memberNickname"/>
 		
 	</resultMap>
-	
-	<!-- <select id="getList" resultType="org.zerock.domain.MemberVO">
-		<![CDATA[
-	select memberId,memberPassword from member
-		]]>
-	</select> -->
-	
+
+	<!-- 일반 회원가입 -->
 	<insert id="memberJoin">
-		insert into member
+		insert into member(memberNo,memberId,memberPassword,memberName,memberNickname,memberEmail,memberPhoneNo,memberGender)
 		values (member_seq.nextval, #{memberId}, #{memberPassword}, #{memberName}, #{memberNickname},#{memberEmail},#{memberPhoneNo},#{memberGender})
 	</insert>
 	<!-- 아이디 중복검사 -->
@@ -53,25 +48,31 @@
  		delete from member where memberId = #{memberId} and memberPassword = #{memberPassword}
  	
  	</delete>
-	<!-- test용 회원가입 -->
-	<!-- <insert id="memberJoin">
-		insert into member(memberNo, memberId, memberPassword, memberName, memberNickname)
-		values (member_seq.nextval, #{memberId}, #{memberPassword}, #{memberName}, #{memberNickname})
-	</insert> -->
-	
-	<!-- <select id="read" resultType="org.zerock.domain.MemberVO">
-		select * from member where memberNo=#{memberNo}
-	</select>
-	
-	<delete id="delete">
-		delete from member where memberNo=#{memberNo}
-	</delete>
-
-	<update id="update">
-		update member
-		set memberPassword=#{memberPassword},
-		memberNickname=#{memberNickname}
-		where memberNo=#{memberNo}
-	</update> -->
+ 	
+ 	<!-- 네이버 이메일 체크 -->
+      <select id="naverConnectionCheck" resultType="map" parameterType="map">
+      
+        SELECT memberEmail,memberNickname,naverLogin FROM member WHERE memberEmail = #{email }
+      
+      </select>
+      
+      <!-- 로그인 정보 가져와 세션에 담기 -->
+      <select id="userNaverLoginPro" resultType="map" parameterType="map">
+      
+        SELECT memberEmail,memberNickname FROM member WHERE memberEmail = #{email} AND NAVERLOGIN = #{id}
+      
+      </select>
+      
+      <!-- 기존 회원이지만 네이버 연동은 x-->
+      <update id="setNaverConnection" parameterType="map">
+      
+        UPDATE member SET NAVERLOGIN = #{id } WHERE memberEmail = #{email }
+      
+      </update>
+      <!-- 네이버 가입 -->
+      <insert id="userNaverRegisterPro" >
+		insert into member
+		values (member_seq.nextval, #{email},#{id}, #{name}, #{nickname},#{email},#{mobile},#{gender},#{id})
+	</insert>
 
 </mapper>

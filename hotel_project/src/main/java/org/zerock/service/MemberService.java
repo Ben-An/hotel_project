@@ -1,6 +1,7 @@
 package org.zerock.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.zerock.domain.MemberVO;
 //느슨한 결합을 위한 인터페이스 이용
@@ -34,5 +35,15 @@ public interface MemberService {
 	
 	//회원정보 삭제
 	public void memberDelete(MemberVO member) throws Exception;
+	
+    //네이버 연동 체크
+	public Map<String, Object> naverConnectionCheck(Map<String, Object> apiJson);
+
+	public Map<String, Object> userNaverLoginPro(Map<String, Object> apiJson);
+
+	public void setNaverConnection(Map<String, Object> apiJson);
+
+	//네이버 가입
+	public void userNaverRegisterPro(Map<String, Object> apiJson);
     
 }

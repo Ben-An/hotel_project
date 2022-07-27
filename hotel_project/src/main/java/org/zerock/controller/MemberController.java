@@ -1,5 +1,8 @@
 package org.zerock.controller;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -18,8 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.MemberVO;
+import org.zerock.domain.NaverLoginBO;
 import org.zerock.service.MemberService;
 import org.zerock.service.MemberServiceImpl;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.scribejava.core.model.OAuth2AccessToken;
 
 import lombok.extern.log4j.Log4j;
 
@@ -28,6 +35,14 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping(value = "/member")
 public class MemberController {
 
+	/* NaverLoginBO */	
+	private NaverLoginBO naverLoginBO;	
+	private String apiResult = null;		
+	@Autowired	
+	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {		
+		this.naverLoginBO = naverLoginBO;	
+		}
+	
 	@Autowired
 	private MemberService memberservice;
 	
@@ -58,8 +73,17 @@ public class MemberController {
 
 	// 로그인 페이지 이동
 	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public void loginGET() {
-		log.info("로그인 페이지 진입");
+	public String loginGET(Model model,HttpSession session) {
+		log.info("네이버 로그인 페이지 진입");
+		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */		
+		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);		
+		//https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=sE***************&		
+		//redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125		
+		System.out.println("네이버:" + naverAuthUrl);				
+		//네이버 		
+		model.addAttribute("url", naverAuthUrl); 		
+		return "member/login";
+
 	}
 
 	// 아이디 중복 검사
@@ -146,6 +170,41 @@ public class MemberController {
 		return "redirect:/hotel/index";
 	}
 	
+	//네이버 로그인 콜백
+	@RequestMapping(value="/callback",  method = {RequestMethod.GET,RequestMethod.POST})
+	public String callback(Model model,@RequestParam Map<String,Object> paramMap, @RequestParam String code, @RequestParam String state,HttpSession session) throws SQLException, Exception {
+		System.out.println("paramMap:" + paramMap);
+		Map <String, Object> resultMap = new HashMap<String, Object>();
+
+		OAuth2AccessToken oauthToken;
+		oauthToken = naverLoginBO.getAccessToken(session, code, state);
+		//로그인 사용자 정보를 읽어온다.
+		String apiResult = naverLoginBO.getUserProfile(oauthToken);
+		System.out.println("apiResult =>"+apiResult);
+		ObjectMapper objectMapper =new ObjectMapper();
+		Map<String, Object> apiJson = (Map<String, Object>) objectMapper.readValue(apiResult, Map.class).get("response");
+		System.out.println("apiJson =>"+apiJson);
+		Map<String, Object> naverConnectionCheck = memberservice.naverConnectionCheck(apiJson);
+		System.out.println("naverConnectionCheck =>"+naverConnectionCheck);
+		//System.out.println("naverConnectionCheck.isEmpty =>"+naverConnectionCheck.isEmpty());
+		//System.out.println("naverConnectionCheck.MEMBEREMAIL =>"+naverConnectionCheck.get("MEMBEREMAIL"));
+		//System.out.println("naverConnectionCheck.email =>"+naverConnectionCheck.get("email"));
+		if(naverConnectionCheck == null) { //일치하는 이메일 없으면 가입	
+
+			//memberservice.userNaverRegisterPro(paramMap); 
+			memberservice.userNaverRegisterPro(apiJson); 
+
+		}else if(naverConnectionCheck.get("NAVERLOGIN") == null && naverConnectionCheck.get("MEMBEREMAIL") != null) { //이메일 가입 되어있고 네이버 연동 안되어 있을시
+			memberservice.setNaverConnection(apiJson);
+			Map<String, Object> loginCheck = memberservice.userNaverLoginPro(apiJson);
+			session.setAttribute("member", loginCheck);
+		}else { //모두 연동 되어있을시
+			Map<String, Object> loginCheck = memberservice.userNaverLoginPro(apiJson);
+			session.setAttribute("member", loginCheck);
+		}
+
+		return "redirect:/hotel/index";
+	}
 	 /* 메인페이지 로그아웃 */
     @RequestMapping(value="logout.do", method=RequestMethod.GET)
     public String logoutMainGET(HttpServletRequest request) throws Exception{
