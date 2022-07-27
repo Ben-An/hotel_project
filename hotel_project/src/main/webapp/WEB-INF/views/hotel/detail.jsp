@@ -438,7 +438,7 @@ $(function() {
 								str +="<h6 class='mb-0 mt-2'>방이름: "+roomList[i].roomname+"</h6>";
 								str +="<h6 class='mb-1 mt-3'>수용 가능 인원: "+roomList[i].bedno+"</h6>";
 								str +="<h6 class='mb-2 mt-3'>방 정보 : "+ roomList[i].infoRoom+"</h6>";
-								str +="<p class='mt-3'>예약정보 :"+roomList[i].checkInDate+"~"+roomList[i].checkOutDate+"</p>";
+								str +="<p class='mt-3'>예약정보 :"+detailService.displayDate(roomList[i].checkInDate)+"~"+detailService.displayDate(roomList[i].checkOutDate)+"</p>";
 								str +="</div>";
 								
 								str +="</div>";

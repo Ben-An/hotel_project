@@ -8,6 +8,7 @@
   
   	function add(reservation, callback, error){
  		console.log("add rely................");
+ 		console.log("reservation................", reservation);
  		
  		
  		
@@ -19,6 +20,7 @@
  			success : function(result, status,xhr){
  				if(callback){
  					callback(result);
+ 					
  					
  				}
  			},
@@ -42,6 +44,7 @@
   	return{
  		
  		add : add
+
  		
  	
  	};//함수를 객체로 만들어서 리턴해준다.
