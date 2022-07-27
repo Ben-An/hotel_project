@@ -1135,9 +1135,7 @@
 	<div class="recommend_hotel">
 		<h1>추천숙소</h1>
 	</div>
-	<div class="recommend_hotel_all">
-		<a href="/hotel/search_normal">전체보기<i class="fa-solid fa-angles-right"></i></a>
-	</div>
+	
 </div>
 <hr>
 <div class="container">
