@@ -219,7 +219,9 @@
  		
  		deleteReply : deleteReply,
  		
- 		update : update
+ 		update : update,
+ 		
+ 		displayDate : displayDate
  	
  	
  	};//함수를 객체로 만들어서 리턴해준다.
