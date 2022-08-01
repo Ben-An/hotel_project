@@ -2,11 +2,13 @@ package org.zerock.mapper;
 
 import java.util.List;
 
+import org.zerock.domain.Criteria;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
 import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
 import org.zerock.domain.RelyVO;
+import org.zerock.domain.ReplyListVO;
 
 public interface DetailMapper {
 	
@@ -29,6 +31,10 @@ public interface DetailMapper {
 	
 	//댓글 수정
 	public int update (RelyVO vo);
+	
+	
+	//페이징 만들기
+	public List<RelyVO> getListWithPasing(Criteria cri);
 	
 	
 	

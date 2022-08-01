@@ -55,6 +55,28 @@
 	</select> 
 	
 	
+	<select id="getListWithPasing" resultType="org.zerock.domain.RelyVO">
+		 <![CDATA[
+		 
+		  select reviewNo,grade,reviewcontent,reviewdate,memberNickname,hotelno from 
+  			  (
+   			   select/*+INDEX_DESC(review pk_review)*/
+    		  rownum rn,r.reviewNo,r.grade,r.reviewcontent,r.reviewdate,m.memberNickname,r.hotelno
+     		  from review r
+    		  left join member m on m.memberno = r.memberno
+    		  where rownum <= #{pageNum} * #{amount}
+   			  ) where rn > (#{pageNum} -1) * #{amount}  
+		 
+		 
+		 
+		  ]]>
+		
+	</select>
+	
+	
+	
+	
+	
 		<insert id="insert">
 		  <![CDATA[
 		  

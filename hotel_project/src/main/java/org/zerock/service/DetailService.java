@@ -2,6 +2,7 @@ package org.zerock.service;
 
 import java.util.List;
 
+import org.zerock.domain.Criteria;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
 import org.zerock.domain.ImageList;
@@ -30,6 +31,9 @@ public interface DetailService {
 	
 	//댓글 수정
 	public int modify(RelyVO vo);
+	
+	//paging 가져오기
+	public List<RelyVO> getReplyList(Criteria cri);
 	
 	
 }
