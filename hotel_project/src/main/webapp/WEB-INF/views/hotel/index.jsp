@@ -1158,7 +1158,7 @@
 							<div class="flex-grow-2 ms-1">
 								<h3 style="font-size: 15px;">
 									<div class="review">
-										<div class="rating" data-rate="${item.grade }">
+										<div class="rating" data-rate="${item.ag}">
 											<i class="fas fa-star"></i> <i class="fas fa-star"></i> <i
 												class="fas fa-star"></i> <i class="fas fa-star"></i> <i
 												class="fas fa-star"></i>
@@ -1197,41 +1197,102 @@
 </div>
 <hr>
 <div class="container">
-	<div class="row">
-
-		<c:forEach var="item" items="${list }">
-
-			<div class=" col-lg-3 col-md-6">
-
-				<div class="card" style="height: 15rem">
-					<div class="card-body">
-						<h5 class="card-title">${item.realhotelname }</h5>
-						<p>${item.reviewContent }</p>
-						<p>
-							<fmt:formatDate pattern="yyyy-MM-dd" value="${item.reviewDate }" />
-						</p>
-					</div>
-				</div>
-			</div>
-		</c:forEach>
-	</div>
+	<div class="row replyList"></div> <!-- replyList ajax로 받아와줌  -->
 </div>
 
 
-
+<script tpye="text/javascript" src="/resources/js/util.js"></script>
+<script type="text/javascript" src="/resources/js/main.js"></script>
 <script type="text/javascript">
-	/*  별점받기 */
-	$(function() {
 
-		var rating = $('.review .rating');
-		rating.each(function() {
-			var targetScore = $(this).attr('data-rate');
-			$(this).find('svg:nth-child(-n+' + targetScore + ')').css({
-				color : '#F05522'
-			});
+
+
+/*  별점받기 */
+$(function() {
+
+	var rating = $('.review .rating');
+	rating.each(function() {
+		var targetScore = $(this).attr('data-rate');
+		$(this).find('svg:nth-child(-n+' + targetScore + ')').css({
+			color : '#F05522'
 		});
-
 	});
+
+});
+
+
+
+
+
+
+
+$(document).ready(function(){
+	
+	replyList();
+	
+	var replyListing = $(".replyList");
+	
+	function replyList(){
+		
+		mainService.replyList(function(data){
+			
+			console.log("data>>>>>>>>>>>>>>"+data);
+			
+			var str ="";
+			
+			for(var i = 0; i < data.length; i++){
+				
+				str +="<div class='col-lg-3 col-md-6'>";
+				str +="<a href='/hotel/detail?hotelno="+data[i].hotelno+"'>";
+				str +="	<div class='card' style='height: 15rem'>";
+				
+				str +="<div class='card-body'>";
+				
+				str +="<h5 class='card-title'>"+data[i].realhotelname+"</h5>"; //realhotelname
+				
+				str +="<p>"+data[i].reviewcontent+"</p>";//reviewcontent
+				
+				str +="<p>"+mainService.displayDate(data[i].reviewdate)+"</p>";
+		
+				str +="</div>";//end card-body class
+				
+				str +="</div>";//end card class
+				str +="</a>" //end a tag
+				str +="</div>";//end col-lg-3
+				
+				
+			}
+			
+			
+			
+			replyListing.html(str);
+		});
+		
+		
+		
+		
+		
+	}; //replyList end
+	
+	
+	
+	
+	
+	
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 	/*  지도 클릭 이벤트 */
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
 import org.zerock.domain.ImageList;
@@ -75,6 +76,15 @@ public class DetailServiceImpl implements DetailService {
 		log.info("modify vo>>>>>>>>>>>>>"+vo);
 		
 		return mapper.update(vo);
+	}
+
+	@Override
+	public List<RelyVO> getReplyList(Criteria cri) {
+		log.info("get List with criteria"+cri);
+		List<RelyVO> list = mapper.getListWithPasing(cri);
+		log.info("list mapper에서 보내준 list>>>>>>>>>>>"+list);
+		
+		return mapper.getListWithPasing(cri);
 	}
 	
 	

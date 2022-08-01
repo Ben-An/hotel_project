@@ -6,6 +6,7 @@ import java.util.Map;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.MainVO;
 import org.zerock.domain.MyPageVO;
+import org.zerock.domain.ReplyListVO;
 import org.zerock.domain.SearchVO;
 
 
@@ -22,6 +23,12 @@ public interface BoardMapper {
 	public List<SearchVO> hotelListWithPaging(Map<String, Object> map);
 	
 	public int getTotalCount(Criteria cri);
+	
+	//replyList 최신댓글 가져옴
+	public List<ReplyListVO>  replyList();
+	
+	
+	
 	
 //	public List<BoardVO> getListWithPaging(Criteria cri);
 //	public void insert(BoardVO board);

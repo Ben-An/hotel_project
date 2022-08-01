@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.zerock.domain.HotelImageVO;
 import org.zerock.domain.HotelVO;
 import org.zerock.domain.MainVO;
+import org.zerock.domain.ReplyListVO;
 import org.zerock.mapper.BoardMapper;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +30,13 @@ public class HotelImageServiceImpl implements HotelImageService {
 		
 		return mapper.imageList();
 		
+	}
+
+
+	@Override
+	public java.util.List<ReplyListVO> replyList() {
+
+		return mapper.replyList();
 	}
 
 }

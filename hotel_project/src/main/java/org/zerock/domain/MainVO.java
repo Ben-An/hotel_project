@@ -9,8 +9,7 @@ public class MainVO {
 	private int hotelno;
 	private String hotelFileName; 
 	private String realhotelname;   
-	private int grade;
-	private String reviewContent;
-	private Date reviewDate;
+	private double ag;
+
 	
 }
