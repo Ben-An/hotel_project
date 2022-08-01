@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.zerock.domain.AttachImageVO;
 import org.zerock.domain.HotelImageVO;
 import org.zerock.domain.HotelVO;
+import org.zerock.domain.ReplyListVO;
 import org.zerock.mapper.AttachMapper;
 import org.zerock.service.HotelImageService;
 
@@ -50,6 +51,18 @@ public class MainController {
 		
 		System.out.println("model>>>>>>"+model);
 }
+	
+	
+	//최신 댓글 보여주기
+	@ResponseBody
+	@GetMapping(value="/replyList",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<List<ReplyListVO>> replyList(){
+		
+		
+		return new ResponseEntity<>(service.replyList(),HttpStatus.OK);
+	}
+	
+	
 	
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(String fileName){
