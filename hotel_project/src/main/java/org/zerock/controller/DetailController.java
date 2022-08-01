@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
@@ -47,6 +48,9 @@ public class DetailController {
 		model.addAttribute("detailList",service.detailList(hotelno));
 		
 		log.info(model);
+		
+		
+		
 	
 }
 	
