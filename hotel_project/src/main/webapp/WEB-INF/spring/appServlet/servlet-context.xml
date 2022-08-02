@@ -30,5 +30,6 @@
 	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
 	<beans:bean id="naverLoginBO" class="org.zerock.domain.NaverLoginBO" />
 	
+	<resources mapping="/admin/main/**" location="C:\upload" />
 	
 </beans:beans>

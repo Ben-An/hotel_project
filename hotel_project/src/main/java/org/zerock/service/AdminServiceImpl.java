@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.AttachImageVO;
 import org.zerock.domain.HotelVO;
+import org.zerock.domain.MemberVO;
+import org.zerock.domain.MyPageVO;
+import org.zerock.domain.RelyVO;
 import org.zerock.domain.SearchVO;
 import org.zerock.mapper.AdminMapper;
 import org.zerock.mapper.AttachMapper;
@@ -50,23 +53,40 @@ public class AdminServiceImpl implements AdminService{
 		
 		List<HotelVO> list = adminMapper.adminHotelList();
 		
-//		list.forEach(hotel -> {
-//			
-//			Long hotelNo = hotel.getHotelNo();
-//			
-//			List<AttachImageVO> imageList = attachMapper.getAttachList(hotelNo);
-//			
-//			hotel.setImageList(imageList);
-//			
-//		});
-		
 		return adminMapper.adminHotelList();
-		//return list;
 	}
 	/* 숙소 총 갯수 */
 	public int hotelGetTotal() {
 		log.info("hotelGetTotal().........");
 		return adminMapper.hotelGetTotal();
 	}	
+	
+	/* 예약 숙소 리스트 */
+	@Override
+	public List<MyPageVO> adminReservationList() {
+		log.info("adminReservationList()..........");
+		
+		List<MyPageVO> list = adminMapper.adminReservationList();
+		log.info(list);
+		
+		return adminMapper.adminReservationList();
+	}
+	
+	/* 신고 리뷰 리스트 */
+	@Override
+	public List<RelyVO> adminReviewList() {
+		log.info("adminReviewList()..........");
+		
+		List<RelyVO> list = adminMapper.adminReviewList();
+		log.info(list);
+
+		return adminMapper.adminReviewList();
+	}
+	
+	/* 신고 리뷰 삭제 */
+	@Override
+	public void reviewDelete(RelyVO rely) throws Exception {
+		adminMapper.reviewDelete(rely);	
+	}
 	
 }

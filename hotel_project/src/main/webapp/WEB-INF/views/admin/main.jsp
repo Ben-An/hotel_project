@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <style>
 	.myPageContainer{
 		margin-top: 100px;
@@ -20,20 +21,28 @@
 		<h3>예약 내역 조회</h3>
 		<hr>
 			<table class="table table-sm">
-				<c:forEach var="item" items="${myPageList }">
+				<c:forEach items="${list_reser}" var="list_reser">
 			  		<thead>
 				  		<tr>
+				  			<th>고객 이름</th>
+				  			<th>대표 주소</th>
 				  			<th>예약 호텔</th>
+				  			<th>방 이름</th>
 				  			<th>예약 인원</th>
+				  			<th>결제 금액</th>
 				  			<th>예약 날짜</th>
 				  		</tr>
 			  		</thead>
 			  		<tbody>
 				  		<tr>
-				  			<td>${item.hotelName }</td>
-				  			<td>${item.userAmount }</td>
-				  			<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkInDate }" />
-				  			~ <fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkOutDate }" /></td>
+				  			<td>${list_reser.realUser }</td>
+				  			<td>${list_reser.state }</td>
+				  			<td>${list_reser.realhotelName }</td>
+				  			<td>${list_reser.roomName }</td>
+				  			<td>${list_reser.userAmount }</td>
+				  			<td>${list_reser.roomPrice }</td>
+				  			<td><fmt:formatDate pattern="yyyy-MM-dd" value="${list_reser.checkInDate }" />
+				  			~ <fmt:formatDate pattern="yyyy-MM-dd" value="${list_reser.checkOutDate }" /></td>
 				  		</tr>
 			  		</tbody>
 		  		</c:forEach>
@@ -48,20 +57,25 @@
 		<div class="container">
 			<div class="row">
 				<c:forEach items="${list}" var="list">
+				<c:set var="imagePath" value="${uploadPath}" />
+				<c:set var="imageName" value="${hotelFileName}" />
 					<div class="col-12 col-md-5 col-lg-3 ">
 						<div class="card">
+						<%-- <img src="${contextPath}/C:upload/${list.uploadPath}/${list.uuid}_${list.hotelFileName}"> --%>
+						
 							<%-- <div class="image_wrap" data-bookid="${list.imageList[0].hotelNo}" data-path="${list.imageList[0].uploadPath}" data-uuid="${list.imageList[0].uuid}" data-filename="${list.imageList[0].hotelFileName}">
 								<img>
 							</div> --%>
-<!-- 							<div id="uploadReslut">
+							<div id="uploadReslut">
 																		
-									</div> -->
+									</div>
 
 <!-- 									<img src="http:\\localhost:8080\upload\2022\07\20\${list.hotelFileName }">
 									<img src="http:\\localhost:8080\upload\2022\07\20\hoteltext.png"> -->
 							<div class="card-body">
 								<span class="badge bg-primary "	style="border-radius: 10px; margin-bottom: 10px;">${list.mainAddress }</span>
 								<h5 class="card-title">${list.hotelName }</h5>
+								<%-- <h5 class="card-title">${list.uploadPath }</h5> --%>
 								<p><fmt:formatDate value="${list.hotelRegistDate}" pattern="yyyy-MM-dd"/></p>
 								<%-- <p>${item.mainAddress }</p> --%>
 							</div>
@@ -108,21 +122,23 @@
 		<h3>신고 리뷰 조회</h3>
 		<hr>
 		<table class="table table-sm">
-			<c:forEach var="item" items="${myPageList }">
+			<c:forEach items="${list_review}" var="list_review">
 		  		<thead>
 			  		<tr>
-			  			<th>호텔</th>
+			  		<!-- 	<th>호텔</th> -->
 				  		<th>이용자</th>
+				  		<th>별점</th>
 				  		<th>리뷰내용</th>
 				  		<th>작성일</th>
 					</tr>
 			  	</thead>
 			  	<tbody>
 				 	<tr>
-				  		<td>${item.hotelName }</td>
-				  		<td>${item.realUser }</td>
-				  		<td>${item.reviewContent }</td>
-				 		<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.reviewDate }" /></td>
+				  		<td>${list_review.memberNickname }</td>
+				  		<td>${list_review.grade }</td>
+				  		<td>${list_review.reviewContent }</td>
+				 		<td><fmt:formatDate pattern="yyyy-MM-dd" value="${list_review.reviewDate }" /></td>
+				 		<td><button id="reviewBtn" class="btn btn-danger">삭제</button></td>
 				  	</tr>
 			  	</tbody>
 		  	</c:forEach>
@@ -132,51 +148,31 @@
 	
 </div>
 
-
 <%@include file="../includes/footer.jsp"%>
-
 <script>
 
 let moveForm = $('#moveForm');
 
-//$(document).ready(function(){
-	/* 이미지 정보 호출 */
-	//let hotelNo = $(list.hotelNo);
-   	//let hotelNo = '<c:out value="${hotelInfo.hotelNo}" default="25"/>';
-   	//alert(hotelNo);
-/* 	let uploadReslut = $("#uploadReslut");
+$(document).ready(function(){
+	/* 이미지 출력 */
+	let uploadResult = $("#uploadResult");
+	//let obj = uploadResultArr[0];
+	//let str = "";
+	//let fileCallPath = "/s_" + obj.uuid + "_" + obj.hotelFileName;
 	
-	$.getJSON("/hotel/getAttachList", {hotelNo:hotelNo}, function(arr){	
-		
-		let str = "";
-		let obj = arr[0];
-		console.log(obj);
-		let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.hotelFileName);
-		str += "<div id='result_card'";
-		str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.hotelFileName + "'";
-		//str += obj.uploadPath + obj.uuid + obj.hotelFileName;
-		str += ">";
-		str += "<img src='/hotel/display?fileName=" + fileCallPath +"'>";
-		str += "</div>"; 
-		
-   		uploadResult.html(str); 
-	})  */ 
-	/* 이미지 삽입 */
-	/* $(".image_wrap").each(function(i, obj){
-		
-		const bobj = $(obj);
-		
-		const uploadPath = bobj.data("path");
-		const uuid = bobj.data("uuid");
-		const hotelFileName = bobj.data("hotelFileName");
-		
-		const fileCallPath = encodeURIComponent(uploadPath + "/s_" + uuid + "_" + hotelFileName);
-		
-		$(this).find("img").attr('src', '/display?fileName=' + fileCallPath);
-		
-	}); */
-
-//});
+	//console.log("파일경로"+fileCallPath);
+	//console.log("파일경로"+obj.hotelFileName);
+	
+	str += "<div id='result_card'>";
+	str += "<img src='/hotel/display?fileName=" + fileCallPath +"'>";
+	str += "<div class='imgDeleteBtn' data-file='" + fileCallPath + "'>x</div>";
+	str += "<input type='hidden' name='imageList[0].hotelFileName' value='"+ obj.hotelFileName +"'>";
+	str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
+	str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";		
+	str += "</div>";		
+	
+		uploadResult.append(str);  
+});
 
 /* 페이지 이동 버튼 */
 $(".pageMaker_btn a").on("click", function(e){
@@ -187,6 +183,18 @@ $(".pageMaker_btn a").on("click", function(e){
 	
 	moveForm.submit();
 	
+});
+
+/* 리뷰 삭제 버튼 */
+$("#reviewBtn").on("click", function() {
+	$.ajax({  
+		  type: "post",  
+		  url: "/admin/reviewDelete",  
+		  data: data,  
+		  success: success,  
+		  dataType: dataType  
+		});  
+
 });
 
 </script>
