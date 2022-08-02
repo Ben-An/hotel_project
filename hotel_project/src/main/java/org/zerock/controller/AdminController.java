@@ -105,13 +105,13 @@ public class AdminController {
 		
 		String str = sdf.format(date);
 		
-		String datePath = str.replace("-", File.separator);
+		//String datePath = str.replace("-", File.separator);
 		
 		/* 폴더 생성 */
-		File uploadPath = new File(uploadFolder, datePath);
+		File uploadPath = new File(uploadFolder, str);
 		
 		if(uploadPath.exists() == false) {
-			uploadPath.mkdirs();
+			uploadPath.mkdir();
 		}
 		
 		/* 이미저 정보 담는 객체 */
@@ -126,7 +126,7 @@ public class AdminController {
 			/* 파일 이름 */
 			String uploadFileName = multipartFile.getOriginalFilename();			
 			vo.setHotelFileName(uploadFileName);
-			vo.setUploadPath(datePath);
+			vo.setUploadPath(str);
 			
 			/* uuid 적용 파일 이름  - 파일이름중복시 덮어씌우기 방지위해 고유식별번호부여 */ 
 			String uuid = UUID.randomUUID().toString();
@@ -222,5 +222,25 @@ public class AdminController {
 			
 		}
 		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
+	
+	@GetMapping("/display")
+	public ResponseEntity<byte[]> getImage(String fileName){
+		log.info("getImage()..."+fileName);
+		
+		File file = new File("c:\\upload\\"+fileName);
+		
+		ResponseEntity<byte[]> result = null;
+		
+		try {
+			HttpHeaders header = new HttpHeaders();
+			header.add("Content-type", Files.probeContentType(file.toPath()));
+			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+			
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }
