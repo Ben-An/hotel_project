@@ -10,6 +10,8 @@ import org.zerock.domain.DetailVO;
 import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
 import org.zerock.domain.RelyVO;
+import org.zerock.domain.ReplyCriteria;
+import org.zerock.domain.ReplyPageDTO;
 import org.zerock.mapper.DetailMapper;
 
 import lombok.AllArgsConstructor;
@@ -79,13 +81,12 @@ public class DetailServiceImpl implements DetailService {
 	}
 
 	@Override
-	public List<RelyVO> getReplyList(Criteria cri) {
-		log.info("get List with criteria"+cri);
-		List<RelyVO> list = mapper.getListWithPasing(cri);
-		log.info("list mapper에서 보내준 list>>>>>>>>>>>"+list);
-		
-		return mapper.getListWithPasing(cri);
+	public ReplyPageDTO getListPage(ReplyCriteria cri, int hotelno) {
+	
+		return new ReplyPageDTO(mapper.getReplyByHotelno(hotelno), mapper.getListWithPasing(cri, hotelno));
 	}
+
+
 	
 	
 	
