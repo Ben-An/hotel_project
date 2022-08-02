@@ -8,6 +8,8 @@ import org.zerock.domain.DetailVO;
 import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
 import org.zerock.domain.RelyVO;
+import org.zerock.domain.ReplyCriteria;
+import org.zerock.domain.ReplyPageDTO;
 
 public interface DetailService {
 	
@@ -33,7 +35,7 @@ public interface DetailService {
 	public int modify(RelyVO vo);
 	
 	//paging 가져오기
-	public List<RelyVO> getReplyList(Criteria cri);
+	public ReplyPageDTO getListPage(ReplyCriteria cri,int hotelno);
 	
 	
 }
