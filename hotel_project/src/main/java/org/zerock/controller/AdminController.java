@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +33,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.AttachImageVO;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.HotelVO;
+import org.zerock.domain.MemberVO;
 import org.zerock.domain.PageDTO;
+import org.zerock.domain.RelyVO;
 import org.zerock.mapper.AdminMapper;
 import org.zerock.mapper.AttachMapper;
 import org.zerock.service.AdminService;
@@ -64,6 +68,27 @@ public class AdminController {
 		
 		if(!list.isEmpty()) {
 			model.addAttribute("list", list); //뷰에 붙이기
+		} else {
+			model.addAttribute("listCheck", "empty");
+			return;
+		}
+		
+        /* 예약 숙소 리스트 데이터 */
+		List list_reser = adminService.adminReservationList();
+		
+		if(!list_reser.isEmpty()) {
+			model.addAttribute("list_reser", list_reser); //뷰에 붙이기
+		} else {
+			model.addAttribute("listCheck", "empty");
+			return;
+		}
+		
+        /* 신고 리뷰 리스트 데이터 */
+		List list_review = adminService.adminReviewList();
+		log.info("list_view는.."+list_review);
+		if(!list_review.isEmpty()) {
+			model.addAttribute("list_review", list_review); //뷰에 붙이기
+			//log.info("list_view는.."+list_review);
 		} else {
 			model.addAttribute("listCheck", "empty");
 			return;
@@ -224,6 +249,18 @@ public class AdminController {
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 	
+	
+	/* 신고 리뷰 삭제 */
+    @RequestMapping(value = "/reviewDelete", method = RequestMethod.POST)
+	public String deletePOST(HttpServletRequest request, RelyVO rely) throws Exception {
+
+    	adminService.reviewDelete(rely);
+    	HttpSession session = request.getSession();
+        session.invalidate();
+		return "redirect:/admin/main";
+	}
+    
+    
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(String fileName){
 		log.info("getImage()..."+fileName);
@@ -243,4 +280,5 @@ public class AdminController {
 		
 		return result;
 	}
+	
 }

@@ -13,4 +13,5 @@ public class RelyVO {
 	private String memberNickname;
 	private String reviewContent;
 	private Date reviewDate;
+	private String report;
 }
