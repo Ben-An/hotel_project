@@ -212,12 +212,25 @@
 	};
 	
 	
+	function getList(param, callback, error) {
+
+	    var hotelno = param.hotelno;
+	    var page = param.page || 1;
+	    
+	    $.getJSON("/hotel/pages/" + hotelno + "/" + page + ".json",
+	        function(data) {
+	    	
+	          if (callback) {
+	            //callback(data); // 댓글 목록만 가져오는 경우 
+	            callback(data.replyCnt, data.list); //댓글 숫자와 목록을 가져오는 경우 
+	          }
+	        }).fail(function(xhr, status, err) {
+	      if (error) {
+	        error();
+	      }
+	    });
+	  };
 	
- 	
- 	
- 	
- 	
- 	
  	
  	
  	
@@ -238,7 +251,9 @@
  		
  		update : update,
  		
- 		displayDate : displayDate
+ 		displayDate : displayDate,
+ 		
+ 		getList : getList
  	
  	
  	};//함수를 객체로 만들어서 리턴해준다.

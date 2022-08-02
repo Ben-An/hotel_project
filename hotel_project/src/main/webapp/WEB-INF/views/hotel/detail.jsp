@@ -240,20 +240,9 @@
 
 
 </div>
-
-	<nav aria-label="Page navigation example">
-				<ul class="pagination justify-content-center">
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-					</a></li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#"
-						aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-					</a></li>
-				</ul>
-			</nav>
+	<div>
+	
+<div class="panel-footer"></div>
 	
 
 
@@ -529,45 +518,55 @@ $(function() {
 								
 							placeUL.html(str);
 							
-							relyService();
+						
 							
 						}); 
 					
 				}
 				
+				relyService(1);
 				
-				
-				function relyService(){
+				function relyService(page){
 					var hotelno = '<c:out value="${detailList.hotelno}"/>';
 					var relyUL =$(".relyChat");
 					
 					
-					detailService.relyList(
+					detailService.getList(
 							{
 								
-								hotelno : hotelno
+								hotelno : hotelno,
+								page : page || 1
 													
 							},
-							function(relyList) {
+							function(replyCnt, list) {
+								console.log("roomList>>>>>>"+replyCnt);
+								console.log("roomList>>>>>>"+list);
 								
-								console.log("roomList>>>>>>"+relyList);
-								
-								
+							
+								  if(page == -1){
+							          pageNum = Math.ceil(replyCnt/10.0);
+							          relyService(pageNum);
+							          return;
+							        }
 								
 							var str ="";
+							
+							   if(list == null || list.length == 0){
+						           return;
+						         }
 								
-							for(var i = 0; i<relyList.length; i++){
+							for(var i = 0; i<list.length; i++){
 								
 								
 								str +="<div class='row'>";
 								
-								str+="<div style='display:none;' id='replyData' data-reply='"+relyList[i].reviewNo+"' ></div>"
+								str+="<div style='display:none;' id='replyData' data-reply='"+list[i].reviewNo+"' ></div>"
 								
 								str +="<div class='col-2'>";
 								
 								str +="<div class='row'>";
 								str +="<div class='col-8'>";
-						 		str +="<div id='rating' data-rate='"+relyList[i].grade+"'>";
+						 		str +="<div id='rating' data-rate='"+list[i].grade+"'>";
 								str +="<i class='fas fa-star'></i><i class='fas fa-star'></i>";
 						 		str +="<i class='fas fa-star'></i><i class='fas fa-star'></i><i class='fas fa-star'></i>";
 						 		str +="</div>";
@@ -576,7 +575,7 @@ $(function() {
 								str +="</div>";
 								
 								str +="<div class='col-8 mt-2'>";
-								str +="<h3>"+relyList[i].memberNickname+"</h3>";
+								str +="<h3>"+list[i].memberNickname+"</h3>";
 								str +="	</div>";
 								
 								
@@ -589,15 +588,15 @@ $(function() {
 								
 								str +="<div class='col-10' style='background-color: #ddd; height: 200px; border-radius: 5px'>";
 								
-								str +="<p class='py-3'>"+relyList[i].reviewContent +"</p>";
+								str +="<p class='py-3'>"+list[i].reviewContent +"</p>";
 								
-								str +="<p style='margin-top:80px'>"+detailService.displayTime(relyList[i].reviewDate)+"</p>";
+								str +="<p style='margin-top:80px'>"+detailService.displayTime(list[i].reviewDate)+"</p>";
 								
 								
 								str +="<div class='row position-relative'>";
 								str+="<div class='col-5 position-absolute top-100 start-100 translate-middle d-flex'>";
 								str+="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF' data-bs-toggle='modal' data-bs-target='#MyModal'>수정</button>";
-								str+="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF; margin-left:25px' data-delete='"+relyList[i].reviewNo+"'id='replyDeleteBtn'>삭제</button>";
+								str+="<button type='button' class='btn' style='background-color:#FF8C00; color:#FFFFFF; margin-left:25px' data-delete='"+list[i].reviewNo+"'id='replyDeleteBtn'>삭제</button>";
 								
 								
 								str+="</div>";
@@ -628,12 +627,76 @@ $(function() {
 								
 							relyUL.html(str);
 							
-						
+							showReplyPage(replyCnt);
 							
 						}); //end relyList function 
 					
 					
-				}
+				}//end replySerivce
+				
+				
+				var pageNum = 1;
+				var replyPageFooter = $(".panel-footer");
+				
+				  function showReplyPage(replyCnt){
+				      
+				      var endNum = Math.ceil(pageNum / 10.0) * 10;  
+				      var startNum = endNum - 9; 
+				      
+				      var prev = startNum != 1;
+				      var next = false;
+				      
+				      if(endNum * 10 >= replyCnt){
+				        endNum = Math.ceil(replyCnt/10.0);
+				      }
+				      
+				      if(endNum * 10 < replyCnt){
+				        next = true;
+				      }
+				      
+				      var str = "<ul class='pagination justify-content-center'>";
+				      
+				      if(prev){
+				        str+= "<li class='page-item'><a class='page-link' href='"+(startNum -1)+"'>Previous</a></li>";
+				      }
+				      
+				       
+				      
+				      for(var i = startNum ; i <= endNum; i++){
+				        
+				        var active = pageNum == i? "active":"";
+				        
+				        str+= "<li class='page-item "+active+" '><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+				      }
+				      
+				      if(next){
+				        str+= "<li class='page-item'><a class='page-link' href='"+(endNum + 1)+"'>Next</a></li>";
+				      }
+				      
+				      str += "</ul></div>";
+				      
+				      console.log(str);
+				      
+				      replyPageFooter.html(str);
+				    };
+				  
+				  
+				    replyPageFooter.on("click","li a", function(e){
+				        e.preventDefault();
+				        console.log("page click");
+				        
+				        var targetPageNum = $(this).attr("href");
+				        
+				        console.log("targetPageNum: " + targetPageNum);
+				        
+				        pageNum = targetPageNum;
+				        
+				        relyService(pageNum);
+				      });     
+				
+				
+				
+				
 				
 				
 				var replyForms= $(".replyForm");	
@@ -742,29 +805,7 @@ $(function() {
 			
 				
 				
-				//datepicker range
-			/* 	var fromDate = new Date();
-				$('#dates-available-from').daterangepicker({
-				  singleDatePicker: true,
-				  showDropdowns: true,
-				  autoApply:true,
-				  locale: {
-				    format: 'YYYY-MM-DD'
-				  },
-				 minDate:new Date()
-				 },
-				 function(start, end, label) {
-				  fromDate =  start.format('YYYY-MM-DD');   
-				  $('dates-available-to').daterangepicker({
-				    singleDatePicker: true,
-				    showDropdowns: true,
-				    autoApply:true,
-				    locale: {
-				      format: 'YYYY-MM-DD'
-				    },
-				    minDate:fromDate
-				 });
-				}); */
+			
 				
 				
 				
