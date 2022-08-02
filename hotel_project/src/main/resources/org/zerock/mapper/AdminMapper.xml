@@ -31,6 +31,30 @@
 		]]>
 
 	</select>
+	
+	 <!-- 예약 숙소 리스트 -->
+	<select id="adminReservationList" resultType="org.zerock.domain.MyPageVO">
+			
+		<![CDATA[
+	
+	          select t.* from (select i.realuser,i.checkindate,i.checkoutdate,i.useramount, t.realhotelName, t.state, h.hotelPhoneNo,r.roomname,r.roomprice
+        from hotel h, reservation i,hotel_room r,realhotel t where h.hotelNo = r.hotelNo and i.roomno=r.roomno and h.realhotelno = t.realhotelno order by h.hotelRegistDate desc) t where rownum<5
+	
+		]]>
+
+	</select>
+	
+	<!-- 신고 리뷰 리스트 -->
+	<select id="adminReviewList" resultType="org.zerock.domain.RelyVO">
+			
+		<![CDATA[
+	
+	              select t.* from (select r.grade,r.reviewcontent,r.report,r.reviewdate, m.membernickname
+        from member m, review r where m.memberNo = r.memberNo and r.report='t' order by r.reviewdate desc) t where rownum<5
+	
+		]]>
+
+	</select>
   	
   	<!-- 숙소 총 개수 -->
   	<select id="hotelGetTotal" resultType="int">
@@ -46,5 +70,11 @@
 	
 	</insert>
 	
+	<!-- 신고 리뷰 삭제 -->
+ 	<delete id="reviewDelete" parameterType="org.zerock.domain.RelyVO">
+ 	
+ 		delete from review where reviewno = #{reviewno}
+ 	
+ 	</delete>
 	
   </mapper>

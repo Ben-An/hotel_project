@@ -26,5 +26,9 @@ public class MyPageVO {
 	private int hotelImageId;
 	private String hotelFileName;
 	private String state;
+	private String mainAddress;
+	private String hotelPhoneNo;
+	private String roomName;
+	private String roomPrice;
 	
 }
