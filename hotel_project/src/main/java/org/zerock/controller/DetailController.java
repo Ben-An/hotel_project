@@ -22,6 +22,8 @@ import org.zerock.domain.DetailImage;
 import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
 import org.zerock.domain.RelyVO;
+import org.zerock.domain.ReplyCriteria;
+import org.zerock.domain.ReplyPageDTO;
 import org.zerock.service.DetailService;
 
 
@@ -83,16 +85,20 @@ public class DetailController {
 	
 	
 	
-	@ResponseBody
-	@GetMapping(value="/rely.do", produces = {MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE})
-	public ResponseEntity< List<RelyVO>> relyList(int hotelno){
-		
-		
-		log.info("get rely>>>>>>>>>>>>>>>>>>>>>>"+hotelno);
-		
-		return new ResponseEntity<>(service.getRely(hotelno),HttpStatus.OK);
-		
-	}
+	/*
+	 * @ResponseBody
+	 * 
+	 * @GetMapping(value="/rely.do", produces =
+	 * {MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE}) public ResponseEntity<
+	 * List<RelyVO>> relyList(int hotelno){
+	 * 
+	 * 
+	 * log.info("get rely>>>>>>>>>>>>>>>>>>>>>>"+hotelno);
+	 * 
+	 * return new ResponseEntity<>(service.getRely(hotelno),HttpStatus.OK);
+	 * 
+	 * }
+	 */
 	
 	@ResponseBody
 	@PostMapping(value="/new.do",consumes =MediaType.APPLICATION_JSON_UTF8_VALUE,produces= {MediaType.TEXT_PLAIN_VALUE})
@@ -139,6 +145,24 @@ public class DetailController {
 		return service.modify(vo) == 1 ? new ResponseEntity<>("success",HttpStatus.OK)
 			: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR	);
 	}
+	
+	
+	//페이징처리
+	@ResponseBody
+	@GetMapping(value ="/pages/{hotelno}/{page}", produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<ReplyPageDTO> getList(@PathVariable("page") int page, @PathVariable("hotelno") int hotelno){
+		
+		ReplyCriteria cri = new ReplyCriteria(page,10);
+		
+		
+		log.info("cri>>>>>>>>>>>>>>>>>>>"+cri);
+		
+		
+		
+		return new ResponseEntity<>(service.getListPage(cri, hotelno),HttpStatus.OK);
+	}
+	
+	
 
 	
 	

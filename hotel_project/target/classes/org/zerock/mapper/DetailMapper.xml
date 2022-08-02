@@ -58,19 +58,28 @@
 	<select id="getListWithPasing" resultType="org.zerock.domain.RelyVO">
 		 <![CDATA[
 		 
-		  select reviewNo,grade,reviewcontent,reviewdate,memberNickname,hotelno from 
+		 	 select reviewNo,grade,reviewcontent,reviewdate,memberNickname,hotelno from 
   			  (
-   			   select/*+INDEX_DESC(review pk_review)*/
+   			   select
     		  rownum rn,r.reviewNo,r.grade,r.reviewcontent,r.reviewdate,m.memberNickname,r.hotelno
      		  from review r
     		  left join member m on m.memberno = r.memberno
-    		  where rownum <= #{pageNum} * #{amount}
-   			  ) where rn > (#{pageNum} -1) * #{amount}  
+    		  where hotelno = #{hotelno}
+    		  and rownum <= #{cri.pageNum} * #{cri.amount}
+    		  order by reviewNo desc
+   			  ) where rn > (#{cri.pageNum} -1) * #{cri.amount}  
 		 
 		 
 		 
 		  ]]>
 		
+	</select>
+	
+	<select id="getReplyByHotelno" resultType="int">
+		 <![CDATA[
+		select count(reviewno) from review where hotelno= #{hotelno}
+		  ]]>
+	
 	</select>
 	
 	
