@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "be_hotel (Spring Boot)",
+      "request": "launch",
+      "mainClass": "org.zerock.BeHotelApplication",
+      "projectName": "be_hotel",
+      "cwd": "${workspaceFolder}/be_hotel",
+    }
+  ]
+}

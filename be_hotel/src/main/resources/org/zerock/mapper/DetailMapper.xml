@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.DetailMapper">
+
+	<select id="detailList" resultType="org.zerock.domain.DetailVO">
+
+		  <![CDATA[
+
+		  	select h.hotelno,
+		  	       NVL(rh.realhotelname, h.hotelName) AS realhotelname,
+		  	       NVL(rh.roadaddr, h.address) AS roadaddr
+		  	from hotel h
+			left join realhotel rh on h.realhotelno = rh.realhotelno
+			where h.hotelno=#{hotelno}
+		   ]]>
+
+	</select>
+
+
+
+	<select id="listImage"
+		resultType="org.zerock.domain.DetailImage">
+		  <![CDATA[
+			select hotelFileName as roomfilename from hotel_image where hotelno=#{hotelno}
+		   ]]>
+	</select>
+
+
+	<select id="roomList" resultType="org.zerock.domain.ImageList">
+		  <![CDATA[
+		  	
+		  		select roomno, roomname,roomprice,bedno,infoRoom,checkInDate,checkOutDate from hotel_room where hotelno=#{hotelno}
+		   ]]>
+
+
+	</select>
+	
+	<select id="placeList" resultType="org.zerock.domain.PlaceVO">
+		<![CDATA[
+			select placeName, placeAddress, placeOpenTime, placeCloseTime from
+			place p,
+			(select state from hotel h, realhotel r where h.realhotelno = r.realhotelno and hotelno = #{hotelno}) h
+			where p.placeAddress like '%' || h.state || '%'
+		]]>		
+	</select>
+	
+  <select id="read" resultType="org.zerock.domain.RelyVO">
+		  <![CDATA[
+		  	
+		  		select r.reviewNo, r.grade,r.reviewcontent,r.reviewdate,m.memberNickname from review r
+				left join member m on m.memberno = r.memberno
+				where hotelno =#{hotelno}
+		   ]]>
+
+
+	</select> 
+	
+	
+	<select id="getListWithPasing" resultType="org.zerock.domain.RelyVO">
+		 <![CDATA[
+		 
+		 	 select reviewNo,grade,reviewcontent,reviewdate,memberNickname,hotelno from 
+  			  (
+   			   select
+    		  rownum rn,r.reviewNo,r.grade,r.reviewcontent,r.reviewdate,m.memberNickname,r.hotelno
+     		  from review r
+    		  left join member m on m.memberno = r.memberno
+    		  where hotelno = #{hotelno}
+    		  and rownum <= #{cri.pageNum} * #{cri.amount}
+    		  order by reviewNo desc
+   			  ) where rn > (#{cri.pageNum} -1) * #{cri.amount}  
+		 
+		 
+		 
+		  ]]>
+		
+	</select>
+	
+	<select id="getReplyByHotelno" resultType="int">
+		 <![CDATA[
+		select count(reviewno) from review where hotelno= #{hotelno}
+		  ]]>
+	
+	</select>
+	
+	
+	
+	
+	
+		<insert id="insert">
+		  <![CDATA[
+		  
+				insert into review(reviewNo,memberNo,hotelNo,grade,reviewContent,reviewDate) values (review_seq.nextval,#{memberNo},#{hotelNo},#{grade},#{reviewContent},sysdate)
+				
+				
+		   ]]>
+	</insert>
+	
+	
+	
+	
+	<delete id="delete">
+		  <![CDATA[
+				delete from review where reviewNo = #{reviewNo}
+		 ]]>
+	</delete>
+	
+	
+	
+	<update id ="update">
+		 <![CDATA[
+		 
+		 		update review set reviewContent =#{reviewContent}
+		 		
+		 		where reviewNo = #{reviewNo}
+		 
+		 
+		 
+		    ]]>
+	</update>
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+	<!-- 객실 등록 -->
+	<insert id="insertRoom">
+		insert into hotel_room(roomNo, hotelNo, roomName, roomPrice, bedNo, infoRoom, checkInDate, checkOutDate, roomRegistDate)
+		values (hotel_room_seq.nextval, #{hotelno}, #{roomname}, #{roomprice}, #{bedno}, #{infoRoom}, #{checkInDate}, #{checkOutDate}, sysdate)
+	</insert>
+
+	<!-- 객실 수정 -->
+	<update id="updateRoom">
+		update hotel_room set roomName=#{roomname}, roomPrice=#{roomprice}, bedNo=#{bedno}, infoRoom=#{infoRoom},
+		checkInDate=#{checkInDate}, checkOutDate=#{checkOutDate}
+		where roomNo=#{roomno}
+	</update>
+
+	<!-- 객실 삭제 -->
+	<delete id="deleteRoom">
+		delete from hotel_room where roomNo=#{roomno}
+	</delete>
+
+	<!-- 호텔 이미지 삭제 -->
+	<delete id="deleteImage">
+		delete from hotel_image where hotelImageId=#{hotelImageId}
+	</delete>
+
+	<!-- 호텔 이미지 등록 -->
+	<insert id="insertImage">
+		insert into hotel_image(hotelImageId, hotelNo, hotelFileName)
+		values (hotel_image_seq.nextval, #{hotelNo}, #{hotelFileName})
+	</insert>
+
+	<!-- 좋아하는 이유 목록 -->
+	<select id="reasonList" resultType="org.zerock.domain.HotelReasonVO">
+		<![CDATA[
+			select reasonNo, hotelNo, reasonTitle, reasonContent, reasonImage, regDate
+			from hotel_reason
+			where hotelNo = #{hotelNo}
+			order by reasonNo asc
+		]]>
+	</select>
+
+	<!-- 좋아하는 이유 단건 -->
+	<select id="getReason" resultType="org.zerock.domain.HotelReasonVO">
+		<![CDATA[
+			select reasonNo, hotelNo, reasonTitle, reasonContent, reasonImage, regDate
+			from hotel_reason
+			where reasonNo = #{reasonNo}
+		]]>
+	</select>
+
+	<!-- 좋아하는 이유 추가 -->
+	<insert id="insertReason">
+		insert into hotel_reason(reasonNo, hotelNo, reasonTitle, reasonContent, reasonImage, regDate)
+		values (hotel_reason_seq.nextval, #{hotelNo}, #{reasonTitle}, #{reasonContent}, #{reasonImage}, sysdate)
+	</insert>
+
+	<!-- 좋아하는 이유 수정 -->
+	<update id="updateReason">
+		update hotel_reason
+		set reasonTitle = #{reasonTitle},
+		    reasonContent = #{reasonContent},
+		    <if test="reasonImage != null and reasonImage != ''">
+		    reasonImage = #{reasonImage},
+		    </if>
+		    reasonNo = reasonNo
+		where reasonNo = #{reasonNo}
+	</update>
+
+	<!-- 좋아하는 이유 삭제 -->
+	<delete id="deleteReason">
+		delete from hotel_reason where reasonNo = #{reasonNo}
+	</delete>
+
+</mapper>

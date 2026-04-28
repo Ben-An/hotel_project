@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+/* Header responsive overrides are now handled in style.css */
+.bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+}
+
+.text-small {
+  font-size: 85%;
+}
+
+.dropdown-toggle {
+  outline: 0;
+}

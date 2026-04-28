@@ -1,0 +1,78 @@
+package org.zerock.controller;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import org.zerock.domain.PayRservationVO;
+import org.zerock.domain.ReservationVO;
+import org.zerock.service.ReservationService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/hotel")
+public class ReservationApiController {
+
+	@Autowired
+	private ReservationService service;
+
+	@GetMapping("/reservation")
+	public ResponseEntity<ReservationVO> reservation(@RequestParam int roomno) {
+		return new ResponseEntity<>(service.ReseravationList(roomno), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/reservePayment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> reservePay(@Valid @RequestBody PayRservationVO payVO) {
+		int result = service.payRegister(payVO);
+		return result == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@PostMapping("/kakaoPay")
+	@ResponseBody
+	public String kakaoPay() {
+		try {
+			URL url = new URL("https://kapi.kakao.com/v1/payment/ready");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Authorization", "KakaoAK e9a69f79dbf4f0106b16ac148df3b7a1");
+			connection.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+			connection.setDoOutput(true);
+			String parameters = "cid=TC0ONETIME&partner_order_id=partner_order_id&partner_user_id=partner_user_id&item_name=초코파이&quantity=1&total_amount=2200&vat_amount=200&tax_free_amount=0&approval_url=/localhost:8080/hotel/kakaoPay.cls&fail_url=https://localhost:8080/fail&cancel_url=https://localhost:8080/cancel";
+			OutputStream given = connection.getOutputStream();
+			DataOutputStream dataGiven = new DataOutputStream(given);
+			dataGiven.writeBytes(parameters);
+			dataGiven.close();
+
+			int result = connection.getResponseCode();
+			InputStream inputstream;
+			if (result == 200) {
+				inputstream = connection.getInputStream();
+			} else {
+				inputstream = connection.getErrorStream();
+			}
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputstream));
+			return bufferedReader.readLine();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "{\"result\":\"NO\"}";
+	}
+}

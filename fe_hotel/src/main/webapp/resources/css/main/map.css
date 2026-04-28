@@ -1,0 +1,133 @@
+@charset "UTF-8";
+
+/* ===== Gyeonggi-do Interactive Map ===== */
+
+.map-svg {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.map-svg svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+}
+
+/* Base region fills - soft pastel palette */
+.st0 {
+  fill: #f0f4f8;
+}
+
+.st2 {
+  fill: #e8f4e8;
+}
+
+.st3 {
+  fill: #e3eef9;
+}
+
+.st4 {
+  fill: #d4e6f1;
+}
+
+.st5 {
+  fill: none;
+}
+
+.st6 {
+  fill: #dce8d4;
+}
+
+.st7 {
+  fill: #c5d5e8;
+}
+
+.st8 {
+  fill: #d5e8d5;
+}
+
+.st9 {
+  fill: #e8e3f0;
+}
+
+.st10 {
+  fill: #c9dde8;
+}
+
+.st11 {
+  fill: #d8cfe6;
+}
+
+.st12 {
+  fill: #ddd8e8;
+}
+
+/* Region stroke */
+.map-svg svg path {
+  stroke: #ffffff;
+  stroke-width: 1;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* Hover effect - all region classes */
+.map-a:hover path,
+.st0:hover, .st2:hover, .st3:hover, .st4:hover,
+.st6:hover, .st7:hover, .st8:hover, .st9:hover,
+.st10:hover, .st11:hover, .st12:hover {
+  fill: var(--color-primary, #FF8C00);
+  filter: brightness(1.05);
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+/* Active/clicked state */
+.map-a:active path {
+  fill: var(--color-primary-hover, #E67E00);
+  transform: scale(0.99);
+}
+
+/* Map link styling */
+.map-a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Text labels in the map */
+.map-svg svg text,
+.map-svg svg g g:last-child path {
+  pointer-events: none;
+}
+
+/* Label text styling */
+.map-svg svg text {
+  font-family: var(--font-primary, sans-serif);
+  font-size: 10px;
+  font-weight: 600;
+  fill: #333;
+}
+
+/* Tooltip effect via title */
+.map-a:hover {
+  position: relative;
+}
+
+/* Container styling for the map section */
+.map-svg {
+  padding: var(--space-lg, 1.5rem);
+  background: var(--color-white, #fff);
+  border-radius: var(--radius-lg, 0.75rem);
+  border: 1px solid var(--color-gray-300, #dee2e6);
+}
+
+/* Responsive: hide map on mobile */
+@media (max-width: 768px) {
+  .map-svg {
+    display: none;
+  }
+}
+
+/* Opacity for the base group */
+.st1 {
+  opacity: 1;
+}

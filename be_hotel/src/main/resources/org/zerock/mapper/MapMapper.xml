@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.MapMapper">
+
+
+
+
+
+
+	<select id="mapSelect" resultType="org.zerock.domain.MapVO">
+
+
+   <![CDATA[
+	
+    
+    
+select h.hotelno, h.hotelfilename,rh.realhotelname,rh.lat,rh.logt,rh.lotnoaddr,AVG(r.grade),hr.bedno,hr.roomprice,rh.state,rh.roadaddr from hotel h 
+left join realhotel rh on h.realhotelno = rh.realhotelno
+left join review r on h.hotelno = r.hotelno
+left join  hotel_room hr on h.hotelno = hr.hotelno
+where rh.state= #{state}
+group by h.hotelno, h.hotelfilename,rh.realhotelname,rh.lat,rh.logt,rh.lotnoaddr,hr.bedno,hr.roomprice,rh.state,rh.roadaddr
+		
+		
+		
+	   ]]>
+		
+
+
+	</select>
+	
+	
+	<select id="nearbySelect" resultType="org.zerock.domain.MapVO">
+	<![CDATA[
+		SELECT * FROM (
+			SELECT h.hotelno, h.hotelfilename, rh.realhotelname, rh.lat, rh.logt,
+				rh.lotnoaddr, AVG(r.grade) AS grade, hr.bedno, hr.roomprice, rh.state, rh.roadaddr,
+				(6371 * 2 * ASIN(SQRT(
+					POWER(SIN((#{lat} - TO_NUMBER(rh.lat)) * 3.14159265358979 / 360), 2) +
+					COS(TO_NUMBER(rh.lat) * 3.14159265358979 / 180) *
+					COS(#{lat} * 3.14159265358979 / 180) *
+					POWER(SIN((#{lng} - TO_NUMBER(rh.logt)) * 3.14159265358979 / 360), 2)
+				))) AS distance
+			FROM hotel h
+			LEFT JOIN realhotel rh ON h.realhotelno = rh.realhotelno
+			LEFT JOIN review r ON h.hotelno = r.hotelno
+			LEFT JOIN hotel_room hr ON h.hotelno = hr.hotelno
+			WHERE rh.lat IS NOT NULL AND rh.logt IS NOT NULL
+			GROUP BY h.hotelno, h.hotelfilename, rh.realhotelname, rh.lat, rh.logt,
+				rh.lotnoaddr, hr.bedno, hr.roomprice, rh.state, rh.roadaddr
+		) WHERE distance <= #{radius}
+		ORDER BY distance
+	]]>
+	</select>
+
+	<insert id="insertInfo" >
+ <![CDATA[
+	
+	 	insert into realhotel (realhotelno,state,realhotelname,wstroom,korroom,
+	 	roadaddr,lotnoaddr,lat,logt,hotelcondition) values(realhotel_seq.nextval,#{state,jdbcType=VARCHAR},#{realhotelname, jdbcType=VARCHAR},#{wstroom, jdbcType=VARCHAR},#{korroom, jdbcType=VARCHAR},
+	 	#{roadaddr, jdbcType=VARCHAR},#{lotnoaddr, jdbcType=VARCHAR},#{lat, jdbcType=VARCHAR},#{logt, jdbcType=VARCHAR},#{hotelcondition, jdbcType=VARCHAR})
+	
+	   ]]>
+	 
+	</insert>
+	
+	
+	<select id="hotelList" resultType="org.zerock.domain.HotelApiVO">
+	 <![CDATA[
+			select * from realhotel
+	 ]]>
+	</select>
+
+
+
+</mapper>

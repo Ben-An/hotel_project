@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.MemberMapper">
+	
+	<resultMap type="org.zerock.domain.MemberVO" id="memberMap">
+		<id	property="memberNo" column="memberNo"/>
+		<result property="memberNo" column="memberNo"/>
+		<result property="memberId" column="memberId"/>
+		<result property="memberPassword" column="memberPassword"/>
+		<result property="memberName" column="memberName"/>
+		<result property="memberNickname" column="memberNickname"/>
+		
+	</resultMap>
+
+	<!-- 일반 회원가입 -->
+	<insert id="memberJoin">
+		insert into member(memberNo,memberId,memberPassword,memberName,memberNickname,memberEmail,memberPhoneNo,memberGender)
+		values ((SELECT NVL(MAX(memberNo), 0) + 1 FROM member), #{memberId}, #{memberPassword}, #{memberName}, #{memberNickname},#{memberEmail},#{memberPhoneNo},#{memberGender})
+	</insert>
+	<!-- 아이디 중복검사 -->
+  	<select id="idCheck" resultType="int">
+
+  		select count(*) from member where memberId = #{memberId}
+
+  	</select>
+  	<!-- 닉네임 중복검사 -->
+  	<select id="nicknameCheck" resultType="int">
+
+  		select count(*) from member where memberNickname = #{memberNickname}
+
+  	</select>
+  	
+  	<!-- ID로 회원 조회 (비밀번호 포함) -->
+    <select id="memberFindById" resultType="org.zerock.domain.MemberVO">
+        SELECT memberNo, memberId, memberPassword, memberName, memberNickname, memberPhoneNo, memberRole
+        FROM member WHERE memberId = #{memberId}
+    </select>
+    
+    <!-- 회원 정보 수정 -->
+ 	<update id="memberUpdate" parameterType="org.zerock.domain.MemberVO">
+ 	
+ 		update member set 
+ 		memberPassword = #{memberPassword}, memberName = #{memberName}, memberNickname = #{memberNickname}, memberEmail = #{memberEmail}, memberPhoneNo = #{memberPhoneNo}, memberGender = #{memberGender} 
+ 		where memberId = #{memberId}
+ 		
+ 	</update>
+ 	
+ 	<!-- 회원 삭제 (ID로) -->
+ 	<delete id="memberDeleteById">
+ 		delete from member where memberId = #{memberId}
+ 	</delete>
+ 	
+ 	<!-- 네이버 이메일 체크 -->
+      <select id="naverConnectionCheck" resultType="map" parameterType="map">
+      
+        SELECT memberEmail,memberNickname,naverLogin FROM member WHERE memberEmail = #{email }
+      
+      </select>
+      
+      <!-- 로그인 정보 가져와 세션에 담기 -->
+      <select id="userNaverLoginPro" resultType="map" parameterType="map">
+      
+        SELECT memberEmail,memberNickname FROM member WHERE memberEmail = #{email} AND NAVERLOGIN = #{id}
+      
+      </select>
+      
+      <!-- 기존 회원이지만 네이버 연동은 x-->
+      <update id="setNaverConnection" parameterType="map">
+      
+        UPDATE member SET NAVERLOGIN = #{id } WHERE memberEmail = #{email }
+      
+      </update>
+      <!-- 네이버 가입 -->
+      <insert id="userNaverRegisterPro" >
+		insert into member
+		values ((SELECT NVL(MAX(memberNo), 0) + 1 FROM member), #{email},#{id}, #{name}, #{nickname},#{email},#{mobile},#{gender},#{id})
+	</insert>
+
+</mapper>

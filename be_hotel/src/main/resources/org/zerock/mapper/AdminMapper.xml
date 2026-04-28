@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.zerock.mapper.AdminMapper">
+
+  	<!-- 숙소 등록 -->
+  	<insert id="HotelEnroll">
+  	
+  		<selectKey resultType="long" keyProperty="hotelNo" order="AFTER">
+  		
+  			SELECT MAX(hotelNo) FROM hotel
+  		
+  		</selectKey>
+		
+		insert into hotel(hotelNo,hotelName,mainAddress,address,hotelPhoneNo,hotelRegistDate,
+		buffet,swim,golf,pet,restaurant,fitness,parking,wifi,kitchen,smoke,memberNo)
+		values (hotel_seq.nextval,#{hotelName},#{mainAddress},#{address},#{hotelPhoneNo},sysdate,
+		#{buffet},#{swim},#{golf},#{pet},#{restaurant},#{fitness},#{parking},#{wifi},#{kitchen},#{smoke},#{memberNo})
+
+  	</insert>
+  	
+  	<!-- 숙소 리스트 -->
+	<select id="adminHotelList" resultType="org.zerock.domain.HotelVO">
+			
+		<![CDATA[
+
+	    select t.* from (select h.hotelNo, i.hotelFileName, h.hotelName, h.mainAddress, h.hotelPhoneNo, h.hotelRegistDate, m.memberNickname
+        from hotel h
+        JOIN hotel_image i ON h.hotelNo = i.hotelNo
+        LEFT JOIN member m ON h.memberNo = m.memberNo
+        order by h.hotelRegistDate desc) t where rownum<5
+
+		]]>
+
+	</select>
+	
+	 <!-- 예약 숙소 리스트 -->
+	<select id="adminReservationList" resultType="org.zerock.domain.MyPageVO">
+			
+		<![CDATA[
+	
+	          select t.* from (select i.realuser,i.checkindate,i.checkoutdate,i.useramount, t.realhotelName, t.state, h.hotelPhoneNo,r.roomname,r.roomprice
+        from hotel h, reservation i,hotel_room r,realhotel t where h.hotelNo = r.hotelNo and i.roomno=r.roomno and h.realhotelno = t.realhotelno order by h.hotelRegistDate desc) t where rownum<5
+	
+		]]>
+
+	</select>
+	
+	<!-- 신고 리뷰 리스트 -->
+	<select id="adminReviewList" resultType="org.zerock.domain.RelyVO">
+			
+		<![CDATA[
+	
+	              select t.* from (select r.grade,r.reviewcontent,r.report,r.reviewdate, m.membernickname
+        from member m, review r where m.memberNo = r.memberNo and r.report='t' order by r.reviewdate desc) t where rownum<5
+	
+		]]>
+
+	</select>
+  	
+  	<!-- 전체 숙소 리스트 (페이징 + 검색) -->
+	<select id="adminHotelListAll" resultType="org.zerock.domain.HotelVO" parameterType="org.zerock.domain.Criteria">
+		<![CDATA[
+		SELECT * FROM (
+			SELECT rownum rn, t.* FROM (
+				SELECT h.hotelNo,
+					(SELECT hotelFileName FROM hotel_image WHERE hotelNo = h.hotelNo AND rownum = 1) AS hotelFileName,
+					h.hotelName, h.mainAddress, h.address, h.hotelPhoneNo, h.hotelRegistDate,
+					h.buffet, h.swim, h.golf, h.pet, h.restaurant, h.fitness, h.parking, h.wifi, h.kitchen, h.smoke,
+					m.memberNickname
+				FROM hotel h
+				LEFT JOIN member m ON h.memberNo = m.memberNo
+		]]>
+				<where>
+					<if test="keyword != null and keyword != ''">
+						(h.hotelName LIKE '%' || #{keyword} || '%'
+						 OR h.mainAddress LIKE '%' || #{keyword} || '%'
+						 OR h.address LIKE '%' || #{keyword} || '%')
+					</if>
+				</where>
+		<![CDATA[
+				ORDER BY h.hotelRegistDate DESC
+			) t WHERE rownum <= #{pageNum} * #{amount}
+		) WHERE rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+
+	<!-- 전체 숙소 개수 (검색 포함) -->
+	<select id="hotelGetTotalWithSearch" resultType="int" parameterType="org.zerock.domain.Criteria">
+		SELECT COUNT(*) FROM hotel h
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(h.hotelName LIKE '%' || #{keyword} || '%'
+				 OR h.mainAddress LIKE '%' || #{keyword} || '%'
+				 OR h.address LIKE '%' || #{keyword} || '%')
+			</if>
+		</where>
+	</select>
+
+  	<!-- 숙소 총 개수 -->
+  	<select id="hotelGetTotal" resultType="int">
+
+  		select count(*) from hotel
+
+  	</select>
+  	
+  	<!-- 이미지 등록 -->
+	<insert id="imageEnroll">
+
+		insert into hotel_image(hotelImageId, hotelNo, hotelFileName)
+		values (hotel_image_seq.nextval, #{hotelNo}, #{hotelFileName})
+
+	</insert>
+	
+	<!-- 신고 리뷰 삭제 -->
+ 	<delete id="reviewDelete" parameterType="org.zerock.domain.RelyVO">
+ 	
+ 		delete from review where reviewno = #{reviewno}
+ 	
+ 	</delete>
+	
+  </mapper>

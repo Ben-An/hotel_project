@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.BoardMapper">
+
+
+
+	
+	
+	<select id="imageList" resultType="org.zerock.domain.MainVO" parameterType="org.zerock.domain.Criteria">
+
+		<![CDATA[
+
+		SELECT * FROM (
+			SELECT rownum rn, t.* FROM (
+				select h.hotelno,
+				       (select hotelFileName from hotel_image where hotelNo = h.hotelNo and rownum = 1) as hotelFileName,
+				       NVL(rh.realhotelname, h.hotelName) as realhotelname,
+				       NVL(a.ag, 0) as ag,
+				       NVL(rh.roadaddr, h.address) as roadaddr,
+				       h.mainAddress
+				from hotel h
+				left join realhotel rh on h.realhotelno = rh.realhotelno
+				left join (
+					select hotelno, round(avg(grade),1) as ag
+					from review
+					group by hotelno
+				) a on a.hotelno = h.hotelno
+				order by a.ag desc nulls last, h.hotelRegistDate desc
+			) t WHERE rownum <= #{pageNum} * #{amount}
+		) WHERE rn > (#{pageNum} - 1) * #{amount}
+
+		]]>
+
+	</select>
+
+	<select id="imageListCount" resultType="int">
+		SELECT COUNT(*) FROM hotel
+	</select>
+	
+	
+	<select id="replyList" resultType="org.zerock.domain.ReplyListVO">
+		 <![CDATA[
+			select t.* from (
+				select r.reviewno, h.hotelno, NVL(rh.realhotelname, h.hotelName) as realhotelname, r.reviewdate, r.reviewcontent
+				from hotel h
+				left join realhotel rh on h.realhotelno = rh.realhotelno
+				inner join review r on r.hotelno = h.hotelno
+				order by r.reviewno desc
+			) t where rownum < 5
+		 ]]>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	<select id="hotelList" resultType="org.zerock.domain.HotelVO">
+			
+		<![CDATA[
+	
+	select n.hotelNo, i.hotelFileName, n.hotelName, n.mainAddress, n.address from hotel_image i, hotel n where i.hotelNo = n.hotelNo
+	
+		]]>
+
+	</select>
+	
+	<select id="hotelListWithPaging" resultType="org.zerock.domain.SearchVO" parameterType="map">
+		select
+			h.hotelno,
+			COALESCE(rh.realhotelname, h.hotelName) as realhotelName,
+			COALESCE(h.hotelFileName,
+			         (select min(hi.hotelFileName) from hotel_image hi where hi.hotelNo = h.hotelNo)
+			) as hotelFileName,
+			COALESCE(rh.state, h.mainAddress) as state,
+			(select min(hr.roomPrice) from hotel_room hr where hr.hotelNo = h.hotelNo) as roomPrice,
+			NVL(a.ag, 0) as ag,
+			h.buffet, h.swim, h.golf, h.pet, h.restaurant, h.fitness, h.parking, h.wifi, h.kitchen, h.smoke
+		from hotel h
+		left join realhotel rh on h.realhotelno = rh.realhotelno
+		left join (
+			select hotelno, round(avg(grade),1) as ag
+			from review
+			group by hotelno
+		) a on a.hotelno = h.hotelno
+		<where>
+			<if test="keyword != null and keyword != ''">
+				AND (
+					rh.state LIKE '%'||#{keyword}||'%'
+					OR h.mainAddress LIKE '%'||#{keyword}||'%'
+					OR h.hotelName LIKE '%'||#{keyword}||'%'
+				)
+			</if>
+		</where>
+		order by h.hotelRegistDate desc
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from hotel where hotelNo > 0
+		<if test="keyword != null">
+			and title like '%'||#{keyword}||'%'
+		</if>
+
+	</select>
+
+	<select id="popularRegions" resultType="map" parameterType="int">
+		<![CDATA[
+		select rh.state as "state", count(*) as "cnt"
+		from reservation res
+		join hotel_room hr on res.roomNo = hr.roomNo
+		join hotel h on hr.hotelNo = h.hotelNo
+		join realhotel rh on h.realhotelNo = rh.realhotelNo
+		where rh.state is not null
+		group by rh.state
+		order by count(*) desc
+		fetch first #{limit} rows only
+		]]>
+	</select>
+
+	<select id="popularRegionsByHotelCount" resultType="map" parameterType="int">
+		<![CDATA[
+		select rh.state as "state", count(*) as "cnt"
+		from realhotel rh
+		where rh.state is not null
+		group by rh.state
+		order by count(*) desc
+		fetch first #{limit} rows only
+		]]>
+	</select>
+
+</mapper>

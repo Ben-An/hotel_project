@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+/* ===== Design Tokens ===== */
+:root {
+  /* Brand Colors */
+  --color-primary: #E8985A;
+  --color-primary-hover: #D4864A;
+  --color-primary-light: #FDF5EF;
+  --color-primary-rgb: 232, 152, 90;
+
+  /* Neutral Colors */
+  --color-dark: #1a1a2e;
+  --color-gray-900: #212529;
+  --color-gray-700: #495057;
+  --color-gray-500: #6c757d;
+  --color-gray-300: #dee2e6;
+  --color-gray-100: #f8f9fa;
+  --color-white: #ffffff;
+
+  /* Semantic Colors */
+  --color-success: #28a745;
+  --color-danger: #dc3545;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+
+  /* Typography */
+  --font-primary: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Gowun Batang', serif;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 50rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Transition */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* Layout */
+  --header-height: 70px;
+  --container-max: 1200px;
+}

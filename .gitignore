@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+.claude/agents/worktrees/
+.claude/agents/logs/
+.claude/agents/plans/
+node_modules/
+test-results/
+playwright-report/
+target/
+tomcat/
+apache-maven-3.9.6/
+*.log
+*.class
