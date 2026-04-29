@@ -17,7 +17,7 @@
 		<!-- Hotel List -->
 		<div class="col-lg-9" id="contentList">
 			<c:forEach var="item" items="${list}">
-				<a href="/hotel/detail?hotelno=${item.hotelno}&memberNo=${member.memberNo}">
+				<a href="/hotel/detail?hotelno=${item.hotelno}">
 					<div class="hotel-list-card hotelContent">
 						<c:if test="${not empty item.hotelFileName}">
 							<img src="/hotel/display?fileName=${item.hotelFileName}" class="card-img-left d-none d-md-block" alt="${item.realhotelName}">

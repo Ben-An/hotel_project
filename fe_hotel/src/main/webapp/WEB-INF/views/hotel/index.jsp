@@ -19,7 +19,7 @@
 							<div id="carousel-${item.hotelno}" class="carousel slide" data-bs-ride="false">
 								<div class="carousel-inner">
 									<div class="carousel-item active">
-										<a href="/hotel/detail?hotelno=${item.hotelno}&memberNo=${member.memberNo}">
+										<a href="/hotel/detail?hotelno=${item.hotelno}">
 											<img src="/hotel/display?fileName=${item.hotelFileName}" class="d-block card-img" alt="${item.realhotelname}">
 										</a>
 									</div>
@@ -33,7 +33,7 @@
 							</div>
 							<span class="badge-hotel">추천</span>
 						</div>
-						<a href="/hotel/detail?hotelno=${item.hotelno}&memberNo=${member.memberNo}" class="text-decoration-none text-dark">
+						<a href="/hotel/detail?hotelno=${item.hotelno}" class="text-decoration-none text-dark">
 							<div class="card-body">
 								<h5 class="card-title">${item.realhotelname}</h5>
 								<p class="card-location">
