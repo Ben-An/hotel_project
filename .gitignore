@@ -1,9 +1,7 @@
 .env
 .env.*
 !.env.example
-.claude/agents/worktrees/
-.claude/agents/logs/
-.claude/agents/plans/
+.claude/
 node_modules/
 test-results/
 playwright-report/
@@ -12,3 +10,5 @@ tomcat/
 apache-maven-3.9.6/
 *.log
 *.class
+tomcat-start.ps1
+tomcat-start-all.ps1
