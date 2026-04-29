@@ -12,3 +12,16 @@ apache-maven-3.9.6/
 *.class
 tomcat-start.ps1
 tomcat-start-all.ps1
+
+# 로컬 전용 (원격에서 삭제됨, 로컬에서만 사용)
+.vscode/
+CLAUDE.md
+e2e/
+scripts/
+fe_hotel/run.bat
+fe_hotel/run.ps1
+fe_hotel/run.sh
+fe_hotel/watch.ps1
+package.json
+package-lock.json
+playwright.config.js

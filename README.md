@@ -30,39 +30,6 @@ hotel_project/
 
 DB 접속 정보, 메일 계정 등 민감 설정은 환경변수로 관리합니다 (`.gitignore` 처리됨).
 
-## 실행 방법
-
-### 백엔드 (be_hotel)
-
-```bash
-cd be_hotel
-mvn spring-boot:run
-```
-
-기본 포트 외 설정은 `src/main/resources/application.properties` 참고.
-
-### 프런트엔드 (fe_hotel)
-
-WAR로 빌드 후 Tomcat에 배포합니다.
-
-```bash
-cd fe_hotel
-mvn clean package
-# 생성된 target/fe_hotel.war를 tomcat/webapps/에 복사
-
-# Tomcat 시작
-./tomcat-start.ps1          # 프런트만
-./tomcat-start-all.ps1      # 전체 스택
-```
-
-또는 `fe_hotel/run.sh`, `run.bat`, `run.ps1` 스크립트 사용.
-
-### E2E 테스트
-
-```bash
-npm install
-npx playwright test
-```
 
 ## 개발 워크플로
 
