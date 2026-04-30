@@ -110,8 +110,8 @@ public class MemberApiController {
 
 	/* 네이버 로그인 URL 반환 */
 	@GetMapping("/naverLoginUrl")
-	public ResponseEntity<Map<String, String>> naverLoginUrl(HttpSession session) {
-		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+	public ResponseEntity<Map<String, String>> naverLoginUrl() {
+		String naverAuthUrl = naverLoginBO.getAuthorizationUrl();
 		Map<String, String> result = new HashMap<>();
 		result.put("url", naverAuthUrl);
 		return new ResponseEntity<>(result, HttpStatus.OK);
@@ -121,7 +121,13 @@ public class MemberApiController {
 	@RequestMapping(value = "/callback", method = {RequestMethod.GET, RequestMethod.POST})
 	public ResponseEntity<Map<String, Object>> callback(@RequestParam String code, @RequestParam String state,
 			HttpSession session) throws Exception {
-		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
+		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(code, state);
+		if (oauthToken == null) {
+			Map<String, Object> err = new HashMap<>();
+			err.put("status", "fail");
+			err.put("message", "OAuth state mismatch or expired");
+			return new ResponseEntity<>(err, HttpStatus.UNAUTHORIZED);
+		}
 		String apiResult = naverLoginBO.getUserProfile(oauthToken);
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, Object> apiJson = (Map<String, Object>) objectMapper.readValue(apiResult, Map.class).get("response");
