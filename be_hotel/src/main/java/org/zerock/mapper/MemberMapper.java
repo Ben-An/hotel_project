@@ -45,7 +45,7 @@ public interface MemberMapper {
     public Map<String, Object> naverConnectionCheck(Map<String, Object> apiJson);
 
     //로그인 정보 가져와 세션에 담기(이미 네이버로 가입된 계정)
-	public Map<String, Object> userNaverLoginPro(Map<String, Object> apiJson);
+	public MemberVO userNaverLoginPro(Map<String, Object> apiJson);
 	// 기존 회원이지만 네이버 연동은 x
 	public void setNaverConnection(Map<String, Object> apiJson);
 	//네이버 가입

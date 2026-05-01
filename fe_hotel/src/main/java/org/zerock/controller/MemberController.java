@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.config.BackendConfig;
 import org.zerock.domain.MemberVO;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -103,6 +105,9 @@ public class MemberController {
 	}
 
 	/* 네이버 로그인 콜백 */
+	// be_hotel은 응답 body의 "member" 키에 MemberVO를 실어 보내지만 RestTemplate이 Map.class로
+	// 받으면 LinkedHashMap으로 역직렬화된다. 세션에 그대로 넣으면 MyPageController에서
+	// (MemberVO) 캐스팅 시 ClassCastException이 나므로 여기서 MemberVO로 변환한다.
 	@RequestMapping(value = "/callback", method = {RequestMethod.GET, RequestMethod.POST})
 	public String callback(@RequestParam String code, @RequestParam String state,
 			HttpSession session, RedirectAttributes rttr) {
@@ -110,7 +115,8 @@ public class MemberController {
 			Map<String, Object> result = restTemplate.getForObject(
 					API + "/callback?code=" + code + "&state=" + state, Map.class);
 			if (result != null && "success".equals(result.get("status")) && result.get("member") != null) {
-				session.setAttribute("member", result.get("member"));
+				MemberVO member = new ObjectMapper().convertValue(result.get("member"), MemberVO.class);
+				session.setAttribute("member", member);
 				return "redirect:/hotel/index";
 			}
 		} catch (HttpClientErrorException e) {

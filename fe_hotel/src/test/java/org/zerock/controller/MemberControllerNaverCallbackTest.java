@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,8 +17,10 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.MemberVO;
 
 /**
  * /member/callback (네이버 로그인 후 fe_hotel 콜백) 회귀 테스트.
@@ -41,18 +44,30 @@ class MemberControllerNaverCallbackTest {
 	}
 
 	@Test
-	void callback_storesMemberOnSession_andRedirectsHome_whenSuccess() {
+	void callback_storesMemberVoOnSession_andRedirectsHome_whenSuccess() {
+		// be_hotel 응답이 RestTemplate 에서 Map.class 로 받히면 member 키 값은 LinkedHashMap 으로 역직렬화된다.
+		// 이를 그대로 세션에 넣으면 MyPageController 에서 (MemberVO) 캐스팅이 ClassCastException 으로 깨졌던 회귀 케이스.
 		Map<String, Object> beResponse = new HashMap<>();
 		beResponse.put("status", "success");
-		Map<String, Object> member = new HashMap<>();
-		member.put("MEMBEREMAIL", "a@b.com");
-		beResponse.put("member", member);
+		Map<String, Object> memberJson = new LinkedHashMap<>();
+		memberJson.put("memberNo", 42);
+		memberJson.put("memberEmail", "a@b.com");
+		memberJson.put("memberNickname", "nick");
+		beResponse.put("member", memberJson);
 		when(restTemplate.getForObject(eq(callbackUrl("c", "s")), eq(Map.class))).thenReturn(beResponse);
 
 		String view = controller.callback("c", "s", session, rttr);
 
 		assertThat(view).isEqualTo("redirect:/hotel/index");
-		verify(session, times(1)).setAttribute("member", member);
+		ArgumentCaptor<Object> captured = ArgumentCaptor.forClass(Object.class);
+		verify(session, times(1)).setAttribute(eq("member"), captured.capture());
+		assertThat(captured.getValue())
+				.as("세션에는 MemberVO 가 저장되어야 한다 (LinkedHashMap 그대로면 MyPage 진입 시 ClassCastException)")
+				.isInstanceOf(MemberVO.class);
+		MemberVO stored = (MemberVO) captured.getValue();
+		assertThat(stored.getMemberNo()).isEqualTo(42);
+		assertThat(stored.getMemberEmail()).isEqualTo("a@b.com");
+		assertThat(stored.getMemberNickname()).isEqualTo("nick");
 		verify(rttr, never()).addFlashAttribute(eq("result"), eq(0));
 	}
 

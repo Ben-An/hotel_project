@@ -103,8 +103,8 @@ public class MemberServiceImpl implements MemberService{
 		}
 
 		@Override
-		public Map<String, Object> userNaverLoginPro(Map<String, Object> apiJson) {
-			return mapper.userNaverLoginPro(apiJson); 
+		public MemberVO userNaverLoginPro(Map<String, Object> apiJson) {
+			return mapper.userNaverLoginPro(apiJson);
 		}
 
 		@Override
