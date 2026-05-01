@@ -71,6 +71,38 @@ public class MemberServiceImpl implements MemberService{
 		return mapper.emailCheck(memberEmail);
 	}
 
+	// 아이디 찾기
+	@Override
+	public String findMemberId(MemberVO member) throws Exception {
+		return mapper.findMemberId(member);
+	}
+
+	// 비밀번호 재설정 — 임시 비밀번호 발급 + DB 갱신, 평문 임시PW 반환 (메일 발송은 호출측 책임)
+	@Override
+	public String resetPassword(MemberVO member) throws Exception {
+		MemberVO target = mapper.findMemberForPw(member);
+		if (target == null) {
+			return null;
+		}
+		String tempPassword = generateTempPassword();
+		MemberVO update = new MemberVO();
+		update.setMemberId(target.getMemberId());
+		update.setMemberPassword(passwordEncoder.encode(tempPassword));
+		mapper.updatePasswordById(update);
+		return tempPassword;
+	}
+
+	// 영문/숫자 10자리 임시 비밀번호 생성
+	private static String generateTempPassword() {
+		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		java.security.SecureRandom random = new java.security.SecureRandom();
+		StringBuilder sb = new StringBuilder(10);
+		for (int i = 0; i < 10; i++) {
+			sb.append(chars.charAt(random.nextInt(chars.length())));
+		}
+		return sb.toString();
+	}
+
     // 로그인
     @Override
     public MemberVO memberLogin(MemberVO member) throws Exception {

@@ -34,7 +34,16 @@ public interface MemberMapper {
 
 	// 이메일 중복 검사
 	public int emailCheck(String memberEmail);
-	
+
+	// 아이디 찾기 (이름 + 이메일)
+	public String findMemberId(MemberVO member);
+
+	// 비밀번호 찾기 대상 회원 조회 (아이디 + 이메일)
+	public MemberVO findMemberForPw(MemberVO member);
+
+	// 비밀번호 재설정
+	public void updatePasswordById(MemberVO member);
+
 	// ID로 회원 조회 (로그인/비밀번호 검증용)
     public MemberVO memberFindById(String memberId);
 

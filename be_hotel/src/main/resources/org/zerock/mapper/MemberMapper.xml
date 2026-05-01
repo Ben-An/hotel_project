@@ -37,7 +37,25 @@
   		select count(*) from member where memberEmail = #{memberEmail}
 
   	</select>
-  	
+
+  	<!-- 아이디 찾기 (이름 + 이메일) -->
+  	<select id="findMemberId" resultType="string" parameterType="org.zerock.domain.MemberVO">
+  		select memberId from member
+  		where memberName = #{memberName} and memberEmail = #{memberEmail}
+  	</select>
+
+  	<!-- 비밀번호 찾기 대상 회원 조회 (아이디 + 이메일) -->
+  	<select id="findMemberForPw" resultType="org.zerock.domain.MemberVO" parameterType="org.zerock.domain.MemberVO">
+  		select memberNo, memberId, memberName, memberEmail
+  		from member
+  		where memberId = #{memberId} and memberEmail = #{memberEmail}
+  	</select>
+
+  	<!-- 비밀번호 재설정 -->
+  	<update id="updatePasswordById" parameterType="org.zerock.domain.MemberVO">
+  		update member set memberPassword = #{memberPassword} where memberId = #{memberId}
+  	</update>
+
   	<!-- ID로 회원 조회 (비밀번호 포함) -->
     <select id="memberFindById" resultType="org.zerock.domain.MemberVO">
         SELECT memberNo, memberId, memberPassword, memberName, memberNickname, memberPhoneNo, memberRole
