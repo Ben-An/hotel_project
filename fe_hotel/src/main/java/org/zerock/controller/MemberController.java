@@ -104,10 +104,20 @@ public class MemberController {
 
 	/* 네이버 로그인 콜백 */
 	@RequestMapping(value = "/callback", method = {RequestMethod.GET, RequestMethod.POST})
-	public String callback(@RequestParam String code, @RequestParam String state, HttpSession session) {
-		Map result = restTemplate.getForObject(
-				API + "/callback?code=" + code + "&state=" + state, Map.class);
-		return "redirect:/hotel/index";
+	public String callback(@RequestParam String code, @RequestParam String state,
+			HttpSession session, RedirectAttributes rttr) {
+		try {
+			Map<String, Object> result = restTemplate.getForObject(
+					API + "/callback?code=" + code + "&state=" + state, Map.class);
+			if (result != null && "success".equals(result.get("status")) && result.get("member") != null) {
+				session.setAttribute("member", result.get("member"));
+				return "redirect:/hotel/index";
+			}
+		} catch (HttpClientErrorException e) {
+			// OAuth state mismatch / expired 등
+		}
+		rttr.addFlashAttribute("result", 0);
+		return "redirect:/member/login";
 	}
 
 	/* 로그아웃 */

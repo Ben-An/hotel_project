@@ -119,8 +119,7 @@ public class MemberApiController {
 
 	/* 네이버 로그인 콜백 */
 	@RequestMapping(value = "/callback", method = {RequestMethod.GET, RequestMethod.POST})
-	public ResponseEntity<Map<String, Object>> callback(@RequestParam String code, @RequestParam String state,
-			HttpSession session) throws Exception {
+	public ResponseEntity<Map<String, Object>> callback(@RequestParam String code, @RequestParam String state) throws Exception {
 		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(code, state);
 		if (oauthToken == null) {
 			Map<String, Object> err = new HashMap<>();
@@ -137,15 +136,12 @@ public class MemberApiController {
 			memberservice.userNaverRegisterPro(apiJson);
 		} else if (naverConnectionCheck.get("NAVERLOGIN") == null && naverConnectionCheck.get("MEMBEREMAIL") != null) {
 			memberservice.setNaverConnection(apiJson);
-			Map<String, Object> loginCheck = memberservice.userNaverLoginPro(apiJson);
-			session.setAttribute("member", loginCheck);
-		} else {
-			Map<String, Object> loginCheck = memberservice.userNaverLoginPro(apiJson);
-			session.setAttribute("member", loginCheck);
 		}
+		Map<String, Object> loginCheck = memberservice.userNaverLoginPro(apiJson);
 
 		Map<String, Object> result = new HashMap<>();
 		result.put("status", "success");
+		result.put("member", loginCheck);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
