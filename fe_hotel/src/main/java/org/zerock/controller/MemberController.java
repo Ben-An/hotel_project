@@ -89,6 +89,33 @@ public class MemberController {
 		return restTemplate.getForObject(API + "/mailCheck?email=" + email, String.class);
 	}
 
+	/* 아이디 찾기 */
+	@RequestMapping(value = "/findId", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> findIdPOST(@RequestBody MemberVO member) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<MemberVO> entity = new HttpEntity<>(member, headers);
+		return restTemplate.postForObject(API + "/findId", entity, Map.class);
+	}
+
+	/* 비밀번호 찾기 — 임시 비밀번호 메일 발송 */
+	@RequestMapping(value = "/findPw", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Map<String, String>> findPwPOST(@RequestBody MemberVO member) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<MemberVO> entity = new HttpEntity<>(member, headers);
+		try {
+			Map response = restTemplate.postForObject(API + "/findPw", entity, Map.class);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (HttpClientErrorException e) {
+			Map<String, String> err = new java.util.HashMap<>();
+			err.put("status", "fail");
+			return new ResponseEntity<>(err, HttpStatus.OK);
+		}
+	}
+
 	/* 로그인 */
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String loginPOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) {

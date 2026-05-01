@@ -74,6 +74,54 @@ public class MemberApiController {
 		return new ResponseEntity<>(result != 0 ? "fail" : "success", HttpStatus.OK);
 	}
 
+	/* 아이디 찾기 (이름 + 이메일) */
+	@PostMapping("/findId")
+	public ResponseEntity<Map<String, String>> findId(@RequestBody MemberVO member) throws Exception {
+		String memberId = memberservice.findMemberId(member);
+		Map<String, String> body = new HashMap<>();
+		if (memberId == null) {
+			body.put("status", "fail");
+			return new ResponseEntity<>(body, HttpStatus.OK);
+		}
+		body.put("status", "success");
+		body.put("memberId", memberId);
+		return new ResponseEntity<>(body, HttpStatus.OK);
+	}
+
+	/* 비밀번호 찾기 (아이디 + 이메일) — 임시 비밀번호를 발급해 메일로 전송 */
+	@PostMapping("/findPw")
+	public ResponseEntity<Map<String, String>> findPw(@RequestBody MemberVO member) throws Exception {
+		String tempPassword = memberservice.resetPassword(member);
+		Map<String, String> body = new HashMap<>();
+		if (tempPassword == null) {
+			body.put("status", "fail");
+			return new ResponseEntity<>(body, HttpStatus.OK);
+		}
+
+		String title = "심사숙소 임시 비밀번호 안내";
+		String content = "심사숙소 홈페이지를 방문해주셔서 감사합니다." +
+				"<br><br>" +
+				"임시 비밀번호는 <b>" + tempPassword + "</b> 입니다." +
+				"<br>" +
+				"로그인 후 반드시 비밀번호를 변경해주세요.";
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+			helper.setFrom(mailFromAddress);
+			helper.setTo(member.getMemberEmail());
+			helper.setSubject(title);
+			helper.setText(content, true);
+			mailSender.send(message);
+		} catch (Exception e) {
+			log.error("임시 비밀번호 메일 발송 실패 - 수신자: {}", member.getMemberEmail(), e);
+			body.put("status", "mailFail");
+			return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		body.put("status", "success");
+		return new ResponseEntity<>(body, HttpStatus.OK);
+	}
+
 	/* 이메일 인증 */
 	@GetMapping("/mailCheck")
 	public ResponseEntity<String> mailCheck(@RequestParam String email) throws Exception {

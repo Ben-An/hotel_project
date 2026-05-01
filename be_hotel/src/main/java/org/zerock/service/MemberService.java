@@ -32,8 +32,14 @@ public interface MemberService {
 
 	// 이메일 중복 검사
 	public int emailCheck(String memberEmail) throws Exception;
-	
-	// 로그인 
+
+	// 아이디 찾기 (이름 + 이메일)
+	public String findMemberId(MemberVO member) throws Exception;
+
+	// 비밀번호 재설정 — 임시 비밀번호를 발급해 DB 갱신 후 평문 임시PW 반환
+	public String resetPassword(MemberVO member) throws Exception;
+
+	// 로그인
     public MemberVO memberLogin(MemberVO member) throws Exception;
 
     //회원정보 수정
