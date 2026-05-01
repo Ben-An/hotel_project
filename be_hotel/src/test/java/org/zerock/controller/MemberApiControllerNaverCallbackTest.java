@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.zerock.domain.MemberVO;
 import org.zerock.domain.NaverLoginBO;
 import org.zerock.service.MemberService;
 
@@ -65,9 +66,7 @@ class MemberApiControllerNaverCallbackTest {
 		existing.put("MEMBEREMAIL", "a@b.com");
 		existing.put("NAVERLOGIN", "naver-uid-1");
 		when(memberService.naverConnectionCheck(any())).thenReturn(existing);
-		Map<String, Object> loginResult = new HashMap<>();
-		loginResult.put("MEMBEREMAIL", "a@b.com");
-		loginResult.put("MEMBERID", "memberA");
+		MemberVO loginResult = memberVo(7, "a@b.com");
 		when(memberService.userNaverLoginPro(any())).thenReturn(loginResult);
 
 		ResponseEntity<Map<String, Object>> response = controller.callback("code", "state");
@@ -90,8 +89,7 @@ class MemberApiControllerNaverCallbackTest {
 		existingButUnlinked.put("MEMBEREMAIL", "a@b.com");
 		existingButUnlinked.put("NAVERLOGIN", null);
 		when(memberService.naverConnectionCheck(any())).thenReturn(existingButUnlinked);
-		Map<String, Object> loginResult = new HashMap<>();
-		loginResult.put("MEMBEREMAIL", "a@b.com");
+		MemberVO loginResult = memberVo(8, "a@b.com");
 		when(memberService.userNaverLoginPro(any())).thenReturn(loginResult);
 
 		ResponseEntity<Map<String, Object>> response = controller.callback("code", "state");
@@ -108,8 +106,7 @@ class MemberApiControllerNaverCallbackTest {
 		when(naverLoginBO.getUserProfile(token))
 				.thenReturn("{\"response\":{\"id\":\"naver-uid-1\",\"email\":\"a@b.com\",\"name\":\"홍\",\"nickname\":\"길\"}}");
 		when(memberService.naverConnectionCheck(any())).thenReturn(null);
-		Map<String, Object> registered = new HashMap<>();
-		registered.put("MEMBEREMAIL", "a@b.com");
+		MemberVO registered = memberVo(9, "a@b.com");
 		when(memberService.userNaverLoginPro(any())).thenReturn(registered);
 
 		ResponseEntity<Map<String, Object>> response = controller.callback("code", "state");
@@ -120,6 +117,13 @@ class MemberApiControllerNaverCallbackTest {
 				.containsEntry("member", registered);
 		verify(memberService, times(1)).userNaverRegisterPro(any());
 		verify(memberService, times(1)).userNaverLoginPro(any());
+	}
+
+	private static MemberVO memberVo(int memberNo, String email) {
+		MemberVO vo = new MemberVO();
+		vo.setMemberNo(memberNo);
+		vo.setMemberEmail(email);
+		return vo;
 	}
 
 	private static void inject(Object target, String field, Object value) throws Exception {

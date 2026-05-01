@@ -60,10 +60,11 @@
       </select>
       
       <!-- 로그인 정보 가져와 세션에 담기 -->
-      <select id="userNaverLoginPro" resultType="map" parameterType="map">
-      
-        SELECT memberEmail,memberNickname FROM member WHERE memberEmail = #{email} AND NAVERLOGIN = #{id}
-      
+      <select id="userNaverLoginPro" resultType="org.zerock.domain.MemberVO" parameterType="map">
+
+        SELECT memberNo, memberId, memberName, memberNickname, memberEmail, memberPhoneNo, memberGender, memberRole
+        FROM member WHERE memberEmail = #{email} AND NAVERLOGIN = #{id}
+
       </select>
       
       <!-- 기존 회원이지만 네이버 연동은 x-->

@@ -42,7 +42,7 @@ public interface MemberService {
     //네이버 연동 체크
 	public Map<String, Object> naverConnectionCheck(Map<String, Object> apiJson);
 
-	public Map<String, Object> userNaverLoginPro(Map<String, Object> apiJson);
+	public MemberVO userNaverLoginPro(Map<String, Object> apiJson);
 
 	public void setNaverConnection(Map<String, Object> apiJson);
 

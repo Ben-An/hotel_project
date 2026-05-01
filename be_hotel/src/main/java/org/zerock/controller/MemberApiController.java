@@ -137,7 +137,7 @@ public class MemberApiController {
 		} else if (naverConnectionCheck.get("NAVERLOGIN") == null && naverConnectionCheck.get("MEMBEREMAIL") != null) {
 			memberservice.setNaverConnection(apiJson);
 		}
-		Map<String, Object> loginCheck = memberservice.userNaverLoginPro(apiJson);
+		MemberVO loginCheck = memberservice.userNaverLoginPro(apiJson);
 
 		Map<String, Object> result = new HashMap<>();
 		result.put("status", "success");

@@ -43,6 +43,24 @@ class MemberMapperNaverLoginSqlTest {
 				.containsPattern("(?is)<update\\s+id=\"setNaverConnection\".*?SET\\s+NAVERLOGIN\\s*=\\s*#\\{id\\s*\\}.*?</update>");
 	}
 
+	/**
+	 * Why: userNaverLoginPro 가 memberNo 를 select 하지 않으면 fe_hotel 의 MyPageController 가
+	 * member.getMemberNo() 로 0/null 을 받아 myPage 가 깨진다. 또 resultType 이 map 이면
+	 * fe_hotel 세션에 LinkedHashMap 이 들어가 (MemberVO) 캐스팅에서 ClassCastException 이 난다.
+	 */
+	@Test
+	void userNaverLoginProReturnsMemberVoWithMemberNo() throws Exception {
+		String xml = mapperXml();
+
+		assertThat(xml)
+				.as("userNaverLoginPro 는 MemberVO 로 매핑되어야 한다 (resultType=map 이면 fe 세션 캐스팅에서 ClassCastException 발생)")
+				.containsPattern("(?is)<select\\s+id=\"userNaverLoginPro\"[^>]*resultType=\"org\\.zerock\\.domain\\.MemberVO\"");
+
+		assertThat(xml)
+				.as("userNaverLoginPro SELECT 절에 memberNo 가 포함되어야 한다 (MyPage 가 memberNo 로 동작함)")
+				.containsPattern("(?is)<select\\s+id=\"userNaverLoginPro\".*?SELECT\\s+[^<]*\\bmemberNo\\b.*?</select>");
+	}
+
 	@Test
 	void userNaverRegisterProInsertColumnsAndValuesAreAligned() throws Exception {
 		String xml = mapperXml();
