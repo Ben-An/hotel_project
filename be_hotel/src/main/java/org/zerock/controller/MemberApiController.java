@@ -67,6 +67,13 @@ public class MemberApiController {
 		return new ResponseEntity<>(result != 0 ? "fail" : "success", HttpStatus.OK);
 	}
 
+	/* 이메일 중복 검사 */
+	@PostMapping("/memberEmailChk")
+	public ResponseEntity<String> memberEmailChk(@RequestParam String memberEmail) throws Exception {
+		int result = memberservice.emailCheck(memberEmail);
+		return new ResponseEntity<>(result != 0 ? "fail" : "success", HttpStatus.OK);
+	}
+
 	/* 이메일 인증 */
 	@GetMapping("/mailCheck")
 	public ResponseEntity<String> mailCheck(@RequestParam String email) throws Exception {

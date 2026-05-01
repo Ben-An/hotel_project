@@ -31,6 +31,9 @@ public interface MemberMapper {
 
 	// 닉네임 중복 검사
 	public int nicknameCheck(String memberNickname);
+
+	// 이메일 중복 검사
+	public int emailCheck(String memberEmail);
 	
 	// ID로 회원 조회 (로그인/비밀번호 검증용)
     public MemberVO memberFindById(String memberId);
