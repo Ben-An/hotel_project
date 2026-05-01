@@ -75,7 +75,12 @@
       <!-- 네이버 가입 -->
       <insert id="userNaverRegisterPro" >
 		insert into member
-		values ((SELECT NVL(MAX(memberNo), 0) + 1 FROM member), #{email},#{id}, #{name}, #{nickname},#{email},#{mobile},#{gender},#{id})
+			(memberNo, memberId, memberPassword, memberName, memberNickname,
+			 memberEmail, memberPhoneNo, memberGender, memberRole, naverLogin)
+		values
+			((SELECT NVL(MAX(memberNo), 0) + 1 FROM member),
+			 #{email}, #{id}, #{name}, #{nickname},
+			 #{email}, #{mobile}, #{gender}, 'USER', #{id})
 	</insert>
 
 </mapper>

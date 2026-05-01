@@ -107,7 +107,8 @@ CREATE TABLE member (
 	memberEmail    VARCHAR2(100) NULL,     -- ����� �̸���
 	memberPhoneNo  VARCHAR2(100) NULL,     -- ����� �ڵ��� ��ȣ
 	memberGender   CHARACTER(1)  NULL,     -- ����� ����
-	memberRole     VARCHAR2(20)  DEFAULT 'USER'  -- ����: USER, ADMIN
+	memberRole     VARCHAR2(20)  DEFAULT 'USER',  -- ����: USER, ADMIN
+	naverLogin     VARCHAR2(100) NULL             -- naver OAuth identifier
 );
 create sequence member_seq start with 1 increment by 1 ;
 ALTER TABLE member ADD CONSTRAINT PK_member PRIMARY KEY (memberNo);
