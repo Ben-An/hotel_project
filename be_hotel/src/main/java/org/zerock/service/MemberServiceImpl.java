@@ -64,6 +64,13 @@ public class MemberServiceImpl implements MemberService{
 		return mapper.nicknameCheck(memberNickname);
 	}
 
+	//이메일 중복 검사
+	@Override
+	public int emailCheck(String memberEmail) throws Exception {
+
+		return mapper.emailCheck(memberEmail);
+	}
+
     // 로그인
     @Override
     public MemberVO memberLogin(MemberVO member) throws Exception {

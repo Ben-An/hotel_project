@@ -75,6 +75,13 @@ public class MemberController {
 		return restTemplate.postForObject(API + "/memberNicknameChk?memberNickname=" + memberNickname, null, String.class);
 	}
 
+	/* 이메일 중복 검사 */
+	@RequestMapping(value = "/memberEmailChk", method = RequestMethod.POST)
+	@ResponseBody
+	public String memberEmailChkPOST(@RequestParam String memberEmail) {
+		return restTemplate.postForObject(API + "/memberEmailChk?memberEmail=" + memberEmail, null, String.class);
+	}
+
 	/* 이메일 인증 */
 	@RequestMapping(value = "/mailCheck", method = RequestMethod.GET)
 	@ResponseBody

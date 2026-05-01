@@ -31,6 +31,12 @@
   		select count(*) from member where memberNickname = #{memberNickname}
 
   	</select>
+  	<!-- 이메일 중복검사 -->
+  	<select id="emailCheck" resultType="int">
+
+  		select count(*) from member where memberEmail = #{memberEmail}
+
+  	</select>
   	
   	<!-- ID로 회원 조회 (비밀번호 포함) -->
     <select id="memberFindById" resultType="org.zerock.domain.MemberVO">

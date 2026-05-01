@@ -80,7 +80,12 @@
 			<!-- Email -->
 			<div class="mb-3">
 				<label class="form-label">이메일</label>
-				<input class="form-control mail_input" type="email" name="memberEmail" placeholder="이메일을 입력하세요">
+				<div class="input-group">
+					<input class="form-control mail_input" type="email" name="memberEmail" placeholder="이메일을 입력하세요">
+					<button class="btn btn-outline-secondary mail_check_dup_button" type="button">중복확인</button>
+				</div>
+				<small class="valid-msg mail_input_re_1">사용 가능한 이메일입니다.</small>
+				<small class="invalid-msg mail_input_re_2">이미 존재하는 이메일입니다.</small>
 				<small class="invalid-msg final_mail_ck">이메일을 입력해주세요.</small>
 				<small class="mail_input_box_warn" style="display:none;"></small>
 
@@ -123,7 +128,7 @@
 var code = "";
 var idCheck = false, idCkCheck = false, pwCheck = false, pwCkCheck = false;
 var pwCkCorCheck = false, nameCheck = false, nickNameCheck = false, nnCkCheck = false;
-var mailCheck = false, mailNumCheck = false;
+var mailCheck = false, mailCkCheck = false, mailNumCheck = false;
 
 $(document).ready(function() {
 	$(".join_button").click(function() {
@@ -143,7 +148,7 @@ $(document).ready(function() {
 		mailCheck = mail !== ""; $('.final_mail_ck').css('display', mail ? 'none' : 'block');
 		$('.final_hp_ck').css('display', fn_mbtlnumChk(phone) ? 'none' : 'block');
 
-		if (idCheck && idCkCheck && pwCheck && pwCkCheck && pwCkCorCheck && nameCheck && nickNameCheck && nnCkCheck && mailCheck && mailNumCheck) {
+		if (idCheck && idCkCheck && pwCheck && pwCkCheck && pwCkCorCheck && nameCheck && nickNameCheck && nnCkCheck && mailCheck && mailCkCheck && mailNumCheck) {
 			$.ajax({
 				type: "POST",
 				url: "/member/join",
@@ -227,10 +232,61 @@ $('.nn_check_button').click(function() {
 	});
 });
 
+// Email change resets duplicate / verification state
+$('.mail_input').on("propertychange change keyup paste input", function() {
+	mailCkCheck = false;
+	mailNumCheck = false;
+	$('.mail_input_re_1').css("display", "none");
+	$('.mail_input_re_2').css("display", "none");
+	$('.mail_input_box_warn').css("display", "none");
+	$('#mail_check_input_box_warn').html("");
+	$('.mail_check_input').val("").attr("disabled", true);
+});
+
+// Email duplicate check button
+$('.mail_check_dup_button').click(function() {
+	var memberEmail = $('.mail_input').val();
+	var warnMsg = $('.mail_input_box_warn');
+
+	if (!memberEmail) {
+		$('.final_mail_ck').css('display', 'block');
+		return;
+	}
+	$('.final_mail_ck').css('display', 'none');
+
+	if (!mailFormCheck(memberEmail)) {
+		warnMsg.html("올바르지 않은 이메일 형식입니다.").css({ "display": "inline-block", "color": "var(--color-danger)" });
+		return;
+	}
+	warnMsg.css('display', 'none');
+
+	$.ajax({
+		type: "post",
+		url: "/member/memberEmailChk",
+		data: { memberEmail: memberEmail },
+		success: function(result) {
+			if (result != 'fail') {
+				$('.mail_input_re_1').css("display", "inline-block");
+				$('.mail_input_re_2').css("display", "none");
+				mailCkCheck = true;
+			} else {
+				$('.mail_input_re_2').css("display", "inline-block");
+				$('.mail_input_re_1').css("display", "none");
+				mailCkCheck = false;
+			}
+		}
+	});
+});
+
 // Email verification
 $(".mail_check_button").click(function() {
 	var email = $(".mail_input").val();
 	var warnMsg = $(".mail_input_box_warn");
+
+	if (!mailCkCheck) {
+		warnMsg.html("이메일 중복확인을 먼저 진행해주세요.").css({ "display": "inline-block", "color": "var(--color-danger)" });
+		return false;
+	}
 
 	if (mailFormCheck(email)) {
 		warnMsg.html("인증 메일이 전송되었습니다.").css({ "display": "inline-block", "color": "var(--color-success)" });
