@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.zerock.domain.AttachImageVO;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
+import org.zerock.domain.HotelAmenityVO;
 import org.zerock.domain.HotelReasonVO;
 import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
@@ -133,5 +134,14 @@ public class DetailApiController {
 	public ResponseEntity<String> deleteReason(@PathVariable("reasonNo") int reasonNo) {
 		return service.deleteReason(reasonNo) == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	/* ===== 편의 시설/서비스 ===== */
+
+	@GetMapping(value = "/amenity", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<HotelAmenityVO>> amenityList(
+			@RequestParam int hotelno,
+			@RequestParam(value = "type", required = false) String amenityType) {
+		return new ResponseEntity<>(service.getAmenityList(hotelno, amenityType), HttpStatus.OK);
 	}
 }
