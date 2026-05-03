@@ -31,34 +31,14 @@
 	<!-- 인기 편의 시설/서비스 -->
 	<section class="mt-5">
 		<h3 class="section-heading">인기 편의 시설/서비스</h3>
-		<div class="d-flex flex-wrap gap-4 mt-3">
-			<div class="d-flex align-items-center gap-2"><i class="bi bi-wifi fs-5 text-primary"></i><span>무료 WiFi</span></div>
-			<div class="d-flex align-items-center gap-2"><i class="bi bi-snow fs-5 text-primary"></i><span>에어컨</span></div>
-			<div class="d-flex align-items-center gap-2"><i class="bi bi-cup-hot fs-5 text-primary"></i><span>세탁 시설</span></div>
-			<div class="d-flex align-items-center gap-2"><i class="bi bi-p-circle fs-5 text-primary"></i><span>무료 주차</span></div>
-			<div class="d-flex align-items-center gap-2"><i class="bi bi-clock fs-5 text-primary"></i><span>매일 24시간 운영 프론트데스크</span></div>
-			<div class="d-flex align-items-center gap-2"><i class="bi bi-shield-check fs-5 text-primary"></i><span>금연</span></div>
-		</div>
+		<div class="d-flex flex-wrap gap-4 mt-3 amenityPopular"></div>
 		<a href="#amenities-detail" class="text-decoration-none mt-2 d-inline-block" data-bs-toggle="collapse" style="color:#1a73e8;">모두 보기 &raquo;</a>
 	</section>
 
 	<!-- 주요 편의 시설 및 서비스 -->
 	<section class="mt-5 collapse" id="amenities-detail">
-		<h5 class="fw-bold mb-3"><i class="bi bi-building"></i> 주요 편의 시설 및 서비스 (12)</h5>
-		<div class="row g-2">
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 무료 WiFi</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 여행 시설 가능</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 무료 주차장</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 비즈니스 센터</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 6 개 회의실</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 24시간 운영 프론트데스크</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 에어컨</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 매일 하우스키핑</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 세탁 서비스</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 룸 서비스, 에어컨 시설</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 컨시어지 서비스</div>
-			<div class="col-md-4"><i class="bi bi-check-lg text-success"></i> 드라이클리닝</div>
-		</div>
+		<h5 class="fw-bold mb-3"><i class="bi bi-building"></i> 주요 편의 시설 및 서비스 <span class="amenityMainCount"></span></h5>
+		<div class="row g-2 amenityMain"></div>
 	</section>
 
 	<!-- 집처럼 편안한 숙소 -->
@@ -265,7 +245,47 @@ $(document).ready(function() {
 			imageUL.html(str);
 			roomService();
 			reasonRender();
+			amenityRender();
 			$("#carousel").find('.carousel-item:first-child').addClass('active');
+		});
+	}
+
+	function amenityRender() {
+		var hotelValue = '<c:out value="${detailList.hotelno}"/>';
+		var $popular = $('.amenityPopular');
+		var $main = $('.amenityMain');
+		var $mainCount = $('.amenityMainCount');
+
+		detailService.amenityList({ hotelno: hotelValue }, function(list) {
+			var popularStr = '';
+			var mainStr = '';
+			var mainCount = 0;
+
+			if (!list || list.length === 0) {
+				$popular.html("<div class='text-muted'>등록된 편의 시설이 없습니다.</div>");
+				$main.html("<div class='col-12 text-muted'>등록된 편의 시설이 없습니다.</div>");
+				$mainCount.text('');
+				return;
+			}
+
+			for (var i = 0; i < list.length; i++) {
+				var a = list[i];
+				var name = escapeHtml(a.amenityName);
+				var icon = escapeAttr(a.amenityIcon || 'bi-check-lg');
+				if (a.amenityType === 'MAIN') {
+					mainStr += "<div class='col-md-4'><i class='bi " + icon + " text-success'></i> " + name + "</div>";
+					mainCount++;
+				} else {
+					popularStr += "<div class='d-flex align-items-center gap-2'><i class='bi " + icon + " fs-5 text-primary'></i><span>" + name + "</span></div>";
+				}
+			}
+
+			$popular.html(popularStr || "<div class='text-muted'>등록된 인기 편의 시설이 없습니다.</div>");
+			$main.html(mainStr || "<div class='col-12 text-muted'>등록된 주요 편의 시설이 없습니다.</div>");
+			$mainCount.text(mainCount > 0 ? '(' + mainCount + ')' : '');
+		}, function() {
+			$popular.html("<div class='text-danger'>편의 시설 정보를 불러오지 못했습니다.</div>");
+			$main.html("<div class='col-12 text-danger'>편의 시설 정보를 불러오지 못했습니다.</div>");
 		});
 	}
 

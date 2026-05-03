@@ -18,6 +18,7 @@ import org.zerock.config.BackendConfig;
 import org.zerock.domain.AttachImageVO;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
+import org.zerock.domain.HotelAmenityVO;
 import org.zerock.domain.HotelReasonVO;
 import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
@@ -194,5 +195,23 @@ public class DetailController {
 	public ResponseEntity<String> deleteReason(@PathVariable("reasonNo") int reasonNo) {
 		restTemplate.delete(API + "/reason/" + reasonNo);
 		return new ResponseEntity<>("success", HttpStatus.OK);
+	}
+
+	/* ===== 편의 시설/서비스 ===== */
+
+	@ResponseBody
+	@GetMapping(value = "/amenity", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<HotelAmenityVO>> amenityList(
+			@RequestParam int hotelno,
+			@RequestParam(value = "type", required = false) String type) {
+		String url = API + "/amenity?hotelno=" + hotelno;
+		if (type != null && !type.isEmpty()) {
+			url += "&type=" + type;
+		}
+		List<HotelAmenityVO> result = restTemplate.exchange(
+				url,
+				HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<HotelAmenityVO>>() {}).getBody();
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }

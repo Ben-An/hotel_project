@@ -8,6 +8,7 @@ import org.zerock.domain.AttachImageVO;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.DetailImage;
 import org.zerock.domain.DetailVO;
+import org.zerock.domain.HotelAmenityVO;
 import org.zerock.domain.HotelReasonVO;
 import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
@@ -135,5 +136,10 @@ public class DetailServiceImpl implements DetailService {
 	@Override
 	public int deleteReason(int reasonNo) {
 		return mapper.deleteReason(reasonNo);
+	}
+
+	@Override
+	public List<HotelAmenityVO> getAmenityList(int hotelNo, String amenityType) {
+		return mapper.amenityList(hotelNo, amenityType);
 	}
 }

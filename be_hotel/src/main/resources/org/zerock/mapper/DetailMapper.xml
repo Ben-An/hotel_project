@@ -204,4 +204,17 @@
 		delete from hotel_reason where reasonNo = #{reasonNo}
 	</delete>
 
+	<!-- 편의 시설/서비스 목록 (amenityType: POPULAR | MAIN | null=전체) -->
+	<select id="amenityList" resultType="org.zerock.domain.HotelAmenityVO">
+		<![CDATA[
+			select amenityNo, hotelNo, amenityName, amenityIcon, amenityType, amenityOrder, regDate
+			from hotel_amenity
+			where hotelNo = #{hotelNo}
+		]]>
+		<if test="amenityType != null and amenityType != ''">
+			and amenityType = #{amenityType}
+		</if>
+		order by amenityOrder asc, amenityNo asc
+	</select>
+
 </mapper>

@@ -10,6 +10,7 @@ import org.zerock.domain.ImageList;
 import org.zerock.domain.PlaceVO;
 import org.zerock.domain.RelyVO;
 import org.zerock.domain.AttachImageVO;
+import org.zerock.domain.HotelAmenityVO;
 import org.zerock.domain.HotelReasonVO;
 import org.zerock.domain.ReplyCriteria;
 import org.zerock.domain.ReplyListVO;
@@ -60,4 +61,8 @@ public interface DetailMapper {
 	public int updateReason(HotelReasonVO vo);
 	public int deleteReason(int reasonNo);
 	public HotelReasonVO getReason(int reasonNo);
+
+	// 편의 시설/서비스 조회
+	public List<HotelAmenityVO> amenityList(@Param("hotelNo") int hotelNo,
+	                                        @Param("amenityType") String amenityType);
 }

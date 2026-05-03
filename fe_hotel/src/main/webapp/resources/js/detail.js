@@ -271,10 +271,22 @@
 			error: function(xhr, status, er) { if (error) error(er); }
 		});
 	}
-	
- 	
- 	
- 	
+
+	/* ===== 편의 시설/서비스 ===== */
+	function amenityList(param, callback, error) {
+		var hotelno = param.hotelno;
+		var url = "/hotel/amenity?hotelno=" + hotelno;
+		if (param.type) {
+			url += "&type=" + encodeURIComponent(param.type);
+		}
+		$.getJSON(url, function(data) {
+			if (callback) callback(data);
+		}).fail(function() {
+			if (error) error();
+		});
+	}
+
+
  	return{
  		list : list,
 
@@ -302,7 +314,9 @@
 
  		updateReason : updateReason,
 
- 		deleteReason : deleteReason
+ 		deleteReason : deleteReason,
+
+ 		amenityList : amenityList
 
 
  	};//함수를 객체로 만들어서 리턴해준다.
