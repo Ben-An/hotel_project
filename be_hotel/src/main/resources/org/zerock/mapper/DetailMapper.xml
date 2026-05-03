@@ -217,4 +217,35 @@
 		order by amenityOrder asc, amenityNo asc
 	</select>
 
+	<!-- 편의 시설/서비스 단건 조회 -->
+	<select id="getAmenity" resultType="org.zerock.domain.HotelAmenityVO">
+		<![CDATA[
+			select amenityNo, hotelNo, amenityName, amenityIcon, amenityType, amenityOrder, regDate
+			from hotel_amenity
+			where amenityNo = #{amenityNo}
+		]]>
+	</select>
+
+	<!-- 편의 시설/서비스 추가 -->
+	<insert id="insertAmenity">
+		insert into hotel_amenity(amenityNo, hotelNo, amenityName, amenityIcon, amenityType, amenityOrder, regDate)
+		values (hotel_amenity_seq.nextval, #{hotelNo}, #{amenityName}, #{amenityIcon},
+		        #{amenityType}, #{amenityOrder}, sysdate)
+	</insert>
+
+	<!-- 편의 시설/서비스 수정 -->
+	<update id="updateAmenity">
+		update hotel_amenity
+		set amenityName  = #{amenityName},
+		    amenityIcon  = #{amenityIcon},
+		    amenityType  = #{amenityType},
+		    amenityOrder = #{amenityOrder}
+		where amenityNo = #{amenityNo}
+	</update>
+
+	<!-- 편의 시설/서비스 삭제 -->
+	<delete id="deleteAmenity">
+		delete from hotel_amenity where amenityNo = #{amenityNo}
+	</delete>
+
 </mapper>

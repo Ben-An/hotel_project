@@ -286,6 +286,37 @@
 		});
 	}
 
+	function addAmenity(amenity, callback, error) {
+		$.ajax({
+			type: 'post',
+			url: '/hotel/amenity',
+			data: JSON.stringify(amenity),
+			contentType: "application/json; charset=utf-8",
+			success: function(result) { if (callback) callback(result); },
+			error: function(xhr, status, er) { if (error) error(er); }
+		});
+	}
+
+	function updateAmenity(amenity, callback, error) {
+		$.ajax({
+			type: 'put',
+			url: '/hotel/amenity',
+			data: JSON.stringify(amenity),
+			contentType: "application/json; charset=utf-8",
+			success: function(result) { if (callback) callback(result); },
+			error: function(xhr, status, er) { if (error) error(er); }
+		});
+	}
+
+	function deleteAmenity(amenityNo, callback, error) {
+		$.ajax({
+			type: 'delete',
+			url: '/hotel/amenity/' + amenityNo,
+			success: function(result) { if (callback) callback(result); },
+			error: function(xhr, status, er) { if (error) error(er); }
+		});
+	}
+
 
  	return{
  		list : list,
@@ -316,7 +347,13 @@
 
  		deleteReason : deleteReason,
 
- 		amenityList : amenityList
+ 		amenityList : amenityList,
+
+ 		addAmenity : addAmenity,
+
+ 		updateAmenity : updateAmenity,
+
+ 		deleteAmenity : deleteAmenity
 
 
  	};//함수를 객체로 만들어서 리턴해준다.

@@ -144,4 +144,22 @@ public class DetailApiController {
 			@RequestParam(value = "type", required = false) String amenityType) {
 		return new ResponseEntity<>(service.getAmenityList(hotelno, amenityType), HttpStatus.OK);
 	}
+
+	@PostMapping(value = "/amenity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> insertAmenity(@RequestBody HotelAmenityVO vo) {
+		return service.insertAmenity(vo) == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@PutMapping(value = "/amenity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> updateAmenity(@RequestBody HotelAmenityVO vo) {
+		return service.updateAmenity(vo) == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@DeleteMapping(value = "/amenity/{amenityNo}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> deleteAmenity(@PathVariable("amenityNo") int amenityNo) {
+		return service.deleteAmenity(amenityNo) == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

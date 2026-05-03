@@ -142,4 +142,24 @@ public class DetailServiceImpl implements DetailService {
 	public List<HotelAmenityVO> getAmenityList(int hotelNo, String amenityType) {
 		return mapper.amenityList(hotelNo, amenityType);
 	}
+
+	@Override
+	public HotelAmenityVO getAmenity(int amenityNo) {
+		return mapper.getAmenity(amenityNo);
+	}
+
+	@Override
+	public int insertAmenity(HotelAmenityVO vo) {
+		return mapper.insertAmenity(vo);
+	}
+
+	@Override
+	public int updateAmenity(HotelAmenityVO vo) {
+		return mapper.updateAmenity(vo);
+	}
+
+	@Override
+	public int deleteAmenity(int amenityNo) {
+		return mapper.deleteAmenity(amenityNo);
+	}
 }
