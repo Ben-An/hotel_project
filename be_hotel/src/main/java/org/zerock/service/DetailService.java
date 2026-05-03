@@ -56,6 +56,10 @@ public interface DetailService {
 	public int updateReason(HotelReasonVO vo);
 	public int deleteReason(int reasonNo);
 
-	// 편의 시설/서비스 조회
+	// 편의 시설/서비스 조회 + CRUD
 	public List<HotelAmenityVO> getAmenityList(int hotelNo, String amenityType);
+	public HotelAmenityVO getAmenity(int amenityNo);
+	public int insertAmenity(HotelAmenityVO vo);
+	public int updateAmenity(HotelAmenityVO vo);
+	public int deleteAmenity(int amenityNo);
 }

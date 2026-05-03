@@ -30,14 +30,24 @@
 
 	<!-- 인기 편의 시설/서비스 -->
 	<section class="mt-5">
-		<h3 class="section-heading">인기 편의 시설/서비스</h3>
+		<div class="d-flex align-items-center justify-content-between">
+			<h3 class="section-heading mb-0">인기 편의 시설/서비스</h3>
+			<c:if test="${member.memberRole == 'MASTER' or member.memberRole == 'ADMIN'}">
+			<button type="button" class="btn btn-sm btn-primary-hotel btn-add-amenity" data-type="POPULAR"><i class="bi bi-plus-lg"></i> 추가</button>
+			</c:if>
+		</div>
 		<div class="d-flex flex-wrap gap-4 mt-3 amenityPopular"></div>
 		<a href="#amenities-detail" class="text-decoration-none mt-2 d-inline-block" data-bs-toggle="collapse" style="color:#1a73e8;">모두 보기 &raquo;</a>
 	</section>
 
 	<!-- 주요 편의 시설 및 서비스 -->
 	<section class="mt-5 collapse" id="amenities-detail">
-		<h5 class="fw-bold mb-3"><i class="bi bi-building"></i> 주요 편의 시설 및 서비스 <span class="amenityMainCount"></span></h5>
+		<div class="d-flex align-items-center justify-content-between mb-3">
+			<h5 class="fw-bold mb-0"><i class="bi bi-building"></i> 주요 편의 시설 및 서비스 <span class="amenityMainCount"></span></h5>
+			<c:if test="${member.memberRole == 'MASTER' or member.memberRole == 'ADMIN'}">
+			<button type="button" class="btn btn-sm btn-outline-primary btn-add-amenity" data-type="MAIN"><i class="bi bi-plus-lg"></i> 추가</button>
+			</c:if>
+		</div>
 		<div class="row g-2 amenityMain"></div>
 	</section>
 
@@ -219,6 +229,46 @@
 		</div>
 	</div>
 </div>
+
+<!-- Amenity Add/Edit Modal -->
+<div class="modal fade" id="amenityModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="amenityModalTitle">편의 시설 추가</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="amenityModalAmenityNo">
+				<div class="mb-3">
+					<label class="form-label">시설명</label>
+					<input type="text" class="form-control" id="amenityModalName" placeholder="예: 무료 WiFi" maxlength="100">
+				</div>
+				<div class="mb-3">
+					<label class="form-label">아이콘 클래스</label>
+					<input type="text" class="form-control" id="amenityModalIcon" placeholder="예: bi-wifi, bi-snow, bi-check-lg" maxlength="100">
+					<small class="text-muted">Bootstrap Icons 클래스명 (<a href="https://icons.getbootstrap.com/" target="_blank">목록</a>)</small>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">분류</label>
+					<select class="form-select" id="amenityModalType">
+						<option value="POPULAR">인기 편의 시설 (POPULAR)</option>
+						<option value="MAIN">주요 편의 시설 (MAIN)</option>
+					</select>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">정렬 순서</label>
+					<input type="number" class="form-control" id="amenityModalOrder" value="0" min="0">
+					<small class="text-muted">작은 값이 먼저 표시됩니다</small>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary-hotel" id="btnAmenitySave">저장</button>
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+			</div>
+		</div>
+	</div>
+</div>
 </c:if>
 
 <script type="text/javascript" src="/resources/js/util.js"></script>
@@ -272,16 +322,31 @@ $(document).ready(function() {
 				var a = list[i];
 				var name = escapeHtml(a.amenityName);
 				var icon = escapeAttr(a.amenityIcon || 'bi-check-lg');
+				var adminBtns = '';
+				if (isAdmin) {
+					adminBtns = "<span class='ms-1 d-inline-flex gap-1 align-middle'>"
+						+ "<button type='button' class='btn btn-sm btn-link p-0 btn-edit-amenity' "
+						+ "data-amenityno='" + a.amenityNo + "' "
+						+ "data-name='" + escapeAttr(a.amenityName) + "' "
+						+ "data-icon='" + escapeAttr(a.amenityIcon || '') + "' "
+						+ "data-type='" + escapeAttr(a.amenityType) + "' "
+						+ "data-order='" + (a.amenityOrder || 0) + "'"
+						+ " title='수정'><i class='bi bi-pencil text-secondary'></i></button>"
+						+ "<button type='button' class='btn btn-sm btn-link p-0 btn-delete-amenity' "
+						+ "data-amenityno='" + a.amenityNo + "' title='삭제'><i class='bi bi-trash text-danger'></i></button>"
+						+ "</span>";
+				}
 				if (a.amenityType === 'MAIN') {
-					mainStr += "<div class='col-md-4'><i class='bi " + icon + " text-success'></i> " + name + "</div>";
+					mainStr += "<div class='col-md-4'><i class='bi " + icon + " text-success'></i> " + name + adminBtns + "</div>";
 					mainCount++;
 				} else {
-					popularStr += "<div class='d-flex align-items-center gap-2'><i class='bi " + icon + " fs-5 text-primary'></i><span>" + name + "</span></div>";
+					popularStr += "<div class='d-flex align-items-center gap-2'><i class='bi " + icon + " fs-5 text-primary'></i><span>" + name + "</span>" + adminBtns + "</div>";
 				}
 			}
 
-			$popular.html(popularStr || "<div class='text-muted'>등록된 인기 편의 시설이 없습니다.</div>");
-			$main.html(mainStr || "<div class='col-12 text-muted'>등록된 주요 편의 시설이 없습니다.</div>");
+			var emptyAdminHint = isAdmin ? " '추가' 버튼을 눌러 등록해 주세요." : "";
+			$popular.html(popularStr || ("<div class='text-muted'>등록된 인기 편의 시설이 없습니다." + emptyAdminHint + "</div>"));
+			$main.html(mainStr || ("<div class='col-12 text-muted'>등록된 주요 편의 시설이 없습니다." + emptyAdminHint + "</div>"));
 			$mainCount.text(mainCount > 0 ? '(' + mainCount + ')' : '');
 		}, function() {
 			$popular.html("<div class='text-danger'>편의 시설 정보를 불러오지 못했습니다.</div>");
@@ -750,6 +815,80 @@ $(document).ready(function() {
 			detailService.deleteReason(reasonNo, function() {
 				alert('삭제되었습니다.');
 				reasonRender();
+			}, function() { alert('삭제에 실패했습니다.'); });
+		});
+
+		/* ===== 편의 시설/서비스 관리 ===== */
+		function resetAmenityModal() {
+			$('#amenityModalAmenityNo').val('');
+			$('#amenityModalName').val('');
+			$('#amenityModalIcon').val('');
+			$('#amenityModalType').val('POPULAR');
+			$('#amenityModalOrder').val(0);
+		}
+
+		$(document).on('click', '.btn-add-amenity', function() {
+			var presetType = $(this).data('type') || 'POPULAR';
+			$('#amenityModalTitle').text('편의 시설 추가');
+			resetAmenityModal();
+			$('#amenityModalType').val(presetType);
+			new bootstrap.Modal(document.getElementById('amenityModal')).show();
+		});
+
+		$(document).on('click', '.btn-edit-amenity', function() {
+			var $btn = $(this);
+			$('#amenityModalTitle').text('편의 시설 수정');
+			resetAmenityModal();
+			$('#amenityModalAmenityNo').val($btn.data('amenityno'));
+			$('#amenityModalName').val($btn.data('name'));
+			$('#amenityModalIcon').val($btn.data('icon'));
+			$('#amenityModalType').val($btn.data('type') || 'POPULAR');
+			$('#amenityModalOrder').val($btn.data('order') || 0);
+			new bootstrap.Modal(document.getElementById('amenityModal')).show();
+		});
+
+		$('#btnAmenitySave').on('click', function() {
+			var amenityNo = $('#amenityModalAmenityNo').val();
+			var name = $('#amenityModalName').val().trim();
+			var icon = $('#amenityModalIcon').val().trim();
+			var type = $('#amenityModalType').val();
+			var order = parseInt($('#amenityModalOrder').val(), 10);
+			if (isNaN(order)) order = 0;
+
+			if (!name) { alert('시설명을 입력해주세요.'); return; }
+			if (!icon) { alert('아이콘 클래스를 입력해주세요. (예: bi-wifi)'); return; }
+			if (type !== 'POPULAR' && type !== 'MAIN') { alert('분류를 선택해주세요.'); return; }
+
+			var data = {
+				hotelNo: parseInt(hotelNo),
+				amenityName: name,
+				amenityIcon: icon,
+				amenityType: type,
+				amenityOrder: order
+			};
+
+			if (amenityNo) {
+				data.amenityNo = parseInt(amenityNo);
+				detailService.updateAmenity(data, function() {
+					bootstrap.Modal.getInstance(document.getElementById('amenityModal')).hide();
+					alert('수정되었습니다.');
+					amenityRender();
+				}, function() { alert('수정에 실패했습니다.'); });
+			} else {
+				detailService.addAmenity(data, function() {
+					bootstrap.Modal.getInstance(document.getElementById('amenityModal')).hide();
+					alert('추가되었습니다.');
+					amenityRender();
+				}, function() { alert('추가에 실패했습니다.'); });
+			}
+		});
+
+		$(document).on('click', '.btn-delete-amenity', function() {
+			if (!confirm('이 편의 시설을 삭제하시겠습니까?')) return;
+			var amenityNo = $(this).data('amenityno');
+			detailService.deleteAmenity(amenityNo, function() {
+				alert('삭제되었습니다.');
+				amenityRender();
 			}, function() { alert('삭제에 실패했습니다.'); });
 		});
 	}

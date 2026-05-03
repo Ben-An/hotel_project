@@ -214,4 +214,31 @@ public class DetailController {
 				new ParameterizedTypeReference<List<HotelAmenityVO>>() {}).getBody();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+
+	@ResponseBody
+	@PostMapping(value = "/amenity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> insertAmenity(@RequestBody HotelAmenityVO vo) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<HotelAmenityVO> entity = new HttpEntity<>(vo, headers);
+		String result = restTemplate.postForObject(API + "/amenity", entity, String.class);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@ResponseBody
+	@PutMapping(value = "/amenity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> updateAmenity(@RequestBody HotelAmenityVO vo) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<HotelAmenityVO> entity = new HttpEntity<>(vo, headers);
+		restTemplate.put(API + "/amenity", entity);
+		return new ResponseEntity<>("success", HttpStatus.OK);
+	}
+
+	@ResponseBody
+	@DeleteMapping(value = "/amenity/{amenityNo}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> deleteAmenity(@PathVariable("amenityNo") int amenityNo) {
+		restTemplate.delete(API + "/amenity/" + amenityNo);
+		return new ResponseEntity<>("success", HttpStatus.OK);
+	}
 }
