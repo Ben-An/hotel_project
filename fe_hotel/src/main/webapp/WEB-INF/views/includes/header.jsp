@@ -455,6 +455,8 @@ $(function() {
 	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 	<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 	<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+	<input type="hidden" name="checkIn"  value="${param.checkIn}">
+	<input type="hidden" name="checkOut" value="${param.checkOut}">
 </form>
 
 <script>
@@ -483,6 +485,27 @@ $(".search-btn").on("click", function(e) {
 	var keyword = $("#searchValue").val() || $("#searchInput").val();
 	searchForm.find("input[name='keyword']").val(keyword);
 	searchForm.find("input[name='pageNum']").val(1);
+
+	// 체크인 / 체크아웃 (둘 다 선택했을 때만 백엔드로 전달)
+	var ci = $("#checkinInput").val();
+	var co = $("#checkoutInput").val();
+	if (ci && co) {
+		searchForm.find("input[name='checkIn']").val(ci);
+		searchForm.find("input[name='checkOut']").val(co);
+	} else {
+		searchForm.find("input[name='checkIn']").val('');
+		searchForm.find("input[name='checkOut']").val('');
+	}
+
 	searchForm.submit();
 });
+
+// search_normal 진입 시 URL 파라미터로 들어온 체크인/체크아웃 값을 입력란에 복원
+(function restoreCheckInOut() {
+	var qs = new URLSearchParams(location.search);
+	var ci = qs.get('checkIn');
+	var co = qs.get('checkOut');
+	if (ci) $("#checkinInput").val(ci);
+	if (co) $("#checkoutInput").val(co);
+})();
 </script>

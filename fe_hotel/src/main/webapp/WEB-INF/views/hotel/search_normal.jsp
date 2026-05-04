@@ -16,8 +16,33 @@
 
 		<!-- Hotel List -->
 		<div class="col-lg-9" id="contentList">
+			<c:if test="${not empty param.checkIn and not empty param.checkOut}">
+				<div class="alert alert-light border d-flex align-items-center justify-content-between mb-3 py-2 px-3">
+					<div>
+						<i class="bi bi-calendar2-week"></i>
+						<strong>${param.checkIn}</strong> ~ <strong>${param.checkOut}</strong>
+						<span class="text-muted ms-2">선택한 기간에 예약 가능한 숙소</span>
+					</div>
+					<span class="badge bg-secondary">${empty list ? 0 : list.size()}건</span>
+				</div>
+			</c:if>
+
+			<c:if test="${empty list}">
+				<div class="alert alert-warning text-center my-4">
+					<i class="bi bi-exclamation-circle"></i>
+					<c:choose>
+						<c:when test="${not empty param.checkIn and not empty param.checkOut}">
+							선택한 기간(${param.checkIn} ~ ${param.checkOut})에 예약 가능한 숙소가 없습니다. 다른 날짜를 선택해 주세요.
+						</c:when>
+						<c:otherwise>
+							조건에 맞는 숙소가 없습니다.
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</c:if>
+
 			<c:forEach var="item" items="${list}">
-				<a href="/hotel/detail?hotelno=${item.hotelno}">
+				<a href="/hotel/detail?hotelno=${item.hotelno}<c:if test='${not empty param.checkIn}'>&checkIn=${param.checkIn}</c:if><c:if test='${not empty param.checkOut}'>&checkOut=${param.checkOut}</c:if>">
 					<div class="hotel-list-card hotelContent">
 						<c:if test="${not empty item.hotelFileName}">
 							<img src="/hotel/display?fileName=${item.hotelFileName}" class="card-img-left d-none d-md-block" alt="${item.realhotelName}">
