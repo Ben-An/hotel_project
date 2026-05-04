@@ -94,6 +94,20 @@
 					OR h.hotelName LIKE '%'||#{keyword}||'%'
 				)
 			</if>
+			<if test="checkIn != null and checkIn != '' and checkOut != null and checkOut != ''">
+				AND EXISTS (
+					SELECT 1
+					FROM hotel_room hr
+					WHERE hr.hotelNo = h.hotelNo
+					AND NOT EXISTS (
+						SELECT 1
+						FROM reservation r
+						WHERE r.roomNo = hr.roomNo
+						AND r.checkInDate  &lt; TO_DATE(#{checkOut}, 'YYYY-MM-DD')
+						AND r.checkOutDate &gt; TO_DATE(#{checkIn},  'YYYY-MM-DD')
+					)
+				)
+			</if>
 		</where>
 		order by h.hotelRegistDate desc
 	</select>
