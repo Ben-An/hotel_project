@@ -75,34 +75,8 @@
 		<div class="row g-4 mt-2 reasonDetail"></div>
 	</section>
 
-	<!-- Room Options -->
+	<!-- Rooms -->
 	<section class="mt-5 mb-5">
-		<h3 class="section-heading mb-0">객실 옵션</h3>
-		<p class="text-muted mt-1 mb-3">이 날짜의 예약 가능 여부 확인</p>
-
-		<!-- Date Tabs -->
-		<ul class="nav nav-tabs mb-3" id="dateTabs" role="tablist">
-			<li class="nav-item" role="presentation">
-				<button class="nav-link active" type="button" id="tab-tonight">오늘 밤<br><small class="text-muted" id="tab-tonight-date"></small></button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" type="button" id="tab-tomorrow">내일<br><small class="text-muted" id="tab-tomorrow-date"></small></button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" type="button" id="tab-weekend">이번 주말<br><small class="text-muted" id="tab-weekend-date"></small></button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" type="button" id="tab-next-weekend">다음 주말<br><small class="text-muted" id="tab-next-weekend-date"></small></button>
-			</li>
-		</ul>
-
-		<!-- Bed Filter -->
-		<div class="d-flex gap-2 mb-4">
-			<button class="btn btn-sm btn-outline-secondary rounded-pill room-filter active" data-filter="all">모든 객실</button>
-			<button class="btn btn-sm btn-outline-secondary rounded-pill room-filter" data-filter="1">침대 1개</button>
-			<button class="btn btn-sm btn-outline-secondary rounded-pill room-filter" data-filter="2">침대 2개</button>
-		</div>
-
 		<c:if test="${member.memberRole == 'MASTER' or member.memberRole == 'ADMIN'}">
 		<div class="mb-3">
 			<button type="button" class="btn btn-sm btn-primary-hotel" id="btnAddRoom"><i class="bi bi-plus-lg"></i> 객실 추가</button>
@@ -442,7 +416,7 @@ $(document).ready(function() {
 				str += "</div>";
 				str += "<a href='#' class='text-decoration-none small mb-3' style='color:#1a73e8;'>자세히 보기 &raquo;</a>";
 				str += "<div class='mt-auto'>";
-				str += "<a href='/hotel/reservation?roomno=" + roomList[i].roomno + "' class='btn btn-primary-hotel w-100'>요금 보기</a>";
+				str += "<button type='button' class='btn btn-primary-hotel w-100 btn-show-rates' data-roomno='" + roomList[i].roomno + "'>요금 보기</button>";
 				str += "</div>";
 				if (isAdmin) {
 					str += "<div class='d-flex gap-1 mt-2 justify-content-end'>";
@@ -458,39 +432,14 @@ $(document).ready(function() {
 		});
 	}
 
-	/* Date Tabs */
-	(function() {
-		var now = new Date();
-		var m = now.getMonth() + 1, d = now.getDate();
-		var tomorrow = new Date(now); tomorrow.setDate(d + 1);
-		var dayOfWeek = now.getDay();
-		var satOffset = (6 - dayOfWeek + 7) % 7; if (satOffset === 0) satOffset = 7;
-		var weekend = new Date(now); weekend.setDate(d + satOffset);
-		var weekendSun = new Date(weekend); weekendSun.setDate(weekend.getDate() + 1);
-		var nextWeekend = new Date(weekend); nextWeekend.setDate(weekend.getDate() + 7);
-		var nextWeekendSun = new Date(nextWeekend); nextWeekendSun.setDate(nextWeekend.getDate() + 1);
-		function fmt(a, b) { return (a.getMonth()+1) + '월 ' + a.getDate() + '일 ~ ' + (b.getMonth()+1) + '월 ' + b.getDate() + '일'; }
-		$('#tab-tonight-date').text(m + '월 ' + d + '일 ~ ' + (tomorrow.getMonth()+1) + '월 ' + tomorrow.getDate() + '일');
-		$('#tab-tomorrow-date').text((tomorrow.getMonth()+1) + '월 ' + tomorrow.getDate() + '일 ~ ' + (tomorrow.getMonth()+1) + '월 ' + (tomorrow.getDate()+1) + '일');
-		$('#tab-weekend-date').text(fmt(weekend, weekendSun));
-		$('#tab-next-weekend-date').text(fmt(nextWeekend, nextWeekendSun));
-		$('#dateTabs .nav-link').on('click', function() {
-			$('#dateTabs .nav-link').removeClass('active');
-			$(this).addClass('active');
-		});
-	})();
-
-	/* Room Filter */
-	$(document).on('click', '.room-filter', function() {
-		$('.room-filter').removeClass('active');
-		$(this).addClass('active');
-		var filter = $(this).data('filter');
-		if (filter === 'all') {
-			$('.room-item').show();
-		} else {
-			$('.room-item').hide();
-			$('.room-item[data-bedno="' + filter + '"]').show();
-		}
+	/* 요금 보기 버튼 → 검색 바로 스크롤 + focus */
+	$(document).on('click', '.btn-show-rates', function(e) {
+		e.preventDefault();
+		var wrapper = document.querySelector('.search-bar-wrapper');
+		if (!wrapper) return;
+		if (!wrapper.hasAttribute('tabindex')) wrapper.setAttribute('tabindex', '-1');
+		wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		wrapper.focus({ preventScroll: true });
 	});
 
 	/* (place and review services removed) */

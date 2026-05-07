@@ -367,7 +367,7 @@ $(function() {
 	</div>
 
 	<!-- Search bar card overlapping hero bottom -->
-	<div class="container search-bar-wrapper">
+	<div class="container search-bar-wrapper" tabindex="-1">
 		<div class="search-bar">
 			<div class="search-field destination-field">
 				<label>목적지</label>
