@@ -9,7 +9,7 @@
 	<select id="myReservationList" resultType="org.zerock.domain.ReservationVO">
 
 		  	select r.reservationNo,
-		  	       rh.realhotelname,
+		  	       COALESCE(rh.realhotelname, h.hotelName) as realhotelname,
 		  	       hr.roomname,
 		  	       r.realUser,
 		  	       r.userAmount,
@@ -18,7 +18,7 @@
 		  	from reservation r
 		  	join hotel_room hr on r.roomNo = hr.roomNo
 		  	join hotel h on hr.hotelNo = h.hotelNo
-		  	join realhotel rh on h.realhotelno = rh.realhotelno
+		  	left join realhotel rh on h.realhotelno = rh.realhotelno
 			where r.memberno = #{memberno}
 			order by r.reservationNo desc
 
@@ -40,11 +40,13 @@
 	<select id="myWishList" resultType="org.zerock.domain.WishListVO">
 
 		  	select h.hotelno,
-		  	       rh.realhotelname,
-		  	       rh.state,
+		  	       COALESCE(rh.realhotelname, h.hotelName) as realhotelname,
+		  	       COALESCE(rh.state, h.mainAddress) as state,
 		  	       (select min(hi.hotelFileName) from hotel_image hi where hi.hotelNo = h.hotelNo) as hotelFileName
-		  	from realhotel rh, hotel h, wishList w
-			where rh.realhotelno = h.realhotelno and h.hotelno = w.hotelno and w.memberno = #{memberno}
+		  	from hotel h
+		  	left join realhotel rh on h.realhotelno = rh.realhotelno
+		  	join wishList w on w.hotelno = h.hotelno
+			where w.memberno = #{memberno}
 
 	</select>
 
