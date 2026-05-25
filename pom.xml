@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.zerock</groupId>
+	<artifactId>hotel-parent</artifactId>
+	<name>hotel-parent</name>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<!--
+		집합(aggregation) 전용 pom.
+		각 모듈의 <parent>는 그대로 유지(be_hotel=spring-boot-starter-parent, fe_hotel=없음).
+		reactor가 hotel-common 의존 관계를 보고 common -> be/fe 순서로 빌드한다.
+	-->
+	<modules>
+		<module>hotel-common</module>
+		<module>be_hotel</module>
+		<module>fe_hotel</module>
+	</modules>
+</project>

@@ -1,4 +1,4 @@
-package org.zerock.domain;
+package org.zerock.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

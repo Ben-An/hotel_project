@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.domain.MemberVO;
-import org.zerock.domain.NaverLoginBO;
+import org.zerock.service.NaverLoginBO;
 import org.zerock.domain.validation.ValidationGroups.Delete;
 import org.zerock.domain.validation.ValidationGroups.Join;
 import org.zerock.domain.validation.ValidationGroups.Login;

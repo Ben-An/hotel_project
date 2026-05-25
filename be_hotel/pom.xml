@@ -22,6 +22,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- 공통 도메인 모듈 (VO / validation / util) -->
+		<dependency>
+			<groupId>org.zerock</groupId>
+			<artifactId>hotel-common</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<!-- Spring Boot Starters (Tomcat 제외, Undertow 사용) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

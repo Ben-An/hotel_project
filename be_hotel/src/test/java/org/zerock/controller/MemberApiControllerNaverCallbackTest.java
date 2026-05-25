@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.zerock.domain.MemberVO;
-import org.zerock.domain.NaverLoginBO;
+import org.zerock.service.NaverLoginBO;
 import org.zerock.service.MemberService;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;

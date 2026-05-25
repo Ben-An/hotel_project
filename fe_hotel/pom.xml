@@ -18,6 +18,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- 공통 도메인 모듈 (VO / validation / util) -->
+		<dependency>
+			<groupId>org.zerock</groupId>
+			<artifactId>hotel-common</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

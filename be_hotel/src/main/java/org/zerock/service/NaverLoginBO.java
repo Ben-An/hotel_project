@@ -1,4 +1,4 @@
-package org.zerock.domain;
+package org.zerock.service;
 
 import java.io.IOException;
 import java.util.Map;
