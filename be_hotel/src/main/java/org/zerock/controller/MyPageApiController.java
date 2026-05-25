@@ -36,4 +36,27 @@ public class MyPageApiController {
 	public ResponseEntity<List<WishListVO>> getWishList(@RequestParam int memberno) {
 		return new ResponseEntity<>(service.getWishList(memberno), HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/wish/check", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> checkWish(@RequestParam int memberno, @RequestParam int hotelno) {
+		return new ResponseEntity<>(service.isWished(memberno, hotelno), HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/wish", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> addWish(@RequestParam int memberno, @RequestParam int hotelno) {
+		return service.addWish(memberno, hotelno) ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@DeleteMapping(value = "/wish", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> removeWish(@RequestParam int memberno, @RequestParam int hotelno) {
+		return service.removeWish(memberno, hotelno) ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@DeleteMapping(value = "/reservation/{reservationNo}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> cancelReservation(@PathVariable int reservationNo, @RequestParam int memberno) {
+		return service.cancelReservation(reservationNo, memberno) ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

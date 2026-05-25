@@ -12,7 +12,8 @@ import lombok.ToString;
 
 @Data
 public class ReservationVO {
-	
+
+	private int reservationNo;
 	private String realhotelname;
 	private String roomname;
 	private Date checkIndate;

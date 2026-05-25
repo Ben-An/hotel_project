@@ -104,8 +104,8 @@
  			},
  			error : function(xhr,status,er){
  				if(error){
- 					eorror(er);
- 					
+ 					error(er);
+
  				}
  			}
  			

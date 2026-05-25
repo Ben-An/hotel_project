@@ -75,4 +75,56 @@ public class MyPageController {
 				new ParameterizedTypeReference<List<WishListVO>>() {}).getBody();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+
+	/* ===== 찜(위시리스트) 토글 — 세션 회원 기준 ===== */
+
+	@ResponseBody
+	@GetMapping(value = "/wish/check", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> checkWish(@RequestParam int hotelNo, HttpSession session) {
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		if (member == null) {
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		Boolean wished = restTemplate.getForObject(
+				API + "/wish/check?memberno=" + member.getMemberNo() + "&hotelno=" + hotelNo,
+				Boolean.class);
+		return new ResponseEntity<>(Boolean.TRUE.equals(wished), HttpStatus.OK);
+	}
+
+	@ResponseBody
+	@PostMapping(value = "/wish", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> addWish(@RequestParam int hotelNo, HttpSession session) {
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		if (member == null) {
+			return new ResponseEntity<>("login", HttpStatus.UNAUTHORIZED);
+		}
+		restTemplate.postForObject(
+				API + "/wish?memberno=" + member.getMemberNo() + "&hotelno=" + hotelNo,
+				null, String.class);
+		return new ResponseEntity<>("success", HttpStatus.OK);
+	}
+
+	@ResponseBody
+	@DeleteMapping(value = "/wish", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> removeWish(@RequestParam int hotelNo, HttpSession session) {
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		if (member == null) {
+			return new ResponseEntity<>("login", HttpStatus.UNAUTHORIZED);
+		}
+		restTemplate.delete(API + "/wish?memberno=" + member.getMemberNo() + "&hotelno=" + hotelNo);
+		return new ResponseEntity<>("success", HttpStatus.OK);
+	}
+
+	/* ===== 예약 취소 — 세션 회원 기준(본인 예약만) ===== */
+
+	@ResponseBody
+	@DeleteMapping(value = "/reservation/{reservationNo}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> cancelReservation(@PathVariable int reservationNo, HttpSession session) {
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		if (member == null) {
+			return new ResponseEntity<>("login", HttpStatus.UNAUTHORIZED);
+		}
+		restTemplate.delete(API + "/reservation/" + reservationNo + "?memberno=" + member.getMemberNo());
+		return new ResponseEntity<>("success", HttpStatus.OK);
+	}
 }

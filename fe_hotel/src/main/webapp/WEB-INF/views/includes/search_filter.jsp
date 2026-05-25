@@ -106,4 +106,14 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- 필터 적용 -->
+	<div class="filter-section">
+		<div class="d-grid gap-2">
+			<button type="button" class="btn btn-primary-hotel" id="btnApplyFilter">
+				<i class="bi bi-funnel"></i> 필터 적용
+			</button>
+			<button type="button" class="btn btn-outline-secondary btn-sm" id="btnResetFilter">초기화</button>
+		</div>
+	</div>
 </div>

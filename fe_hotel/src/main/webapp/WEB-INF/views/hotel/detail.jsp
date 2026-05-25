@@ -28,6 +28,13 @@
 		</c:if>
 	</div>
 
+	<!-- 찜하기 -->
+	<div class="mt-3">
+		<button type="button" class="btn btn-outline-danger" id="btnWish" data-wished="false">
+			<i class="bi bi-heart" id="wishIcon"></i> <span id="wishLabel">찜하기</span>
+		</button>
+	</div>
+
 	<!-- 인기 편의 시설/서비스 -->
 	<section class="mt-5">
 		<div class="d-flex align-items-center justify-content-between">
@@ -84,6 +91,49 @@
 		</c:if>
 
 		<div class="row g-3 roomDetail"></div>
+	</section>
+
+	<!-- 이용 후기 (Reviews) -->
+	<section class="mt-5 mb-5" id="reviews">
+		<div class="d-flex align-items-center justify-content-between mb-3">
+			<h3 class="section-heading mb-0">이용 후기 <span class="review-count text-muted fs-6"></span></h3>
+			<div class="review-avg fw-bold"></div>
+		</div>
+
+		<c:if test="${member != null}">
+		<div class="card border shadow-sm mb-4">
+			<div class="card-body">
+				<h6 class="fw-bold mb-3">후기 작성</h6>
+				<div class="mb-2" style="max-width:160px;">
+					<label class="form-label mb-1">평점</label>
+					<select class="form-select form-select-sm" id="reviewGrade">
+						<option value="5">★★★★★ (5)</option>
+						<option value="4">★★★★ (4)</option>
+						<option value="3">★★★ (3)</option>
+						<option value="2">★★ (2)</option>
+						<option value="1">★ (1)</option>
+					</select>
+				</div>
+				<div class="mb-2">
+					<textarea class="form-control" id="reviewContent" rows="3" maxlength="500"
+						placeholder="숙소 이용 경험을 10자 이상 남겨주세요. (최대 500자)"></textarea>
+				</div>
+				<div class="text-end">
+					<button type="button" class="btn btn-primary-hotel btn-sm" id="btnReviewSubmit">
+						<i class="bi bi-pencil-square"></i> 등록
+					</button>
+				</div>
+			</div>
+		</div>
+		</c:if>
+		<c:if test="${member == null}">
+		<div class="alert alert-light border mb-4">
+			후기를 작성하시려면 <a href="/member/login">로그인</a>이 필요합니다.
+		</div>
+		</c:if>
+
+		<div class="reviewList"></div>
+		<nav class="mt-3"><ul class="pagination justify-content-center reviewPaging mb-0"></ul></nav>
 	</section>
 </div>
 
@@ -841,6 +891,160 @@ $(document).ready(function() {
 			}, function() { alert('삭제에 실패했습니다.'); });
 		});
 	}
+});
+</script>
+
+<!-- ===== 이용 후기 (Reviews) ===== -->
+<script type="text/javascript">
+$(function() {
+	var hotelno = '<c:out value="${detailList.hotelno}"/>';
+	var myNo = '<c:out value="${member.memberNo}"/>';
+	var myNick = '<c:out value="${member.memberNickname}"/>' || '<c:out value="${member.MEMBERNICKNAME}"/>';
+	var role = '<c:out value="${member.memberRole}"/>';
+	var isAdminR = (role === 'ADMIN' || role === 'MASTER');
+	var curPage = 1;
+
+	function esc(s) {
+		if (s == null) return '';
+		return String(s).replace(/[&<>"']/g, function(c) {
+			return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+		});
+	}
+
+	function stars(g) {
+		g = parseInt(g, 10) || 0;
+		var s = '';
+		for (var i = 0; i < 5; i++) {
+			s += '<i class="bi ' + (i < g ? 'bi-star-fill' : 'bi-star') + '"></i>';
+		}
+		return s;
+	}
+
+	function render(page) {
+		curPage = page || 1;
+		detailService.getList({ hotelno: hotelno, page: curPage }, function(cnt, list) {
+			list = list || [];
+			$('.review-count').text('(' + cnt + ')');
+
+			if (list.length) {
+				var sum = 0;
+				list.forEach(function(r) { sum += (r.grade || 0); });
+				var avg = (sum / list.length).toFixed(1);
+				$('.review-avg').html('<span class="text-warning">' + stars(Math.round(avg)) + '</span> <span class="ms-1">' + avg + '</span>');
+			} else {
+				$('.review-avg').html('');
+			}
+
+			var str = '';
+			if (!list.length) {
+				str = '<div class="text-muted text-center py-4">아직 등록된 후기가 없습니다.</div>';
+			} else {
+				for (var i = 0; i < list.length; i++) {
+					var r = list[i];
+					var own = (myNick !== '' && r.memberNickname === myNick);
+					str += '<div class="border-bottom py-3">';
+					str += '<div class="d-flex justify-content-between align-items-center mb-1">';
+					str += '<div><strong>' + esc(r.memberNickname) + '</strong>'
+						+ '<span class="text-warning ms-2">' + stars(r.grade) + '</span></div>';
+					str += '<div class="text-muted small">' + esc(r.reviewDate) + '</div>';
+					str += '</div>';
+					str += '<div>' + esc(r.reviewContent) + '</div>';
+					if (own || isAdminR) {
+						str += '<div class="text-end mt-1">'
+							+ '<button type="button" class="btn btn-sm btn-link text-danger p-0 btn-del-review" data-no="' + r.reviewNo + '">삭제</button>'
+							+ '</div>';
+					}
+					str += '</div>';
+				}
+			}
+			$('.reviewList').html(str);
+
+			var totalPages = Math.ceil(cnt / 10) || 1;
+			var pg = '';
+			for (var p = 1; p <= totalPages; p++) {
+				pg += '<li class="page-item ' + (p === curPage ? 'active' : '')
+					+ '"><a class="page-link btn-review-page" href="#" data-page="' + p + '">' + p + '</a></li>';
+			}
+			$('.reviewPaging').html(totalPages > 1 ? pg : '');
+		}, function() {
+			$('.reviewList').html('<div class="text-danger text-center py-4">후기를 불러오지 못했습니다.</div>');
+		});
+	}
+
+	$(document).on('click', '.btn-review-page', function(e) {
+		e.preventDefault();
+		render($(this).data('page'));
+	});
+
+	$('#btnReviewSubmit').on('click', function() {
+		var grade = parseInt($('#reviewGrade').val(), 10);
+		var content = $('#reviewContent').val().trim();
+		if (content.length < 10) { alert('후기는 10자 이상 입력해주세요.'); return; }
+		if (content.length > 500) { alert('후기는 500자 이하로 입력해주세요.'); return; }
+
+		detailService.add({
+			memberNo: parseInt(myNo, 10),
+			hotelNo: parseInt(hotelno, 10),
+			grade: grade,
+			reviewContent: content
+		}, function() {
+			$('#reviewContent').val('');
+			render(1);
+		}, function() {
+			alert('후기 등록에 실패했습니다. 입력 내용을 확인해주세요.');
+		});
+	});
+
+	$(document).on('click', '.btn-del-review', function() {
+		if (!confirm('이 후기를 삭제하시겠습니까?')) return;
+		var no = $(this).data('no');
+		detailService.deleteReply(no, function() {
+			render(curPage);
+		}, function() {
+			alert('삭제에 실패했습니다.');
+		});
+	});
+
+	render(1);
+});
+</script>
+
+<!-- ===== 찜하기 (Wishlist) ===== -->
+<script type="text/javascript">
+$(function() {
+	var hotelNo = '<c:out value="${detailList.hotelno}"/>';
+	var isLoggedIn = '<c:out value="${member.memberNo}"/>' !== '';
+	var $btn = $('#btnWish');
+
+	function paint(wished) {
+		$btn.attr('data-wished', wished ? 'true' : 'false');
+		$('#wishIcon').attr('class', wished ? 'bi bi-heart-fill' : 'bi bi-heart');
+		$('#wishLabel').text(wished ? '찜 완료' : '찜하기');
+		$btn.toggleClass('btn-danger', wished).toggleClass('btn-outline-danger', !wished);
+	}
+
+	// 초기 상태 조회 (로그인한 경우만)
+	if (isLoggedIn) {
+		$.getJSON('/member/wish/check?hotelNo=' + hotelNo, function(wished) {
+			paint(wished === true);
+		});
+	}
+
+	$btn.on('click', function() {
+		if (!isLoggedIn) {
+			if (confirm('찜하기는 로그인이 필요합니다. 로그인하시겠습니까?')) {
+				location.href = '/member/login';
+			}
+			return;
+		}
+		var wished = $btn.attr('data-wished') === 'true';
+		$.ajax({
+			url: '/member/wish?hotelNo=' + hotelNo,
+			type: wished ? 'DELETE' : 'POST',
+			success: function() { paint(!wished); },
+			error: function() { alert('찜 처리에 실패했습니다.'); }
+		});
+	});
 });
 </script>
 

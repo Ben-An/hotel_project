@@ -7,12 +7,27 @@
 
 
 	<select id="myReservationList" resultType="org.zerock.domain.ReservationVO">
-	
-		  	select rh.realhotelname, r.realUser, r.userAmount, r.checkInDate, r.checkOutDate
-		  	from realhotel rh, hotel h, reservation r
-			where h.realhotelno = rh.realhotelno and h.hoteno = r.hotelno and r.memberno = #{memberno}
+
+		  	select r.reservationNo,
+		  	       rh.realhotelname,
+		  	       hr.roomname,
+		  	       r.realUser,
+		  	       r.userAmount,
+		  	       r.checkInDate as checkIndate,
+		  	       r.checkOutDate
+		  	from reservation r
+		  	join hotel_room hr on r.roomNo = hr.roomNo
+		  	join hotel h on hr.hotelNo = h.hotelNo
+		  	join realhotel rh on h.realhotelno = rh.realhotelno
+			where r.memberno = #{memberno}
+			order by r.reservationNo desc
 
 	</select>
+
+	<!-- 예약 취소 (본인 예약만) -->
+	<delete id="deleteReservation">
+		delete from reservation where reservationNo = #{reservationNo} and memberNo = #{memberNo}
+	</delete>
 	
 	<select id="myReviewList" resultType="org.zerock.domain.RelyVO">
 	
@@ -23,11 +38,30 @@
 	</select>
 	
 	<select id="myWishList" resultType="org.zerock.domain.WishListVO">
-	
-		  	select rh.realhotelname, rh.state
+
+		  	select h.hotelno,
+		  	       rh.realhotelname,
+		  	       rh.state,
+		  	       (select min(hi.hotelFileName) from hotel_image hi where hi.hotelNo = h.hotelNo) as hotelFileName
 		  	from realhotel rh, hotel h, wishList w
 			where rh.realhotelno = h.realhotelno and h.hotelno = w.hotelno and w.memberno = #{memberno}
 
 	</select>
-	
+
+	<!-- 찜 존재 여부 -->
+	<select id="existsWish" resultType="int">
+		select count(*) from wishList where memberNo = #{memberNo} and hotelNo = #{hotelNo}
+	</select>
+
+	<!-- 찜 추가 -->
+	<insert id="insertWish">
+		insert into wishList(wishListNo, memberNo, hotelNo)
+		values (wishList_seq.nextval, #{memberNo}, #{hotelNo})
+	</insert>
+
+	<!-- 찜 삭제 -->
+	<delete id="deleteWish">
+		delete from wishList where memberNo = #{memberNo} and hotelNo = #{hotelNo}
+	</delete>
+
 </mapper>

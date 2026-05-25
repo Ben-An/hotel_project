@@ -457,6 +457,7 @@ $(function() {
 	<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 	<input type="hidden" name="checkIn"  value="${param.checkIn}">
 	<input type="hidden" name="checkOut" value="${param.checkOut}">
+	<input type="hidden" name="guests"   value="${param.guests}">
 </form>
 
 <script>
@@ -496,6 +497,10 @@ $(".search-btn").on("click", function(e) {
 		searchForm.find("input[name='checkIn']").val('');
 		searchForm.find("input[name='checkOut']").val('');
 	}
+
+	// 인원 수 (성인 + 어린이)
+	var guests = (parseInt($("#guestsAdults").val(), 10) || 0) + (parseInt($("#guestsChildren").val(), 10) || 0);
+	searchForm.find("input[name='guests']").val(guests > 0 ? guests : '');
 
 	searchForm.submit();
 });

@@ -103,64 +103,77 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-	// Price slider
+	var qs = new URLSearchParams(location.search);
+
+	// \uAC00\uACA9 \uC2AC\uB77C\uC774\uB354 (URL \uAC12 \uBCF5\uC6D0)
+	var initLo = parseInt(qs.get('minPrice'), 10); if (isNaN(initLo)) initLo = 0;
+	var initHi = parseInt(qs.get('maxPrice'), 10); if (isNaN(initHi)) initHi = 100000;
+	function priceLabel(lo, hi) {
+		$("#price").val("\u20A9" + lo.toLocaleString() + " ~ \u20A9" + hi.toLocaleString());
+	}
 	$("#slider-range").slider({
-		range: true,
-		min: 0,
-		max: 100000,
-		step: 5000,
-		values: [0, 100000],
-		slide: function(event, ui) {
-			$("#price").val("\u20A9" + ui.values[0].toLocaleString() + " ~ \u20A9" + ui.values[1].toLocaleString());
-		}
+		range: true, min: 0, max: 100000, step: 5000,
+		values: [initLo, initHi],
+		slide: function(event, ui) { priceLabel(ui.values[0], ui.values[1]); }
 	});
-	$("#price").val("\u20A9" + $("#slider-range").slider("values", 0).toLocaleString() +
-		" ~ \u20A9" + $("#slider-range").slider("values", 1).toLocaleString());
+	priceLabel(initLo, initHi);
 
-	$("#slider-range").on("slidechange", function() { filterApply(); });
+	// \uC0AC\uC774\uB4DC\uBC14 \uD544\uD130 \uC0C1\uD0DC URL \uBCF5\uC6D0 (\uD3B8\uC758\uC2DC\uC124 / \uC9C0\uC5ED / \uD3C9\uC810)
+	$("input[name='option']").each(function() {
+		if (qs.get($(this).val()) === 'T') $(this).prop('checked', true);
+	});
+	var areaParam = qs.get('area');
+	if (areaParam) {
+		var areaSet = areaParam.split(',');
+		$("input[name='area']").each(function() {
+			if (areaSet.indexOf($(this).val()) >= 0) $(this).prop('checked', true);
+		});
+	}
+	var gradeParam = qs.get('grade');
+	if (gradeParam) {
+		$("#grade").val(gradeParam);
+		$('.star-rating span').css({ width: (parseFloat(gradeParam) * 20) + "%" });
+	}
 
-	// Checkbox event
-	$("input[name='option']").on("change", function() { filterApply(); });
+	// \uC11C\uBC84\uC0AC\uC774\uB4DC \uAC80\uC0C9 URL \uAD6C\uC131 \uD6C4 \uC774\uB3D9
+	function buildAndGo(includeFilters) {
+		var params = new URLSearchParams();
+		params.set('pageNum', 1);
+		var amount = $("#searchForm input[name='amount']").val();
+		if (amount) params.set('amount', amount);
+
+		var keyword = $("#searchValue").val() || $("#searchInput").val();
+		if (keyword) params.set('keyword', keyword);
+
+		var ci = $("#checkinInput").val(), co = $("#checkoutInput").val();
+		if (ci && co) { params.set('checkIn', ci); params.set('checkOut', co); }
+
+		var guests = (parseInt($("#guestsAdults").val(), 10) || 0) + (parseInt($("#guestsChildren").val(), 10) || 0);
+		if (guests > 0) params.set('guests', guests);
+
+		if (includeFilters) {
+			var lo = $("#slider-range").slider("values", 0);
+			var hi = $("#slider-range").slider("values", 1);
+			if (lo > 0) params.set('minPrice', lo);
+			if (hi < 100000) params.set('maxPrice', hi);
+
+			var g = parseFloat($("#grade").val());
+			if (g > 0) params.set('grade', g);
+
+			$("input[name='option']:checked").each(function() { params.set($(this).val(), 'T'); });
+
+			var areas = $("input[name='area']:checked").map(function() { return $(this).val(); }).get();
+			if (areas.length) params.set('area', areas.join(','));
+		}
+		location.href = '/hotel/search_normal?' + params.toString();
+	}
+
+	$("#btnApplyFilter").on("click", function() { buildAndGo(true); });
+	$("#btnResetFilter").on("click", function() { buildAndGo(false); });
 });
 
-// Star rating
-const drawStar = function(target) {
+// Star rating (별점 표시만; 실제 필터링은 서버에서 수행)
+window.drawStar = function(target) {
 	$('.star-rating span').css({ width: target.value * 20 + "%" });
-	filterApply();
-};
-
-// Filter variables
-var allHotels = $('.hotelContent');
-
-// Filter function
-const filterApply = function() {
-	$('.hotelContent').removeClass("filtered");
-
-	var lowPrice = parseInt($("#slider-range").children('span')[0].style.left.replace('%', '')) * 1000;
-	var highPrice = parseInt($("#slider-range").children('span')[1].style.left.replace('%', '')) * 1000;
-	var searchGrade = document.getElementById("grade").value;
-	var selectedFilters = $("input[name='option']:checked");
-	var leng = selectedFilters.length;
-
-	for (var i = 0; i < allHotels.length; i++) {
-		var hotel = allHotels[i];
-		var roomPrice = parseInt(hotel.querySelector('.roomPrice').innerText.replace(/,/g, "").replace(/원/g, ""));
-		var averageGrade = hotel.querySelector('.averageGrade').innerText;
-		var facility = hotel.querySelector(".facility").innerText;
-
-		if (roomPrice < lowPrice || roomPrice > highPrice) {
-			hotel.classList.add("filtered");
-		} else if (averageGrade < searchGrade) {
-			hotel.classList.add("filtered");
-		} else if (leng > 0) {
-			for (var j = 0; j < leng; j++) {
-				var value = selectedFilters[j].value.toLowerCase();
-				if (facility.indexOf(value) < 0) {
-					hotel.classList.add("filtered");
-					break;
-				}
-			}
-		}
-	}
 };
 </script>

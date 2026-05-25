@@ -104,6 +104,54 @@
 					)
 				)
 			</if>
+			<!-- 지역(시/군) 다중 선택: 서비스에서 한글로 매핑된 areaList -->
+			<if test="areaList != null and areaList.size() > 0">
+				AND (
+					<foreach item="a" collection="areaList" separator=" OR ">
+						rh.state LIKE '%'||#{a}||'%'
+					</foreach>
+				)
+			</if>
+			<!-- 가격 범위 (객실 요금이 숫자인 경우만 비교) -->
+			<if test="(minPrice != null and minPrice != '') or (maxPrice != null and maxPrice != '')">
+				AND EXISTS (
+					SELECT 1 FROM hotel_room hrp
+					WHERE hrp.hotelNo = h.hotelNo
+					AND REGEXP_LIKE(hrp.roomPrice, '^[0-9]+$')
+					<if test="minPrice != null and minPrice != ''">
+						AND TO_NUMBER(hrp.roomPrice) &gt;= #{minPrice}
+					</if>
+					<if test="maxPrice != null and maxPrice != ''">
+						AND TO_NUMBER(hrp.roomPrice) &lt;= #{maxPrice}
+					</if>
+				)
+			</if>
+			<!-- 인원 수용: 정원이 숫자면 인원 이상인 객실, 정원 미상(비숫자/미설정)은 통과 -->
+			<if test="guests != null and guests != ''">
+				AND EXISTS (
+					SELECT 1 FROM hotel_room hrg
+					WHERE hrg.hotelNo = h.hotelNo
+					AND (
+						REGEXP_SUBSTR(hrg.bedNo, '^[0-9]+') IS NULL
+						OR TO_NUMBER(REGEXP_SUBSTR(hrg.bedNo, '^[0-9]+')) &gt;= #{guests}
+					)
+				)
+			</if>
+			<!-- 평점 -->
+			<if test="grade != null and grade != ''">
+				AND NVL(a.ag, 0) &gt;= #{grade}
+			</if>
+			<!-- 편의 시설 (체크된 항목만; 'T'/'t' 모두 허용) -->
+			<if test="buffet != null and buffet != ''">AND UPPER(h.buffet) = 'T'</if>
+			<if test="swim != null and swim != ''">AND UPPER(h.swim) = 'T'</if>
+			<if test="golf != null and golf != ''">AND UPPER(h.golf) = 'T'</if>
+			<if test="pet != null and pet != ''">AND UPPER(h.pet) = 'T'</if>
+			<if test="restaurant != null and restaurant != ''">AND UPPER(h.restaurant) = 'T'</if>
+			<if test="fitness != null and fitness != ''">AND UPPER(h.fitness) = 'T'</if>
+			<if test="parking != null and parking != ''">AND UPPER(h.parking) = 'T'</if>
+			<if test="wifi != null and wifi != ''">AND UPPER(h.wifi) = 'T'</if>
+			<if test="kitchen != null and kitchen != ''">AND UPPER(h.kitchen) = 'T'</if>
+			<if test="smoke != null and smoke != ''">AND UPPER(h.smoke) = 'T'</if>
 		</where>
 		order by h.hotelRegistDate desc
 	</select>

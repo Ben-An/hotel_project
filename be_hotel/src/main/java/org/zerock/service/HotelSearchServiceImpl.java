@@ -61,6 +61,20 @@ public class HotelSearchServiceImpl implements HotelSearchService {
 			}
 		}
 
+		// 지역(시/군) 다중 선택: "Goyang,Bucheon" → ["고양","부천"] 로 매핑
+		Object areaRaw = map.get("area");
+		if (areaRaw != null && !areaRaw.toString().trim().isEmpty()) {
+			List<String> areaList = new ArrayList<>();
+			for (String token : areaRaw.toString().split(",")) {
+				String t = token.trim();
+				if (t.isEmpty()) continue;
+				areaList.add(EN_TO_KO.getOrDefault(t, t));
+			}
+			if (!areaList.isEmpty()) {
+				map.put("areaList", areaList);
+			}
+		}
+
 		return mapper.hotelListWithPaging(map);
 
 	}
