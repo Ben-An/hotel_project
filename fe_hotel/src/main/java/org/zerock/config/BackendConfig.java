@@ -6,6 +6,8 @@ package org.zerock.config;
  */
 public class BackendConfig {
 
-	public static final String BACKEND_URL = "http://localhost:8082/api";
+	public static final String BACKEND_URL = System.getenv("BE_HOTEL_URL") != null
+		? System.getenv("BE_HOTEL_URL")
+		: "http://localhost:8082/api";
 
 }

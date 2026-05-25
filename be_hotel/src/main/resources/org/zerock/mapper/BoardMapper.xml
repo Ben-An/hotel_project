@@ -60,11 +60,7 @@
 	
 	<select id="hotelList" resultType="org.zerock.domain.HotelVO">
 			
-		<![CDATA[
-	
 	select n.hotelNo, i.hotelFileName, n.hotelName, n.mainAddress, n.address from hotel_image i, hotel n where i.hotelNo = n.hotelNo
-	
-		]]>
 
 	</select>
 	
@@ -121,7 +117,6 @@
 	</select>
 
 	<select id="popularRegions" resultType="map" parameterType="int">
-		<![CDATA[
 		select rh.state as "state", count(*) as "cnt"
 		from reservation res
 		join hotel_room hr on res.roomNo = hr.roomNo
@@ -131,18 +126,15 @@
 		group by rh.state
 		order by count(*) desc
 		fetch first #{limit} rows only
-		]]>
 	</select>
 
 	<select id="popularRegionsByHotelCount" resultType="map" parameterType="int">
-		<![CDATA[
 		select rh.state as "state", count(*) as "cnt"
 		from realhotel rh
 		where rh.state is not null
 		group by rh.state
 		order by count(*) desc
 		fetch first #{limit} rows only
-		]]>
 	</select>
 
 </mapper>

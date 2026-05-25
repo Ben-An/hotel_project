@@ -8,31 +8,25 @@
 
 	<select id="myReservationList" resultType="org.zerock.domain.ReservationVO">
 	
-		  <![CDATA[	  
 		  	select rh.realhotelname, r.realUser, r.userAmount, r.checkInDate, r.checkOutDate
 		  	from realhotel rh, hotel h, reservation r
 			where h.realhotelno = rh.realhotelno and h.hoteno = r.hotelno and r.memberno = #{memberno}
-		   ]]>
 
 	</select>
 	
 	<select id="myReviewList" resultType="org.zerock.domain.RelyVO">
 	
-		  <![CDATA[	  
 		  	select rh.realhotelname, r.reviewContent, r.reviewDate
 		  	from realhotel rh, hotel h, review r
 			where rh.realhotelno = h.realhotelno and h.hotelno = r.hotelno and r.memberno = #{memberno}
-		   ]]>
 
 	</select>
 	
 	<select id="myWishList" resultType="org.zerock.domain.WishListVO">
 	
-		  <![CDATA[	  
 		  	select rh.realhotelname, rh.state
 		  	from realhotel rh, hotel h, wishList w
-			where rh.realhotelno = h.realhotelno and h.hotelno = w.hotelno and r.memberno = #{memberno}
-		   ]]>
+			where rh.realhotelno = h.realhotelno and h.hotelno = w.hotelno and w.memberno = #{memberno}
 
 	</select>
 	

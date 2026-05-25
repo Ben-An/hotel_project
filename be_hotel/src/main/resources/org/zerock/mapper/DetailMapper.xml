@@ -7,15 +7,12 @@
 
 	<select id="detailList" resultType="org.zerock.domain.DetailVO">
 
-		  <![CDATA[
-
 		  	select h.hotelno,
 		  	       NVL(rh.realhotelname, h.hotelName) AS realhotelname,
 		  	       NVL(rh.roadaddr, h.address) AS roadaddr
 		  	from hotel h
 			left join realhotel rh on h.realhotelno = rh.realhotelno
 			where h.hotelno=#{hotelno}
-		   ]]>
 
 	</select>
 
@@ -23,37 +20,27 @@
 
 	<select id="listImage"
 		resultType="org.zerock.domain.DetailImage">
-		  <![CDATA[
 			select hotelFileName as roomfilename from hotel_image where hotelno=#{hotelno}
-		   ]]>
 	</select>
 
 
 	<select id="roomList" resultType="org.zerock.domain.ImageList">
-		  <![CDATA[
-		  	
 		  		select roomno, roomname,roomprice,bedno,infoRoom,checkInDate,checkOutDate from hotel_room where hotelno=#{hotelno}
-		   ]]>
 
 
 	</select>
 	
 	<select id="placeList" resultType="org.zerock.domain.PlaceVO">
-		<![CDATA[
 			select placeName, placeAddress, placeOpenTime, placeCloseTime from
 			place p,
 			(select state from hotel h, realhotel r where h.realhotelno = r.realhotelno and hotelno = #{hotelno}) h
 			where p.placeAddress like '%' || h.state || '%'
-		]]>		
 	</select>
 	
   <select id="read" resultType="org.zerock.domain.RelyVO">
-		  <![CDATA[
-		  	
 		  		select r.reviewNo, r.grade,r.reviewcontent,r.reviewdate,m.memberNickname from review r
 				left join member m on m.memberno = r.memberno
 				where hotelno =#{hotelno}
-		   ]]>
 
 
 	</select> 
@@ -80,9 +67,7 @@
 	</select>
 	
 	<select id="getReplyByHotelno" resultType="int">
-		 <![CDATA[
 		select count(reviewno) from review where hotelno= #{hotelno}
-		  ]]>
 	
 	</select>
 	
@@ -91,35 +76,21 @@
 	
 	
 		<insert id="insert">
-		  <![CDATA[
-		  
 				insert into review(reviewNo,memberNo,hotelNo,grade,reviewContent,reviewDate) values (review_seq.nextval,#{memberNo},#{hotelNo},#{grade},#{reviewContent},sysdate)
-				
-				
-		   ]]>
 	</insert>
 	
 	
 	
 	
 	<delete id="delete">
-		  <![CDATA[
 				delete from review where reviewNo = #{reviewNo}
-		 ]]>
 	</delete>
 	
 	
 	
 	<update id ="update">
-		 <![CDATA[
-		 
 		 		update review set reviewContent =#{reviewContent}
-		 		
 		 		where reviewNo = #{reviewNo}
-		 
-		 
-		 
-		    ]]>
 	</update>
 	
 	
@@ -164,21 +135,17 @@
 
 	<!-- 좋아하는 이유 목록 -->
 	<select id="reasonList" resultType="org.zerock.domain.HotelReasonVO">
-		<![CDATA[
 			select reasonNo, hotelNo, reasonTitle, reasonContent, reasonImage, regDate
 			from hotel_reason
 			where hotelNo = #{hotelNo}
 			order by reasonNo asc
-		]]>
 	</select>
 
 	<!-- 좋아하는 이유 단건 -->
 	<select id="getReason" resultType="org.zerock.domain.HotelReasonVO">
-		<![CDATA[
 			select reasonNo, hotelNo, reasonTitle, reasonContent, reasonImage, regDate
 			from hotel_reason
 			where reasonNo = #{reasonNo}
-		]]>
 	</select>
 
 	<!-- 좋아하는 이유 추가 -->
@@ -206,11 +173,9 @@
 
 	<!-- 편의 시설/서비스 목록 (amenityType: POPULAR | MAIN | null=전체) -->
 	<select id="amenityList" resultType="org.zerock.domain.HotelAmenityVO">
-		<![CDATA[
 			select amenityNo, hotelNo, amenityName, amenityIcon, amenityType, amenityOrder, regDate
 			from hotel_amenity
 			where hotelNo = #{hotelNo}
-		]]>
 		<if test="amenityType != null and amenityType != ''">
 			and amenityType = #{amenityType}
 		</if>
@@ -219,11 +184,9 @@
 
 	<!-- 편의 시설/서비스 단건 조회 -->
 	<select id="getAmenity" resultType="org.zerock.domain.HotelAmenityVO">
-		<![CDATA[
 			select amenityNo, hotelNo, amenityName, amenityIcon, amenityType, amenityOrder, regDate
 			from hotel_amenity
 			where amenityNo = #{amenityNo}
-		]]>
 	</select>
 
 	<!-- 편의 시설/서비스 추가 -->

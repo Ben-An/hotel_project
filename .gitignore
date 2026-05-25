@@ -1,27 +1,36 @@
 .env
 .env.*
-!.env.example
-.claude/
-node_modules/
-test-results/
-playwright-report/
 target/
 tomcat/
-apache-maven-3.9.6/
-*.log
 *.class
 tomcat-start.ps1
 tomcat-start-all.ps1
-
-# 로컬 전용 (원격에서 삭제됨, 로컬에서만 사용)
-.vscode/
-CLAUDE.md
-e2e/
+*.md
 scripts/
 fe_hotel/run.bat
 fe_hotel/run.ps1
 fe_hotel/run.sh
 fe_hotel/watch.ps1
-package.json
-package-lock.json
-playwright.config.js
+graphify-out/
+
+# Claude Code (로컬 설정/권한)
+.claude/
+
+# 로그
+*.log
+
+# 로컬 Maven 배포본 (deploy-remote.sh가 원격에 끌어다 씀)
+apache-maven-*/
+
+# Playwright / Node e2e 산출물
+node_modules/
+test-results/
+playwright-report/
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# 배포 스크립트 (git이 아닌 rsync로 배포)
+deploy*.sh
