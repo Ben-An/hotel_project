@@ -341,8 +341,8 @@ $(function() {
 						<span class="nav-link fw-semibold">
 							<i class="bi bi-person-circle"></i>
 							<c:choose>
-								<c:when test="${member.memberNickname != null}">${member.memberNickname}</c:when>
-								<c:otherwise>${member.MEMBERNICKNAME}</c:otherwise>
+								<c:when test="${member.memberNickname != null}"><c:out value="${member.memberNickname}"/></c:when>
+								<c:otherwise><c:out value="${member.memberName}"/></c:otherwise>
 							</c:choose>님
 						</span>
 					</li>

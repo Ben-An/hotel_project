@@ -1,11 +1,13 @@
 package org.zerock.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.zerock.config.BackendConfig;
 import org.zerock.domain.AttachImageVO;
@@ -30,6 +33,14 @@ public class MainController {
 	private RestTemplate restTemplate;
 
 	private static final String API = BackendConfig.BACKEND_URL + "/hotel";
+
+	/** be가 이미지를 못 찾거나(404) 호출이 실패할 때 보여줄 대체 이미지(SVG) */
+	private static final byte[] PLACEHOLDER_IMAGE =
+			("<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'>"
+			+ "<rect width='100%' height='100%' fill='#e9ecef'/>"
+			+ "<text x='50%' y='50%' fill='#adb5bd' font-family='sans-serif' font-size='20'"
+			+ " text-anchor='middle' dominant-baseline='middle'>이미지 없음</text></svg>")
+			.getBytes(StandardCharsets.UTF_8);
 
 	@GetMapping("/index")
 	public void list(@RequestParam(defaultValue = "1") int pageNum,
@@ -80,7 +91,15 @@ public class MainController {
 
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(@RequestParam String fileName) {
-		return restTemplate.getForEntity(API + "/display?fileName=" + fileName, byte[].class);
+		try {
+			return restTemplate.getForEntity(API + "/display?fileName=" + fileName, byte[].class);
+		} catch (RestClientException e) {
+			// be가 이미지를 못 찾거나(404) 호출이 실패해도 페이지가 500으로 깨지지 않도록 플레이스홀더 반환
+			log.warn("이미지 조회 실패, 플레이스홀더 반환: fileName=" + fileName + ", cause=" + e.getMessage());
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.valueOf("image/svg+xml"));
+			return new ResponseEntity<>(PLACEHOLDER_IMAGE, headers, HttpStatus.OK);
+		}
 	}
 
 	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_VALUE)

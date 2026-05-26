@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.zerock.mapper.FileBlobMapper">
+
+	<resultMap id="fileBlobMap" type="org.zerock.domain.FileBlobVO">
+		<id     property="fileName"    column="FILE_NAME"/>
+		<result property="contentType" column="CONTENT_TYPE"/>
+		<result property="imageData"   column="IMAGE_DATA" javaType="byte[]"
+		        jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+	</resultMap>
+
+	<!-- 이미지 바이트 저장 -->
+	<insert id="insertBlob" parameterType="org.zerock.domain.FileBlobVO">
+		insert into file_blob(file_name, content_type, image_data)
+		values (
+			#{fileName},
+			#{contentType},
+			#{imageData, jdbcType=BLOB, typeHandler=org.apache.ibatis.type.BlobTypeHandler}
+		)
+	</insert>
+
+	<!-- 파일명으로 이미지 조회 -->
+	<select id="selectBlob" resultMap="fileBlobMap">
+		select file_name, content_type, image_data
+		from file_blob
+		where file_name = #{fileName}
+	</select>
+
+	<!-- 파일명으로 이미지 삭제 -->
+	<delete id="deleteBlob">
+		delete from file_blob where file_name = #{fileName}
+	</delete>
+
+  </mapper>

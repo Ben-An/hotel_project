@@ -1,7 +1,5 @@
 package org.zerock.controller;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -14,24 +12,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import org.zerock.domain.AttachImageVO;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.FileBlobVO;
 import org.zerock.domain.HotelVO;
 import org.zerock.domain.PageDTO;
 import org.zerock.domain.RelyVO;
+import org.zerock.mapper.FileBlobMapper;
 import org.zerock.service.AdminService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +40,8 @@ public class AdminApiController {
 	@Autowired
 	private AdminService adminService;
 
-	@Value("${app.upload-path}")
-	private String uploadPath;
+	@Autowired
+	private FileBlobMapper fileBlobMapper;
 
 	/* 전체 숙소 리스트 */
 	@GetMapping("/hotelList")
@@ -82,58 +78,32 @@ public class AdminApiController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	/* 첨부 파일 업로드 */
+	/* 첨부 파일 업로드 — file_blob에 저장 */
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<AttachImageVO>> uploadAjaxAction(MultipartFile[] uploadFile) {
 		log.info("uploadAjaxAction..........");
 
 		for (MultipartFile multipartFile : uploadFile) {
-			File checkfile = new File(multipartFile.getOriginalFilename());
-			String type = null;
-			try {
-				type = Files.probeContentType(checkfile.toPath());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			if (!type.startsWith("image")) {
+			if (!isImage(multipartFile)) {
 				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 			}
 		}
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String str = sdf.format(new Date());
-		File uploadDir = new File(uploadPath, str);
-		if (!uploadDir.exists()) {
-			uploadDir.mkdir();
-		}
+		String datePath = sdf.format(new Date());
 
 		List<AttachImageVO> list = new ArrayList<>();
 		for (MultipartFile multipartFile : uploadFile) {
-			AttachImageVO vo = new AttachImageVO();
-			String uploadFileName = multipartFile.getOriginalFilename();
-			vo.setHotelFileName(uploadFileName);
-			vo.setUploadPath(str);
-
+			String originalName = multipartFile.getOriginalFilename();
 			String uuid = UUID.randomUUID().toString();
+
+			// 응답 형태 유지 — FE는 uploadPath/uuid_hotelFileName 으로 fileName 조합
+			AttachImageVO vo = new AttachImageVO();
+			vo.setHotelFileName(originalName);
+			vo.setUploadPath(datePath);
 			vo.setUuid(uuid);
-			uploadFileName = uuid + "_" + uploadFileName;
 
-			File saveFile = new File(uploadDir, uploadFileName);
-			try {
-				multipartFile.transferTo(saveFile);
-
-				File thumbnailFile = new File(uploadDir, "s_" + uploadFileName);
-				BufferedImage bo_image = ImageIO.read(saveFile);
-				double ratio = 3;
-				int width = (int) (bo_image.getWidth() / ratio);
-				int height = (int) (bo_image.getHeight() / ratio);
-				BufferedImage bt_image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-				Graphics2D graphic = bt_image.createGraphics();
-				graphic.drawImage(bo_image, 0, 0, width, height, null);
-				ImageIO.write(bt_image, "jpg", thumbnailFile);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			saveBlob(datePath + "/" + uuid + "_" + originalName, multipartFile);
 			list.add(vo);
 		}
 		return new ResponseEntity<>(list, HttpStatus.OK);
@@ -146,48 +116,28 @@ public class AdminApiController {
 			@RequestPart(value = "uploadFile", required = false) MultipartFile[] uploadFile) {
 		log.info("hotelEnroll......" + hotel);
 
-		// 이미지 파일이 있으면 저장 후 imageList에 세팅
+		// 이미지 파일이 있으면 file_blob에 저장 후 imageList에 세팅
 		if (uploadFile != null && uploadFile.length > 0) {
 			List<AttachImageVO> imageList = new ArrayList<>();
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String datePath = sdf.format(new Date());
-			File uploadDir = new File(uploadPath, datePath);
-			if (!uploadDir.exists()) {
-				uploadDir.mkdirs();
-			}
 
 			for (MultipartFile file : uploadFile) {
 				if (file.isEmpty()) continue;
-				try {
-					String originalName = file.getOriginalFilename();
-					String uuid = UUID.randomUUID().toString();
-					String savedFileName = uuid + "_" + originalName;
 
-					// 원본 파일 저장
-					File saveFile = new File(uploadDir, savedFileName);
-					file.transferTo(saveFile);
+				String originalName = file.getOriginalFilename();
+				String uuid = UUID.randomUUID().toString();
+				// 전체 상대경로를 file_blob의 키이자 hotelFileName으로 사용
+				String fileName = datePath + "/" + uuid + "_" + originalName;
 
-					// 썸네일 생성
-					File thumbnailFile = new File(uploadDir, "s_" + savedFileName);
-					BufferedImage bo_image = ImageIO.read(saveFile);
-					double ratio = 3;
-					int width = (int) (bo_image.getWidth() / ratio);
-					int height = (int) (bo_image.getHeight() / ratio);
-					BufferedImage bt_image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-					Graphics2D graphic = bt_image.createGraphics();
-					graphic.drawImage(bo_image, 0, 0, width, height, null);
-					ImageIO.write(bt_image, "jpg", thumbnailFile);
+				saveBlob(fileName, file);
 
-					// AttachImageVO 생성 — 전체 상대경로를 hotelFileName에 저장
-					AttachImageVO imageVO = new AttachImageVO();
-					imageVO.setHotelFileName(datePath + "/" + uuid + "_" + originalName);
-					imageVO.setUuid(uuid);
-					imageVO.setUploadPath(datePath);
-					imageList.add(imageVO);
-				} catch (Exception e) {
-					log.error("이미지 저장 실패: " + file.getOriginalFilename(), e);
-				}
+				AttachImageVO imageVO = new AttachImageVO();
+				imageVO.setHotelFileName(fileName);
+				imageVO.setUuid(uuid);
+				imageVO.setUploadPath(datePath);
+				imageList.add(imageVO);
 			}
 
 			if (!imageList.isEmpty()) {
@@ -214,12 +164,9 @@ public class AdminApiController {
 	public ResponseEntity<String> deleteFile(@RequestParam String fileName) {
 		log.info("deleteFile........" + fileName);
 		try {
-			File file = new File(uploadPath + "\\" + URLDecoder.decode(fileName, "UTF-8"));
-			file.delete();
-			String originFileName = file.getAbsolutePath().replaceFirst("s_", "");
-			new File(originFileName).delete();
+			fileBlobMapper.deleteBlob(URLDecoder.decode(fileName, "UTF-8"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("이미지 삭제 실패: " + fileName, e);
 			return new ResponseEntity<>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>("success", HttpStatus.OK);
@@ -232,31 +179,56 @@ public class AdminApiController {
 		return new ResponseEntity<>("success", HttpStatus.OK);
 	}
 
-	/* 이미지 표시 */
+	/* 이미지 표시 — file_blob에서 조회 */
 	@GetMapping("/display")
 	public ResponseEntity<byte[]> getImage(@RequestParam String fileName) {
-		File file = new File(uploadPath + "\\" + fileName);
-		// 직접 경로에 없으면 하위 디렉터리에서 파일명 포함 검색 (레거시 데이터 호환)
-		if (!file.exists()) {
-			File uploadDir = new File(uploadPath);
-			File[] subDirs = uploadDir.listFiles(File::isDirectory);
-			if (subDirs != null) {
-				for (File dir : subDirs) {
-					File[] matches = dir.listFiles((d, name) -> name.endsWith(fileName));
-					if (matches != null && matches.length > 0) {
-						file = matches[0];
-						break;
-					}
-				}
+		FileBlobVO blob = fileBlobMapper.selectBlob(fileName);
+		if (blob == null || blob.getImageData() == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		HttpHeaders header = new HttpHeaders();
+		if (blob.getContentType() != null) {
+			header.add("Content-type", blob.getContentType());
+		}
+		return new ResponseEntity<>(blob.getImageData(), header, HttpStatus.OK);
+	}
+
+	/* ===== 내부 헬퍼 ===== */
+
+	/* 이미지 파일 여부 (확장자 기반) */
+	private boolean isImage(MultipartFile file) {
+		try {
+			String type = Files.probeContentType(new File(file.getOriginalFilename()).toPath());
+			return type != null && type.startsWith("image");
+		} catch (IOException e) {
+			log.warn("컨텐츠 타입 확인 실패: " + file.getOriginalFilename(), e);
+			return false;
+		}
+	}
+
+	/* MultipartFile을 file_blob에 저장 */
+	private void saveBlob(String fileName, MultipartFile file) {
+		try {
+			FileBlobVO blob = new FileBlobVO();
+			blob.setFileName(fileName);
+			blob.setContentType(resolveContentType(file));
+			blob.setImageData(file.getBytes());
+			fileBlobMapper.insertBlob(blob);
+		} catch (IOException e) {
+			log.error("이미지 저장 실패: " + fileName, e);
+		}
+	}
+
+	/* 컨텐츠 타입 결정 — 업로드 헤더 우선, 없으면 확장자 추론 */
+	private String resolveContentType(MultipartFile file) {
+		String type = file.getContentType();
+		if (type == null || type.isEmpty()) {
+			try {
+				type = Files.probeContentType(new File(file.getOriginalFilename()).toPath());
+			} catch (IOException ignore) {
+				// 무시 — 아래 기본값 사용
 			}
 		}
-		try {
-			HttpHeaders header = new HttpHeaders();
-			header.add("Content-type", Files.probeContentType(file.toPath()));
-			return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		return type != null ? type : MediaType.APPLICATION_OCTET_STREAM_VALUE;
 	}
 }

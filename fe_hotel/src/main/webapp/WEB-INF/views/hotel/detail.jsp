@@ -7,6 +7,14 @@
 
 <div class="container py-4">
 
+	<!-- 숙소명 / 주소 -->
+	<div class="mb-3">
+		<h1 class="fw-bold mb-1"><c:out value="${detailList.realhotelname}"/></h1>
+		<p class="text-muted mb-0">
+			<i class="bi bi-geo-alt"></i> <c:out value="${detailList.roadaddr}"/>
+		</p>
+	</div>
+
 	<!-- Image Carousel -->
 	<div class="position-relative">
 		<div id="carouselExampleControls" class="carousel slide rounded overflow-hidden" data-bs-ride="carousel" style="max-height:400px;">
@@ -899,7 +907,7 @@ $(document).ready(function() {
 $(function() {
 	var hotelno = '<c:out value="${detailList.hotelno}"/>';
 	var myNo = '<c:out value="${member.memberNo}"/>';
-	var myNick = '<c:out value="${member.memberNickname}"/>' || '<c:out value="${member.MEMBERNICKNAME}"/>';
+	var myNick = '<c:out value="${member.memberNickname}"/>';
 	var role = '<c:out value="${member.memberRole}"/>';
 	var isAdminR = (role === 'ADMIN' || role === 'MASTER');
 	var curPage = 1;
