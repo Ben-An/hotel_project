@@ -31,9 +31,16 @@
 	
 	<select id="myReviewList" resultType="org.zerock.domain.RelyVO">
 	
-		  	select rh.realhotelname, r.reviewContent, r.reviewDate
-		  	from realhotel rh, hotel h, review r
-			where rh.realhotelno = h.realhotelno and h.hotelno = r.hotelno and r.memberno = #{memberno}
+		  	select COALESCE(rh.realhotelname, h.hotelName) as realhotelname,
+		  	       m.memberNickname,
+		  	       r.reviewContent,
+		  	       r.reviewDate
+		  	from review r
+		  	join hotel h on r.hotelno = h.hotelno
+		  	left join realhotel rh on h.realhotelno = rh.realhotelno
+		  	left join member m on m.memberno = r.memberno
+			where r.memberno = #{memberno}
+			order by r.reviewDate desc
 
 	</select>
 	

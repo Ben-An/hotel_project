@@ -21,12 +21,17 @@
 				<tbody>
 					<c:forEach var="item" items="${myPageList}">
 						<tr>
-							<td class="fw-semibold">${item.hotelName}</td>
-							<td>${item.realMember}</td>
-							<td>${item.reviewContent}</td>
+							<td class="fw-semibold"><c:out value="${item.realhotelname}" /></td>
+							<td><c:out value="${item.memberNickname}" /></td>
+							<td><c:out value="${item.reviewContent}" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.reviewDate}" /></td>
 						</tr>
 					</c:forEach>
+					<c:if test="${empty myPageList}">
+						<tr>
+							<td colspan="4" class="text-center text-muted py-4">작성한 리뷰가 없습니다.</td>
+						</tr>
+					</c:if>
 				</tbody>
 			</table>
 		</div>

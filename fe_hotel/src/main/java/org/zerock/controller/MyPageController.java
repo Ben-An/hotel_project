@@ -2,6 +2,7 @@ package org.zerock.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,8 @@ public class MyPageController {
 
 	@GetMapping(value = {"/myPage", "/myPage_memberUpdate", "/myPage_memberDelete",
 			"/myPage_reservationList", "myPage_reviewList", "myPage_wishList"})
-	public String list(@RequestParam(required = false) Integer memberno, Model model, HttpSession session) {
+	public String list(@RequestParam(required = false) Integer memberno, Model model,
+			HttpSession session, HttpServletRequest request) {
 		if (memberno == null) {
 			MemberVO member = (MemberVO) session.getAttribute("member");
 			if (member == null) {
@@ -43,37 +45,74 @@ public class MyPageController {
 			memberno = member.getMemberNo();
 		}
 		model.addAttribute("memberno", memberno);
+
+		// 경로별로 be 데이터를 모델에 주입(서버사이드 렌더링). JSP는 <c:forEach>로 소비한다.
+		String path = request.getServletPath();
+		if (path.endsWith("/myPage")) {
+			model.addAttribute("myReservationList", fetchReservations(memberno));
+			model.addAttribute("myReviewList", fetchReviews(memberno));
+			model.addAttribute("myWishList", fetchWishList(memberno));
+		} else if (path.endsWith("/myPage_reservationList")) {
+			model.addAttribute("myPageList", fetchReservations(memberno));
+		} else if (path.endsWith("/myPage_reviewList")) {
+			model.addAttribute("myPageList", fetchReviews(memberno));
+		} else if (path.endsWith("/myPage_wishList")) {
+			model.addAttribute("myPageList", fetchWishList(memberno));
+		}
 		return null; // 기본 view name 사용
+	}
+
+	/* ===== be 조회 헬퍼 — 실패 시 빈 목록으로 graceful 처리(화면은 정상 렌더) ===== */
+
+	private List<ReservationVO> fetchReservations(int memberno) {
+		try {
+			return restTemplate.exchange(API + "/myReservationList?memberno=" + memberno,
+					HttpMethod.GET, null,
+					new ParameterizedTypeReference<List<ReservationVO>>() {}).getBody();
+		} catch (Exception e) {
+			log.warn("예약 목록 조회 실패 memberno=" + memberno + " : " + e.getMessage());
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	private List<RelyVO> fetchReviews(int memberno) {
+		try {
+			return restTemplate.exchange(API + "/myReviewList?memberno=" + memberno,
+					HttpMethod.GET, null,
+					new ParameterizedTypeReference<List<RelyVO>>() {}).getBody();
+		} catch (Exception e) {
+			log.warn("리뷰 목록 조회 실패 memberno=" + memberno + " : " + e.getMessage());
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	private List<WishListVO> fetchWishList(int memberno) {
+		try {
+			return restTemplate.exchange(API + "/myWishList?memberno=" + memberno,
+					HttpMethod.GET, null,
+					new ParameterizedTypeReference<List<WishListVO>>() {}).getBody();
+		} catch (Exception e) {
+			log.warn("찜 목록 조회 실패 memberno=" + memberno + " : " + e.getMessage());
+			return java.util.Collections.emptyList();
+		}
 	}
 
 	@ResponseBody
 	@GetMapping(value = "/myReservationList.do", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ReservationVO>> getReservation(@RequestParam int memberno) {
-		List<ReservationVO> list = restTemplate.exchange(
-				API + "/myReservationList?memberno=" + memberno,
-				HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<ReservationVO>>() {}).getBody();
-		return new ResponseEntity<>(list, HttpStatus.OK);
+		return new ResponseEntity<>(fetchReservations(memberno), HttpStatus.OK);
 	}
 
 	@ResponseBody
 	@GetMapping(value = "/myReviewList.do", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<RelyVO>> getReview(@RequestParam int memberno) {
-		List<RelyVO> list = restTemplate.exchange(
-				API + "/myReviewList?memberno=" + memberno,
-				HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<RelyVO>>() {}).getBody();
-		return new ResponseEntity<>(list, HttpStatus.OK);
+		return new ResponseEntity<>(fetchReviews(memberno), HttpStatus.OK);
 	}
 
 	@ResponseBody
 	@GetMapping(value = "/myWishList.do", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<WishListVO>> getWishList(@RequestParam int memberno) {
-		List<WishListVO> list = restTemplate.exchange(
-				API + "/myWishList?memberno=" + memberno,
-				HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<WishListVO>>() {}).getBody();
-		return new ResponseEntity<>(list, HttpStatus.OK);
+		return new ResponseEntity<>(fetchWishList(memberno), HttpStatus.OK);
 	}
 
 	/* ===== 찜(위시리스트) 토글 — 세션 회원 기준 ===== */

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <%@include file="../includes/header.jsp"%>
@@ -50,30 +51,27 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<c:if test="${item.reservationNo != null}">
-							<td class="fw-semibold">${item.realhotelName}</td>
+					<c:forEach var="item" items="${myReservationList}" begin="0" end="4">
+						<tr>
+							<td class="fw-semibold"><c:out value="${item.realhotelname}" /></td>
+							<td><c:out value="${item.realUser}" /></td>
+							<td><c:out value="${item.userAmount}" />명</td>
 							<td>
-								<c:choose>
-									<c:when test="${item.realUser != null}">${item.realUser}</c:when>
-									<c:otherwise>${item.memberName}</c:otherwise>
-								</c:choose>
-							</td>
-							<td>${item.userAmount}명</td>
-							<td>
-								<fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkInDate}" />
+								<fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkIndate}" />
 								~ <fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkOutDate}" />
 							</td>
-						</c:if>
-						<c:if test="${item.reservationNo == null}">
+						</tr>
+					</c:forEach>
+					<c:if test="${empty myReservationList}">
+						<tr>
 							<td colspan="4" class="text-center text-muted py-4">예약 내역이 없습니다.</td>
-						</c:if>
-					</tr>
+						</tr>
+					</c:if>
 				</tbody>
 			</table>
 		</div>
 		<div class="text-end">
-			<a href="${contextPath}/member/myPage_reservationList?memberNo=${item.memberNo}" class="btn btn-sm btn-outline-hotel">
+			<a href="${contextPath}/member/myPage_reservationList?memberno=${memberno}" class="btn btn-sm btn-outline-hotel">
 				전체보기 <i class="bi bi-chevron-right"></i>
 			</a>
 		</div>
@@ -93,19 +91,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="item" items="${myReviewList}">
+					<c:forEach var="item" items="${myReviewList}" begin="0" end="4">
 						<tr>
-							<td class="fw-semibold">${item.realhotelName}</td>
-							<td>${item.memberNickname}</td>
-							<td>${item.reviewContent}</td>
+							<td class="fw-semibold"><c:out value="${item.realhotelname}" /></td>
+							<td><c:out value="${item.memberNickname}" /></td>
+							<td><c:out value="${item.reviewContent}" /></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${item.reviewDate}" /></td>
 						</tr>
 					</c:forEach>
+					<c:if test="${empty myReviewList}">
+						<tr>
+							<td colspan="4" class="text-center text-muted py-4">작성한 리뷰가 없습니다.</td>
+						</tr>
+					</c:if>
 				</tbody>
 			</table>
 		</div>
 		<div class="text-end">
-			<a href="${contextPath}/member/myPage_reviewList?memberNo=${item.memberNo}" class="btn btn-sm btn-outline-hotel">
+			<a href="${contextPath}/member/myPage_reviewList?memberno=${memberno}" class="btn btn-sm btn-outline-hotel">
 				전체보기 <i class="bi bi-chevron-right"></i>
 			</a>
 		</div>
@@ -116,26 +119,33 @@
 		<h3><i class="bi bi-heart"></i> 찜한 숙소</h3>
 		<div class="row g-3">
 			<c:forEach var="item" items="${myWishList}" begin="0" end="5" step="1">
-				<c:if test="${item.wishListNo != null}">
-					<div class="col-6 col-md-4">
-						<div class="hotel-card">
-							<img src="${item.hotelFileName}" class="card-img" alt="${item.realhotelName}">
+				<div class="col-6 col-md-4">
+					<a href="${contextPath}/hotel/detail?hotelno=${item.hotelno}" class="text-decoration-none text-dark">
+						<div class="hotel-card h-100">
+							<c:choose>
+								<c:when test="${not empty item.hotelFileName}">
+									<img src="${contextPath}/hotel/display?fileName=${fn:escapeXml(item.hotelFileName)}" class="card-img" alt="<c:out value='${item.realhotelname}'/>">
+								</c:when>
+								<c:otherwise>
+									<img src="${contextPath}/resources/hotel/file_repo/1/hotel3.jpg" class="card-img" alt="<c:out value='${item.realhotelname}'/>">
+								</c:otherwise>
+							</c:choose>
 							<div class="card-body">
-								<h6 class="card-title">${item.realhotelName}</h6>
-								<small class="text-muted">${item.state}</small>
+								<h6 class="card-title"><c:out value="${item.realhotelname}" /></h6>
+								<small class="text-muted"><c:out value="${item.state}" /></small>
 							</div>
 						</div>
-					</div>
-				</c:if>
-				<c:if test="${item.wishListNo == null}">
-					<div class="col-12">
-						<p class="text-center text-muted py-4">찜한 숙소가 없습니다.</p>
-					</div>
-				</c:if>
+					</a>
+				</div>
 			</c:forEach>
+			<c:if test="${empty myWishList}">
+				<div class="col-12">
+					<p class="text-center text-muted py-4">찜한 숙소가 없습니다.</p>
+				</div>
+			</c:if>
 		</div>
 		<div class="text-end mt-3">
-			<a href="${contextPath}/member/myPage_wishList?memberNo=${item.memberNo}" class="btn btn-sm btn-outline-hotel">
+			<a href="${contextPath}/member/myPage_wishList?memberno=${memberno}" class="btn btn-sm btn-outline-hotel">
 				전체보기 <i class="bi bi-chevron-right"></i>
 			</a>
 		</div>

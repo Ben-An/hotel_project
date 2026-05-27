@@ -24,6 +24,8 @@ public class RelyVO {
 
 	private String memberNickname;
 
+	private String realhotelname;
+
 	@NotBlank(message = "리뷰 내용을 입력해주세요")
 	@Size(min = 10, max = 500, message = "리뷰는 10~500자여야 합니다")
 	private String reviewContent;
