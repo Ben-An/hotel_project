@@ -30,15 +30,15 @@
 		</div>
 		<c:if test="${member.memberRole == 'MASTER' or member.memberRole == 'ADMIN'}">
 		<div class="mt-2 d-flex gap-2">
-			<button type="button" class="btn btn-sm btn-outline-primary" id="btnAddImage"><i class="bi bi-plus-lg"></i> 사진 추가</button>
-			<button type="button" class="btn btn-sm btn-outline-danger" id="btnManageImages"><i class="bi bi-pencil"></i> 사진 관리</button>
+			<button type="button" class="btn btn-sm btn-outline-hotel" id="btnAddImage"><i class="bi bi-plus-lg"></i> 사진 추가</button>
+			<button type="button" class="btn btn-sm btn-outline-danger-hotel" id="btnManageImages"><i class="bi bi-pencil"></i> 사진 관리</button>
 		</div>
 		</c:if>
 	</div>
 
 	<!-- 찜하기 -->
 	<div class="mt-3">
-		<button type="button" class="btn btn-outline-danger" id="btnWish" data-wished="false">
+		<button type="button" class="btn btn-outline-danger-hotel" id="btnWish" data-wished="false">
 			<i class="bi bi-heart" id="wishIcon"></i> <span id="wishLabel">찜하기</span>
 		</button>
 	</div>
@@ -60,7 +60,7 @@
 		<div class="d-flex align-items-center justify-content-between mb-3">
 			<h5 class="fw-bold mb-0"><i class="bi bi-building"></i> 주요 편의 시설 및 서비스 <span class="amenityMainCount"></span></h5>
 			<c:if test="${member.memberRole == 'MASTER' or member.memberRole == 'ADMIN'}">
-			<button type="button" class="btn btn-sm btn-outline-primary btn-add-amenity" data-type="MAIN"><i class="bi bi-plus-lg"></i> 추가</button>
+			<button type="button" class="btn btn-sm btn-outline-hotel btn-add-amenity" data-type="MAIN"><i class="bi bi-plus-lg"></i> 추가</button>
 			</c:if>
 		</div>
 		<div class="row g-2 amenityMain"></div>
@@ -160,7 +160,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary-hotel" id="btnUploadImageConfirm">업로드</button>
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-outline-secondary-hotel" data-bs-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -178,7 +178,7 @@
 				<div class="row g-2" id="imageManageList"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-outline-secondary-hotel" data-bs-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -211,7 +211,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary-hotel" id="btnReasonSave">저장</button>
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-outline-secondary-hotel" data-bs-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -256,7 +256,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary-hotel" id="btnRoomSave">저장</button>
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-outline-secondary-hotel" data-bs-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -296,7 +296,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary-hotel" id="btnAmenitySave">저장</button>
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-outline-secondary-hotel" data-bs-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -478,8 +478,8 @@ $(document).ready(function() {
 				str += "</div>";
 				if (isAdmin) {
 					str += "<div class='d-flex gap-1 mt-2 justify-content-end'>";
-					str += "<button type='button' class='btn btn-sm btn-outline-secondary btn-edit-room' data-roomno='" + roomList[i].roomno + "' data-roomname='" + roomList[i].roomname + "' data-roomprice='" + roomList[i].roomprice + "' data-bedno='" + roomList[i].bedno + "' data-inforoom='" + (roomList[i].infoRoom || '') + "' data-checkin='" + (roomList[i].checkInDate || '') + "' data-checkout='" + (roomList[i].checkOutDate || '') + "'><i class='bi bi-pencil'></i></button>";
-					str += "<button type='button' class='btn btn-sm btn-outline-danger btn-delete-room' data-roomno='" + roomList[i].roomno + "'><i class='bi bi-trash'></i></button>";
+					str += "<button type='button' class='btn btn-sm btn-outline-secondary-hotel btn-edit-room' data-roomno='" + roomList[i].roomno + "' data-roomname='" + roomList[i].roomname + "' data-roomprice='" + roomList[i].roomprice + "' data-bedno='" + roomList[i].bedno + "' data-inforoom='" + (roomList[i].infoRoom || '') + "' data-checkin='" + (roomList[i].checkInDate || '') + "' data-checkout='" + (roomList[i].checkOutDate || '') + "'><i class='bi bi-pencil'></i></button>";
+					str += "<button type='button' class='btn btn-sm btn-outline-danger-hotel btn-delete-room' data-roomno='" + roomList[i].roomno + "'><i class='bi bi-trash'></i></button>";
 					str += "</div>";
 				}
 				str += "</div>";
@@ -578,7 +578,7 @@ $(document).ready(function() {
 				for (var i = 0; i < list.length; i++) {
 					str += "<div class='col-4 col-md-3 position-relative'>";
 					str += "<img src='/hotel/display?fileName=" + list[i].hotelFileName + "' style='width:100%;height:120px;object-fit:cover;border-radius:6px;'>";
-					str += "<button type='button' class='btn btn-sm btn-danger position-absolute top-0 end-0 m-1 btn-delete-image' data-id='" + list[i].hotelImageId + "' data-filename='" + list[i].hotelFileName + "' style='border-radius:50%;width:28px;height:28px;padding:0;'><i class='bi bi-x'></i></button>";
+					str += "<button type='button' class='btn btn-sm btn-danger-hotel position-absolute top-0 end-0 m-1 btn-delete-image' data-id='" + list[i].hotelImageId + "' data-filename='" + list[i].hotelFileName + "' style='border-radius:50%;width:28px;height:28px;padding:0;'><i class='bi bi-x'></i></button>";
 					str += "</div>";
 				}
 				if (list.length === 0) str = "<p class='text-muted text-center w-100'>등록된 사진이 없습니다.</p>";
@@ -1028,7 +1028,7 @@ $(function() {
 		$btn.attr('data-wished', wished ? 'true' : 'false');
 		$('#wishIcon').attr('class', wished ? 'bi bi-heart-fill' : 'bi bi-heart');
 		$('#wishLabel').text(wished ? '찜 완료' : '찜하기');
-		$btn.toggleClass('btn-danger', wished).toggleClass('btn-outline-danger', !wished);
+		$btn.toggleClass('btn-danger-hotel', wished).toggleClass('btn-outline-danger-hotel', !wished);
 	}
 
 	// 초기 상태 조회 (로그인한 경우만)

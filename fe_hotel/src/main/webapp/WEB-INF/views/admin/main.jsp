@@ -185,7 +185,7 @@
 							<td><span class="text-warning">${list_review.grade} &#9733;</span></td>
 							<td>${list_review.reviewContent}</td>
 							<td>${list_review.reviewDate}</td>
-							<td><button id="reviewBtn" class="btn btn-sm btn-outline-danger">삭제</button></td>
+							<td><button id="reviewBtn" class="btn btn-sm btn-outline-danger-hotel">삭제</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>

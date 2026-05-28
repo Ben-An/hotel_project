@@ -35,7 +35,7 @@
 				<label class="form-label">아이디</label>
 				<div class="input-group">
 					<input class="form-control id_input" type="text" name="memberId" placeholder="아이디를 입력하세요">
-					<button class="btn btn-outline-secondary id_check_button" type="button">중복확인</button>
+					<button class="btn btn-outline-secondary-hotel id_check_button" type="button">중복확인</button>
 				</div>
 				<small class="valid-msg id_input_re_1">사용 가능한 아이디입니다.</small>
 				<small class="invalid-msg id_input_re_2">이미 존재하는 아이디입니다.</small>
@@ -70,7 +70,7 @@
 				<label class="form-label">닉네임</label>
 				<div class="input-group">
 					<input class="form-control usernn_input" type="text" name="memberNickname" placeholder="닉네임을 입력하세요">
-					<button class="btn btn-outline-secondary nn_check_button" type="button">중복확인</button>
+					<button class="btn btn-outline-secondary-hotel nn_check_button" type="button">중복확인</button>
 				</div>
 				<small class="valid-msg nn_input_re_1">사용 가능한 닉네임입니다.</small>
 				<small class="invalid-msg nn_input_re_2">이미 존재하는 닉네임입니다.</small>
@@ -82,7 +82,7 @@
 				<label class="form-label">이메일</label>
 				<div class="input-group">
 					<input class="form-control mail_input" type="email" name="memberEmail" placeholder="이메일을 입력하세요">
-					<button class="btn btn-outline-secondary mail_check_dup_button" type="button">중복확인</button>
+					<button class="btn btn-outline-secondary-hotel mail_check_dup_button" type="button">중복확인</button>
 				</div>
 				<small class="valid-msg mail_input_re_1">사용 가능한 이메일입니다.</small>
 				<small class="invalid-msg mail_input_re_2">이미 존재하는 이메일입니다.</small>
@@ -91,7 +91,7 @@
 
 				<div class="input-group mt-2">
 					<input class="form-control mail_check_input" placeholder="인증번호 입력" disabled>
-					<button class="btn btn-outline-secondary mail_check_button" type="button">인증번호 전송</button>
+					<button class="btn btn-outline-secondary-hotel mail_check_button" type="button">인증번호 전송</button>
 				</div>
 				<small id="mail_check_input_box_warn"></small>
 			</div>
@@ -108,9 +108,9 @@
 				<label class="form-label d-block">성별</label>
 				<div class="btn-group" role="group">
 					<input type="radio" class="btn-check" name="memberGender" id="male" value="M" checked>
-					<label class="btn btn-outline-secondary" for="male">남성</label>
+					<label class="btn btn-outline-secondary-hotel" for="male">남성</label>
 					<input type="radio" class="btn-check" name="memberGender" id="female" value="F">
-					<label class="btn btn-outline-secondary" for="female">여성</label>
+					<label class="btn btn-outline-secondary-hotel" for="female">여성</label>
 				</div>
 			</div>
 

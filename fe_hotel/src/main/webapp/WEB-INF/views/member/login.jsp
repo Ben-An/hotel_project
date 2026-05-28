@@ -88,7 +88,7 @@
 				<div class="find_id_result"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-secondary-hotel" data-bs-dismiss="modal">닫기</button>
 				<button type="button" class="btn btn-primary-hotel find_id_submit">아이디 찾기</button>
 			</div>
 		</div>
@@ -115,7 +115,7 @@
 				<div class="find_pw_result"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-secondary-hotel" data-bs-dismiss="modal">닫기</button>
 				<button type="button" class="btn btn-primary-hotel find_pw_submit">임시 비밀번호 발송</button>
 			</div>
 		</div>

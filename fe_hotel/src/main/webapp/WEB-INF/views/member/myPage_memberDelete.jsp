@@ -34,7 +34,7 @@
 				<label class="form-label">비밀번호 확인</label>
 				<input class="form-control" type="password" name="memberPassword" placeholder="비밀번호를 입력하세요">
 			</div>
-			<button type="submit" class="btn btn-danger w-100 py-2 mb-3">
+			<button type="submit" class="btn btn-danger-hotel w-100 py-2 mb-3">
 				<i class="bi bi-person-x"></i> 탈퇴하기
 			</button>
 			<div class="text-center">

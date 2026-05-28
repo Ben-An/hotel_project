@@ -54,7 +54,7 @@
 				<small class="mail_input_box_warn" style="display:none;"></small>
 				<div class="input-group mt-2">
 					<input class="form-control mail_check_input" placeholder="인증번호 입력" disabled>
-					<button class="btn btn-outline-secondary mail_check_button" type="button">인증번호 전송</button>
+					<button class="btn btn-outline-secondary-hotel mail_check_button" type="button">인증번호 전송</button>
 				</div>
 				<small id="mail_check_input_box_warn"></small>
 			</div>
@@ -67,9 +67,9 @@
 				<label class="form-label d-block">성별</label>
 				<div class="btn-group" role="group">
 					<input type="radio" class="btn-check" name="memberGender" id="male" value="1" checked>
-					<label class="btn btn-outline-secondary" for="male">남성</label>
+					<label class="btn btn-outline-secondary-hotel" for="male">남성</label>
 					<input type="radio" class="btn-check" name="memberGender" id="female" value="2">
-					<label class="btn btn-outline-secondary" for="female">여성</label>
+					<label class="btn btn-outline-secondary-hotel" for="female">여성</label>
 				</div>
 			</div>
 			<button type="button" class="btn btn-primary-hotel w-100 py-2 update_button">수정하기</button>

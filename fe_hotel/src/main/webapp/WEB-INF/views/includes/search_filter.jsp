@@ -59,7 +59,7 @@
 	<div class="filter-section">
 		<h6>지역</h6>
 
-		<button class="btn btn-sm btn-outline-secondary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#area-north">
+		<button class="btn btn-sm btn-outline-secondary-hotel w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#area-north">
 			<i class="bi bi-chevron-down"></i> 북부
 		</button>
 		<div class="collapse" id="area-north">
@@ -77,7 +77,7 @@
 			</div>
 		</div>
 
-		<button class="btn btn-sm btn-outline-secondary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#area-south">
+		<button class="btn btn-sm btn-outline-secondary-hotel w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#area-south">
 			<i class="bi bi-chevron-down"></i> 남부
 		</button>
 		<div class="collapse" id="area-south">
@@ -113,7 +113,7 @@
 			<button type="button" class="btn btn-primary-hotel" id="btnApplyFilter">
 				<i class="bi bi-funnel"></i> 필터 적용
 			</button>
-			<button type="button" class="btn btn-outline-secondary btn-sm" id="btnResetFilter">초기화</button>
+			<button type="button" class="btn btn-outline-secondary-hotel btn-sm" id="btnResetFilter">초기화</button>
 		</div>
 	</div>
 </div>
