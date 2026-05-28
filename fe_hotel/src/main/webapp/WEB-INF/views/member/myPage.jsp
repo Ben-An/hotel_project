@@ -28,10 +28,10 @@
 			</tbody>
 		</table>
 		<div class="d-flex gap-2 justify-content-end">
-			<a href="${contextPath}/member/myPage_memberUpdate?memberNo=${member.memberNo}" class="btn btn-sm btn-outline-hotel">
+			<a href="${contextPath}/member/myPage_memberUpdate?memberNo=${member.memberNo}" class="btn btn-outline-hotel">
 				<i class="bi bi-pencil"></i> 정보 수정
 			</a>
-			<a href="${contextPath}/member/myPage_memberDelete?memberNo=${member.memberNo}" class="btn btn-sm btn-outline-danger">
+			<a href="${contextPath}/member/myPage_memberDelete?memberNo=${member.memberNo}" class="btn btn-outline-danger-hotel">
 				<i class="bi bi-person-x"></i> 회원 탈퇴
 			</a>
 		</div>
@@ -71,7 +71,7 @@
 			</table>
 		</div>
 		<div class="text-end">
-			<a href="${contextPath}/member/myPage_reservationList?memberno=${memberno}" class="btn btn-sm btn-outline-hotel">
+			<a href="${contextPath}/member/myPage_reservationList?memberno=${memberno}" class="btn btn-outline-hotel">
 				전체보기 <i class="bi bi-chevron-right"></i>
 			</a>
 		</div>
@@ -108,7 +108,7 @@
 			</table>
 		</div>
 		<div class="text-end">
-			<a href="${contextPath}/member/myPage_reviewList?memberno=${memberno}" class="btn btn-sm btn-outline-hotel">
+			<a href="${contextPath}/member/myPage_reviewList?memberno=${memberno}" class="btn btn-outline-hotel">
 				전체보기 <i class="bi bi-chevron-right"></i>
 			</a>
 		</div>
@@ -145,7 +145,7 @@
 			</c:if>
 		</div>
 		<div class="text-end mt-3">
-			<a href="${contextPath}/member/myPage_wishList?memberno=${memberno}" class="btn btn-sm btn-outline-hotel">
+			<a href="${contextPath}/member/myPage_wishList?memberno=${memberno}" class="btn btn-outline-hotel">
 				전체보기 <i class="bi bi-chevron-right"></i>
 			</a>
 		</div>

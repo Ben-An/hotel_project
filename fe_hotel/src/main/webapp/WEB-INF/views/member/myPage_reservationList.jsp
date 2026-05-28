@@ -38,7 +38,7 @@
 								~ <fmt:formatDate pattern="yyyy-MM-dd" value="${item.checkOutDate}" />
 							</td>
 							<td class="text-end">
-								<button type="button" class="btn btn-sm btn-outline-danger btn-cancel-reserv"
+								<button type="button" class="btn btn-sm btn-outline-danger-hotel btn-cancel-reserv"
 									data-reservno="${item.reservationNo}">
 									<i class="bi bi-x-circle"></i> 취소
 								</button>

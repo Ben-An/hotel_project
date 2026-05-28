@@ -119,6 +119,45 @@ img {
 .btn-outline-hotel:hover {
   background-color: var(--color-primary);
   color: var(--color-white);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Danger 변형 — 회원 탈퇴 / 예약 취소 / 찜 해제 등 위험 액션. hotel 디자인 토큰 따름. */
+.btn-danger-hotel {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  border: none;
+  padding: 0.625rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-danger-hotel:hover {
+  background-color: #b02a37;
+  color: var(--color-white);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline-danger-hotel {
+  background-color: transparent;
+  color: var(--color-danger);
+  border: 2px solid var(--color-danger);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-outline-danger-hotel:hover {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 /* ===== Search Hero (Trip.com style) ===== */

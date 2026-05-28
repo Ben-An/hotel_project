@@ -37,7 +37,7 @@
 							</div>
 						</a>
 						<div class="px-2 pb-2">
-							<button type="button" class="btn btn-sm btn-outline-danger w-100 btn-wish-remove" data-hotelno="${item.hotelno}">
+							<button type="button" class="btn btn-sm btn-outline-danger-hotel w-100 btn-wish-remove" data-hotelno="${item.hotelno}">
 								<i class="bi bi-heart-fill"></i> 찜 해제
 							</button>
 						</div>
